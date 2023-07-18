@@ -6,10 +6,7 @@ export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <div>
-      <h2 className="mt-24 font-bold text-gray-700 text-3xl">
-        Latest
-      </h2>
+    <div className="flex justify-center">
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
           posts.map(post => {

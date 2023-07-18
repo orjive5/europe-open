@@ -16,6 +16,10 @@ module.exports = {
         hoverBg: '#22303c',
         primaryTxt: '#ffffff',
         secondaryTxt: '#8899a6',
+      },
+      fontFamily: {
+        nunito: ['Nunito'],
+        lexend: ['Lexend'],
       }
     },
   },
