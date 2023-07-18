@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Qualion',
-  description: 'Bleeding-edge science, tech, and AI',
+  description: 'Bleeding-edge science, tech, and AI news',
 }
 
 export default async function RootLayout({
