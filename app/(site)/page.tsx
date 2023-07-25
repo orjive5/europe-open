@@ -10,7 +10,7 @@ export default async function Home() {
         {
           posts.map(post => {
             return (
-              <Card post={post} />
+              <Card key={post._id} post={post} />
             )
           })
         }
