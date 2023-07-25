@@ -21,7 +21,7 @@ export default async function RootLayout({
   const pages = await getPages();
   return (
     <html lang="en">
-      <body className="font-lexend mx-auto bg-primaryBg text-primaryTxt h-screen min-w-full">
+      <body className="flex flex-col justify-between font-lexend mx-auto bg-primaryBg text-primaryTxt h-screen min-w-full">
         <Header pages={pages} />
         <main>
           {children}
