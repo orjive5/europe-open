@@ -3,6 +3,17 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Card = ({ post }: { post: Post }) => {
+
+  function formatDate(inputDate: Date): string {
+    const dateObj = new Date(inputDate);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    return dateObj.toLocaleDateString(undefined, options);
+  }
+
   return (
     <Link
       href={`/posts/${post.slug}`}
@@ -25,6 +36,9 @@ const Card = ({ post }: { post: Post }) => {
       )}
       <h1 className="w-full h-full absolute z-30 top-1 p-5 font-bold text-3xl hover:underline">
         {post.name}
+      </h1>
+      <h1 className="absolute z-30 bottom-1 p-5 text-lg">
+        {formatDate(post._createdAt)}
       </h1>
     </Link>
   );
