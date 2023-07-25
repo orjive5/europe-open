@@ -14,7 +14,7 @@ export async function getPosts(): Promise<Post[]> {
             "image": image.asset->url,
             url,
             content
-        }`
+        } | order(_createdAt desc)`
     )
 }
 
@@ -43,7 +43,7 @@ export async function getPages(): Promise<Page[]> {
             _createdAt,
             title,
             'slug': slug.current,
-        }`
+        } | order(_createdAt asc)`
     )
 }
 
