@@ -22,15 +22,17 @@ const Card = ({ post }: { post: Post }) => {
     >
       {post.image && (
         <div className="h-full w-full relative">
-          <div className="absolute inset-0 opacity-60 z-30 w-full h-full bg-[#99ccff]">
+          <div className="absolute inset-0 opacity-60 z-30 w-full h-full bg-primaryBg">
             <div className="absolute inset-0 z-10 bg-black opacity-25"></div>
           </div>
           <Image
             src={post.image}
             alt={post.name}
             fill
-            sizes="100vw, 50vw, 33vw"
-            className="absolute z-20 w-full h-full object-cover border-2 border-gray-500"
+            //TODO: check sizes with responsive image linter
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={true}
+            className="absolute z-20 w-full h-auto object-cover border-2 border-gray-500"
           />
         </div>
       )}
