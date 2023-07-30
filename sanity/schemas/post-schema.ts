@@ -32,9 +32,26 @@ const post = {
             ]
         },
         {
-            name: 'url',
-            title: 'URL',
-            type: 'url'
+            name: 'URLs',
+            title: 'URLs',
+            type: 'array',
+            of: [
+                {
+                    name: 'url1',
+                    title: 'Url1',
+                    type: 'url',
+                },
+                {
+                    name: 'url2',
+                    title: 'Url2',
+                    type: 'url',
+                },
+                {
+                    name: 'url3',
+                    title: 'Url3',
+                    type: 'url',
+                },
+            ]
         },
         {
             name: 'content',

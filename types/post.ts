@@ -6,6 +6,6 @@ export type Post = {
     name: string;
     slug: string;
     image: string;
-    url: string;
+    URLs: string[];
     content: PortableTextBlock[];
 }

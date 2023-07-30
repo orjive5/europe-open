@@ -1,6 +1,7 @@
 import { getPost } from "@/sanity/sanity-utils";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
     params: {
@@ -11,25 +12,47 @@ type Props = {
 const Post = async ({ params }: Props) => {
     const slug = params.post;
     const post = await getPost(slug);
+
     return (
         <div className="flex items-center justify-center">
             <div className="flex flex-col items-center gap-10 p-10 w-5/6 md:w-4/5 lg:w-3/4">
                 <h1 className="text-center text-primaryTxt text-5xl drop-shadow font-extrabold">
-                    {post.name}
+                    {post.name && post.name}
                 </h1>
                     <div className="relative w-3/4 h-[400px]">
                         <Image
-                            src={post.image}
-                            alt={post.name}
+                            src={post.image ? post.image : '/placeholder_dog.avif'}
+                            alt={post.name ? post.name : 'Sorry, something went wrong on our end!'}
                             fill
                             sizes="100vw"
                             priority={true}
                             className="border-2 border-gray-700 object-cover rounded-xl"
                         />
                     </div>
-                <div className="text-justify text-lg text-primaryTxt">
+                {post.content && (<div className="text-justify text-lg text-primaryTxt">
                     <PortableText value={post.content} />
-                </div>
+                </div>)}
+                {post.URLs && (
+                    <div className="w-full flex flex-col gap-5">
+                        <h2 className="text-justify text-lg text-primaryTxt">
+                            Read more:
+                        </h2>
+                        <div className="text-secondaryTxt flex flex-col gap-2 items-justify">
+                            {post.URLs.map(url => {
+                                return (
+                                    <Link
+                                        href={url}
+                                        target='_blank'
+                                        key={url}
+                                        className="hover:underline"
+                                    >
+                                        {url}
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

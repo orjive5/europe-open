@@ -12,7 +12,7 @@ export async function getPosts(): Promise<Post[]> {
             name,
             "slug": slug.current,
             "image": image.asset->url,
-            url,
+            URLs,
             content
         } | order(_createdAt desc)`
     )
@@ -27,7 +27,7 @@ export async function getPost(slug: string): Promise<Post> {
             name,
             "slug": slug.current,
             "image": image.asset->url,
-            url,
+            URLs,
             content
         }`,
         {
