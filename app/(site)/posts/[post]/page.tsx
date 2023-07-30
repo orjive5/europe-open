@@ -12,25 +12,25 @@ const Post = async ({ params }: Props) => {
     const slug = params.post;
     const post = await getPost(slug);
     return (
-        <div className="p-10">
-            <h1 className="text-primaryTxt text-5xl drop-shadow font-extrabold">
-                {post.name}
-            </h1>
-            <Image
-                src={post.image}
-                alt={post.name}
-                width={1920}
-                height={1080}
-                //TODO: check sizes with responsive image linter
-                // fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={true}
-                className="w-full h-auto mt-10 border-2 border-gray-700 object-cover rounded-xl"
-            />
-            <div className="text-lg text-secondaryTxt mt-5">
-                <PortableText value={post.content} />
+        <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center gap-10 p-10 w-5/6 md:w-4/5 lg:w-3/4">
+                <h1 className="text-center text-primaryTxt text-5xl drop-shadow font-extrabold">
+                    {post.name}
+                </h1>
+                    <div className="relative w-3/4 h-[400px]">
+                        <Image
+                            src={post.image}
+                            alt={post.name}
+                            fill
+                            sizes="100vw"
+                            priority={true}
+                            className="border-2 border-gray-700 object-cover rounded-xl"
+                        />
+                    </div>
+                <div className="text-justify text-lg text-primaryTxt">
+                    <PortableText value={post.content} />
+                </div>
             </div>
-
         </div>
     )
 }

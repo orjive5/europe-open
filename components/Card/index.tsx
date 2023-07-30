@@ -29,8 +29,7 @@ const Card = ({ post }: { post: Post }) => {
             src={post.image}
             alt={post.name}
             fill
-            //TODO: check sizes with responsive image linter
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="100vw"
             priority={true}
             className="absolute z-20 w-full h-auto object-cover border-2 border-gray-500"
           />
