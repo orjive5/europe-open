@@ -31,7 +31,7 @@ const Card = ({ post }: { post: Post }) => {
             fill
             sizes="100vw"
             priority={true}
-            className="absolute z-20 w-full h-auto object-cover border-2 border-gray-500"
+            className="absolute z-20 w-full h-auto object-cover border-2 border-primaryTone"
           />
         </div>
       )}

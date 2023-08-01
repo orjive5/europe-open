@@ -14,7 +14,7 @@ export async function getPosts(): Promise<Post[]> {
           "image": image.asset->url,
           URLs,
           content
-      }`
+      } | order(_createdAt desc)`
     );
 }
 
@@ -38,7 +38,7 @@ export async function getPosts(): Promise<Post[]> {
 //     );
 // }
 
-export async function getPost(slug: string): Promise<Post> {
+export async function getPost(slug: string): Promise<number> {
 
     return createClient(clientConfig).fetch(
         groq`*[_type == "post" && slug.current == $slug][0]{
@@ -56,12 +56,14 @@ export async function getPost(slug: string): Promise<Post> {
     )
 }
 
-export async function countPosts(): Promise<Post[]> {
+// TODO: Delete the code bellow when done with pagination
+
+// export async function countPosts(): Promise<Post[]> {
   
-    return createClient(clientConfig).fetch(
-      groq`count(*[_type == "post"])`
-    );
-}
+//     return createClient(clientConfig).fetch(
+//       groq`count(*[_type == "post"])`
+//     );
+// }
 
 export async function getPages(): Promise<Page[]> {
     return createClient(clientConfig).fetch(
