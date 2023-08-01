@@ -18,27 +18,7 @@ export async function getPosts(): Promise<Post[]> {
     );
 }
 
-// TODO: Delete the code bellow when done with pagination
-
-// export async function getPosts(page: number, perPage: number): Promise<Post[]> {
-//     const startIndex = (page - 1) * perPage;
-  
-//     return createClient(clientConfig).fetch(
-//       groq`*[_type == "post"]{
-//           _id,
-//           _createdAt,
-//           name,
-//           "slug": slug.current,
-//           "image": image.asset->url,
-//           URLs,
-//           content
-//       } | order(_createdAt desc)[${startIndex}...${
-//         startIndex + perPage
-//       }]`
-//     );
-// }
-
-export async function getPost(slug: string): Promise<number> {
+export async function getPost(slug: string): Promise<Post> {
 
     return createClient(clientConfig).fetch(
         groq`*[_type == "post" && slug.current == $slug][0]{
@@ -55,15 +35,6 @@ export async function getPost(slug: string): Promise<number> {
         },
     )
 }
-
-// TODO: Delete the code bellow when done with pagination
-
-// export async function countPosts(): Promise<Post[]> {
-  
-//     return createClient(clientConfig).fetch(
-//       groq`count(*[_type == "post"])`
-//     );
-// }
 
 export async function getPages(): Promise<Page[]> {
     return createClient(clientConfig).fetch(

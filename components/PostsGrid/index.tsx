@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import Card from "../Card"
 import { useState } from "react"
 import ReactPaginate from "react-paginate"
+import CardSkeleton from "../CardSkeleton"
 
 const PostsGrid = () => {
 
@@ -14,11 +15,10 @@ const PostsGrid = () => {
             queryFn: getPosts,
         }
     );
-
-    //PAGINATION
+    
     const [pageNumber, setPageNumber] = useState(0);
 
-    const postsPerPage = 3;
+    const postsPerPage = 12;
     const pagesVisited = pageNumber * postsPerPage;
 
     const displayPosts = posts.data?.slice(pagesVisited, pagesVisited + postsPerPage)
@@ -36,9 +36,16 @@ const PostsGrid = () => {
         <>
             {
                 posts.isLoading &&
-                <h2 className="text-3xl text-center self-center">
-                    Loading...
-                </h2>
+                (
+                    <>
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                        <CardSkeleton />
+                    </>
+                )
             }
             {posts && displayPosts}
             <ReactPaginate
@@ -51,7 +58,6 @@ const PostsGrid = () => {
                 previousLinkClassName={"previousBttn"}
                 disabledClassName={"text-secondaryTxt"}
                 disabledLinkClassName={"cursor-not-allowed"}
-                // pageLinkClassName={"text-blue-200"}
                 activeClassName={"text-primaryTone"}
             />
         </>

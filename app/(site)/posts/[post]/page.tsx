@@ -19,19 +19,21 @@ const Post = async ({ params }: Props) => {
                 <h1 className="text-center text-primaryTxt text-5xl drop-shadow font-extrabold">
                     {post.name && post.name}
                 </h1>
-                    <div className="relative w-3/4 h-[400px]">
+                    <div className="relative w-full h-[400px]">
                         <Image
                             src={post.image ? post.image : '/placeholder_dog.avif'}
                             alt={post.name ? post.name : 'Sorry, something went wrong on our end!'}
                             fill
                             sizes="100vw"
                             priority={true}
-                            className="border-2 border-gray-700 object-cover rounded-xl"
+                            className="border-2 border-primaryTone object-cover"
                         />
                     </div>
-                {post.content && (<div className="text-justify text-lg text-primaryTxt">
-                    <PortableText value={post.content} />
-                </div>)}
+                {post.content && (
+                    <div className="text-justify text-lg text-primaryTxt">
+                        <PortableText value={post.content} />
+                    </div>
+                )}
                 {post.URLs && (
                     <div className="w-full flex flex-col gap-5">
                         <h2 className="text-justify text-lg text-primaryTxt">
@@ -44,7 +46,7 @@ const Post = async ({ params }: Props) => {
                                         href={url}
                                         target='_blank'
                                         key={url}
-                                        className="hover:underline"
+                                        className="hover:underline truncate"
                                     >
                                         {url}
                                     </Link>
