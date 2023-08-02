@@ -35,10 +35,10 @@ const Card = ({ post }: { post: Post }) => {
           />
         </div>
       )}
-      <h1 className="w-full h-full absolute z-30 top-1 p-5 font-bold text-3xl hover:underline">
+      <h1 className="w-full h-full absolute z-30 top-1 p-5 font-bold responsive-heading hover:underline">
         {post.name}
       </h1>
-      <h1 className="absolute z-30 bottom-1 p-5 text-lg">
+      <h1 className="absolute z-30 bottom-1 p-5 responsive-base">
         {formatDate(post._createdAt)}
       </h1>
     </Link>

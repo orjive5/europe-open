@@ -14,8 +14,8 @@ const Header = ({pages}: {pages: Page[]}) => {
             height="64"
         />
         <div className="flex flex-col h-full justify-center">
-            <h1 className="text-2xl font-extrabold font-nunito">QUALION</h1>
-            <p className="text-base text-secondaryTxt">bleeding-edge science, tech, and AI news</p>
+            <h1 className="responsive-heading font-extrabold font-nunito">QUALION</h1>
+            <p className="responsive-base text-secondaryTxt">bleeding-edge science, tech, and AI news</p>
         </div>
       </Link>
       <div className="flex items-center">
@@ -23,7 +23,7 @@ const Header = ({pages}: {pages: Page[]}) => {
           <Link
             key={page._id}
             href={`/${page.slug}`}
-            className="py-7 px-9 text-base hover:bg-hoverBg h-full flex items-center"
+            className="py-7 px-9 responsive-base hover:bg-hoverBg h-full flex items-center"
           >
             {page.title}
           </Link>

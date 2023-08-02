@@ -16,7 +16,7 @@ const Post = async ({ params }: Props) => {
     return (
         <div className="flex items-center justify-center">
             <div className="flex flex-col items-center gap-10 p-10 w-5/6 md:w-4/5 lg:w-3/4">
-                <h1 className="text-center text-primaryTxt text-5xl drop-shadow font-extrabold">
+                <h1 className="text-center text-primaryTxt responsive-heading-large drop-shadow font-extrabold">
                     {post.name && post.name}
                 </h1>
                     <div className="relative w-full h-[400px]">
@@ -30,16 +30,16 @@ const Post = async ({ params }: Props) => {
                         />
                     </div>
                 {post.content && (
-                    <div className="text-justify text-lg text-primaryTxt">
+                    <div className="text-justify responsive-base text-primaryTxt">
                         <PortableText value={post.content} />
                     </div>
                 )}
                 {post.URLs && (
                     <div className="w-full flex flex-col gap-5">
-                        <h2 className="text-justify text-lg text-primaryTxt">
+                        <h2 className="text-justify responsive-base text-primaryTxt">
                             Read more:
                         </h2>
-                        <div className="text-secondaryTxt flex flex-col gap-2 items-justify">
+                        <div className="text-secondaryTxt responsive-base flex flex-col gap-2 items-justify">
                             {post.URLs.map(url => {
                                 return (
                                     <Link

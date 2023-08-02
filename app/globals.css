@@ -2,3 +2,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .responsive-heading {
+        font-size: calc(1.13095238rem + 0.5952381vw);
+    }
+
+    .responsive-heading-large {
+        font-size: calc(1.66071429rem + 1.07142857vw);
+    }
+
+    .responsive-base {
+        font-size: calc(0.97619048rem + 0.11904762vw);
+    }
+}

@@ -54,7 +54,7 @@ const PostsGrid = () => {
                 nextLabel={"Next"}
                 pageCount={pageCount}
                 onPageChange={changePage}
-                containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 text-lg"}
+                containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 responsive-base"}
                 previousLinkClassName={"previousBttn"}
                 disabledClassName={"text-secondaryTxt"}
                 disabledLinkClassName={"cursor-not-allowed"}
