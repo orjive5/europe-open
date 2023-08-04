@@ -8,4 +8,4 @@
 
 ---
 
-![Qualion Blog Demo](https://github.com/orjive5/qualion-sanity/assets/93201142/7c2b7978-19c6-4285-a39f-e2bb252e10d8)
+![Qualion Blog Demo](https://sanity-personal-website-nu.vercel.app/)
