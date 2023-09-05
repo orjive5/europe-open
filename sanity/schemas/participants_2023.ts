@@ -6,8 +6,30 @@ const participants_2023 = defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'name',
-            title: 'Name',
+            name: 'discipline',
+            title: 'Discipline',
+            type: 'array',
+            of: [
+                defineArrayMember({
+                    type: 'reference',
+                    to: [{ type: 'disciplines' }]
+                })
+            ]
+        }),
+        defineField({
+            name: 'category',
+            title: 'Category',
+            type: 'array',
+            of: [
+                defineArrayMember({
+                    type: 'reference',
+                    to: [{ type: 'categories' }]
+                })
+            ]
+        }),
+        defineField({
+            name: 'name_and_surname',
+            title: 'Name and surname',
             type: 'string',
         }),
         defineField({
@@ -15,12 +37,67 @@ const participants_2023 = defineType({
             title: 'Slug',
             type: 'slug',
             options: {
-                source: 'name'
+                source: 'name_and_surname',
+                maxLength: 100,
+                slugify: input => input
+                                    .toLowerCase()
+                                    .replace(/\s+/g, '-')
+                                    .slice(0, 100) + '-2023'
             },
         }),
         defineField({
-            name: 'image',
-            title: 'Image',
+            name: 'date_of_birth',
+            title: 'Date of birth',
+            type: 'date',
+        }),
+        defineField({
+            name: 'teacher_conductor_collective_leader',
+            title: 'Teacher/ Conductor/ Collective leader',
+            type: 'string',
+        }),
+        defineField({
+            name: 'accompanist',
+            title: 'Accompanist',
+            type: 'string',
+        }),
+        defineField({
+            name: 'institution_city_country',
+            title: 'Institution, city, country',
+            type: 'string',
+        }),
+        defineField({
+            name: 'program',
+            title: 'Program (composer, composition title, duration)',
+            type: 'string',
+        }),
+        defineField({
+            name: 'diploma_by_postal_service',
+            title: 'Diplomas by the postal service (+10€)',
+            type: 'boolean',
+        }),
+        defineField({
+            name: 'teacher_email',
+            title: 'Teacher\'s e-mail',
+            type: 'email',
+        }),
+        defineField({
+            name: 'participant_email',
+            title: 'Participant\'s e-mail',
+            type: 'email',
+        }),
+        defineField({
+            name: 'video_link',
+            title: 'Video',
+            type: 'url',
+        }),
+        {
+            name: 'identity_document',
+            title: 'Identity document',
+            type: 'file',
+        },
+        defineField({
+            name: 'poster_photo',
+            title: 'Photo for the poster',
             type: 'image',
             options: {
                 hotspot: true
@@ -33,46 +110,11 @@ const participants_2023 = defineType({
                 })
             ]
         }),
-        defineField({
-            name: 'URLs',
-            title: 'URLs',
-            type: 'array',
-            of: [
-                {
-                    name: 'url1',
-                    title: 'Url1',
-                    type: 'url',
-                },
-                {
-                    name: 'url2',
-                    title: 'Url2',
-                    type: 'url',
-                },
-                {
-                    name: 'url3',
-                    title: 'Url3',
-                    type: 'url',
-                },
-            ]
-        }),
-        defineField({
-            name: 'content',
-            title: 'Content',
-            type: 'array',
-            of: [
-                {
-                    type: 'block'
-                }
-            ]
-        }),
-        defineField({
-            title: "String array",
-            name: "strings",
-            type: "array",
-            of: [
-              defineArrayMember({ type: "string" })  
-            ]
-        })
+        {
+            name: 'biography',
+            title: 'Participant\'s biography',
+            type: 'file',
+        }
     ]
 })
 
