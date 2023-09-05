@@ -2,8 +2,8 @@ import '../globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Qualion',
-  description: 'Bleeding-edge science, tech, and AI news',
+  title: 'Europe Open',
+  description: 'Europe Open online music competition',
 }
 
 export default function RootLayout({

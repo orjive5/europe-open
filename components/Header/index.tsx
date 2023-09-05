@@ -14,8 +14,8 @@ const Header = ({pages}: {pages: Page[]}) => {
             height="64"
         />
         <div className="flex flex-col h-full justify-center">
-            <h1 className="responsive-heading font-extrabold font-nunito">QUALION</h1>
-            <p className="responsive-base text-secondaryTxt">bleeding-edge science, tech, and AI news</p>
+            <h1 className="responsive-heading font-extrabold font-nunito">Europe Open</h1>
+            <p className="responsive-base text-secondaryTxt">online music competition</p>
         </div>
       </Link>
       <div className="flex items-center">

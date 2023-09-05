@@ -9,8 +9,8 @@ import { ReactQueryProvider } from '@/utils/ReactQueryProvider';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Qualion',
-  description: 'Bleeding-edge science, tech, and AI news',
+  title: 'Europe Open',
+  description: 'Europe Open online music competition',
 }
 
 export default async function RootLayout({
