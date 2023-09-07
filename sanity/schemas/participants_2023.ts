@@ -87,7 +87,7 @@ const participants_2023 = defineType({
         }),
         defineField({
             name: 'video_link',
-            title: 'Video',
+            title: 'Video URL',
             type: 'url',
         }),
         {
