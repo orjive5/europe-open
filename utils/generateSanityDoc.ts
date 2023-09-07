@@ -1,22 +1,21 @@
 'use client'
 
+import { ICategory } from "@/types/category";
 import { createClient } from "next-sanity";
-import { title } from "process";
-// import { DRAFTS_FOLDER } from "sanity";
 import clientConfig from '../sanity/config/client-config';
 
-//GENERATE DRAFT DOCUMENT FROM FRONTEND
-// TODO: figure out how to put it in a draft, figure out slug type
-export async function generateCategory() {
+export async function generateCategory({title}: ICategory) {
 
     const doc = {
         _type: 'categories',
-        // _id: 'drafts',
-        title: 'I',
-        slug: 'i',
+        // _id: 'drafts.',
+        title: title,
+        slug: {
+            _type: 'slug',
+            current: title.toLowerCase(),
+        }
     }
     createClient(clientConfig)
         .create(doc)
         .then(res => console.log(res))
-        // (res => console.log(`Document was created, document ID is ${res._id}`)
 }

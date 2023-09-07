@@ -1,9 +1,6 @@
-// 'use client'
-
 import { Page } from "@/types/page";
 import { Post } from "@/types/post";
 import { createClient, groq } from "next-sanity";
-// import { DRAFTS_FOLDER } from "sanity";
 import clientConfig from "./config/client-config";
 
 export async function getPosts(): Promise<Post[]> {
@@ -62,18 +59,3 @@ export async function getPage(slug: string): Promise<Page> {
         { slug }
     )
 }
-
-// //GENERATE DRAFT DOCUMENT FROM FRONTEND
-// export async function generateCategory() {
-
-//     const doc = {
-//         _type: 'categories',
-//         _id: DRAFTS_FOLDER,
-//         title: 'I',
-//         slug: 'i',
-//     }
-//     createClient(clientConfig)
-//         .create(doc)
-//         .then(res => console.log(res))
-//         // (res => console.log(`Document was created, document ID is ${res._id}`)
-// }
