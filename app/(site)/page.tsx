@@ -1,4 +1,4 @@
-import PostsGrid from "@/components/PostsGrid";
+import PostsGrid from "@/components/postsGrid";
 
 export default function Home() {
 
