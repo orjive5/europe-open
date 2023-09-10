@@ -33,11 +33,11 @@ const Header = ({pages}: {pages: Page[]}) => {
             </p>
         </div>
       </Link>
-      <NavMenu />
-      <div>
+      <div className="flex">
         <Button variant='outline'>Apply</Button>
-        <ModeToggle />
+        <NavMenu />
       </div>
+      <ModeToggle />
       {/* <div className="flex items-center">
         {examplePages.map((page) => (
           <Link
