@@ -2,10 +2,10 @@
 
 import { getPosts } from "@/sanity/sanity-utils"
 import { useQuery } from "@tanstack/react-query"
-import Card from "../Card"
+import Card from "../card"
 import { useState } from "react"
 import ReactPaginate from "react-paginate"
-import CardSkeleton from "../CardSkeleton"
+import CardSkeleton from "../cardSkeleton"
 
 const PostsGrid = () => {
 

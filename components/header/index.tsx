@@ -1,6 +1,8 @@
 import { Page } from "@/types/page";
 import Image from "next/image";
 import Link from "next/link";
+import { ModeToggle } from "../modeToggle";
+import { Button } from "../ui/button";
 
 const Header = ({pages}: {pages: Page[]}) => {
 
@@ -29,6 +31,8 @@ const Header = ({pages}: {pages: Page[]}) => {
           </Link>
         ))}
       </div>
+      <Button>This is Shadcn button</Button>
+      <ModeToggle />
     </header>
   );
 };
