@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ModeToggle } from "../modeToggle";
 import { Separator } from "@/components/ui/separator";
 import { NavMenu } from "../navMenu";
+import SideDrawer from "../sideDrawer";
 
 const Header = () => {
 
@@ -26,13 +27,14 @@ const Header = () => {
               Europe Open
             </h1>
             <Separator />
-            <p className="">
+            <p>
               online music competition
             </p>
         </div>
       </Link>
       <NavMenu />
       <ModeToggle />
+      <SideDrawer />
     </header>
   );
 };

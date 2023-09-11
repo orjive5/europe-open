@@ -54,7 +54,7 @@ const about : { title: string; href: string; description: string }[] = [
 
 export const NavMenu = () => {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="hidden lg:block">
       <NavigationMenuList>
         {/* HOME */}
         <NavigationMenuItem>
