@@ -34,7 +34,11 @@ const Header = ({pages}: {pages: Page[]}) => {
         </div>
       </Link>
       <div className="flex">
-        <Button variant='outline'>Apply</Button>
+        <Link href="/apply">
+          <Button variant='outline'>
+            Apply
+          </Button>
+        </Link>
         <NavMenu />
       </div>
       <ModeToggle />

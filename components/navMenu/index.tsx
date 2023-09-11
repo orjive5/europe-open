@@ -1,9 +1,5 @@
 "use client"
 
-import * as React from "react"
-// import Link from "next/link"
-
-import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,9 +7,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  // navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import Link from "next/link";
 
 const competition : { title: string; href: string; description: string }[] = [
   {
@@ -114,15 +110,14 @@ export function NavMenu() {
             Competition
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               {competition.map(competition => (
                 <ListItem
                   key={competition.title}
                   title={competition.title}
                   href={competition.href}
-                >
-                  {competition.description}
-                </ListItem>
+                  description={competition.description}
+                />
               ))}
             </ul>
           </NavigationMenuContent>
@@ -133,7 +128,7 @@ export function NavMenu() {
             About
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
@@ -161,9 +156,8 @@ export function NavMenu() {
                   key={about.title}
                   title={about.title}
                   href={about.href}
-                >
-                  {about.description}
-                </ListItem>
+                  description={about.description}
+                />
               ))}
             </ul>
           </NavigationMenuContent>
@@ -173,28 +167,21 @@ export function NavMenu() {
   )
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+const ListItem = (({ title, href, description }: { title: string, href: string, description: string }) => {
   return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
+      <NavigationMenuItem asChild>
+        <Link href={href} legacyBehavior passHref>
+          <NavigationMenuLink>
+            <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+              <div className="text-sm font-medium leading-none">
+                {title}
+              </div>
+              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                {description}
+              </p>
+            </div>
+          </NavigationMenuLink>
+        </Link>
+      </NavigationMenuItem>
   )
 })
-ListItem.displayName = "ListItem"
