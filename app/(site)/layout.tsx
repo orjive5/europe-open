@@ -26,7 +26,7 @@ export default async function RootLayout({
       <html lang="en">
           <body style={montserrat.style} className="flex flex-col justify-between mx-auto h-screen min-w-full">
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <Header pages={pages} />
+              <Header />
                 <main>
                     {children}
                 </main>

@@ -10,9 +10,9 @@ import SideDrawer from "../sideDrawer";
 const Header = () => {
 
   return (
-    <header className="flex justify-between items-center px-9">
+    <header className="flex justify-between items-center px-4 sm:px-9">
       <Link href="/" className="flex items-center gap-5 py-7 px-9">
-        <div className="relative w-16 h-16">
+        <div className="relative w-12 h-12 sm:w-16 sm:h-16">
           <Image
               src="/europe-logo.png"
               alt="Europe Open logo"
@@ -23,11 +23,11 @@ const Header = () => {
           />
         </div>
         <div className="flex flex-col h-full justify-center">
-            <h1 className="font-semibold text-xl">
+            <h1 className="font-semibold text-base sm:text-xl">
               Europe Open
             </h1>
-            <Separator />
-            <p>
+            <Separator className="hidden sm:block" />
+            <p className="hidden sm:block">
               online music competition
             </p>
         </div>

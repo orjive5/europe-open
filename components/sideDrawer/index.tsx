@@ -6,47 +6,12 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-
+import { drawerPages } from "@/constants/drawerPages"
 import { Menu } from "lucide-react"
 import Link from "next/link"
 import { Separator } from "../ui/separator"
 
 const SideDrawer = () => {
-
-    const europeOpen : { title: string; href: string }[] = [
-        {
-            title: "Participants",
-            href: "/participants",
-        },
-        {
-            title: "Results",
-            href: "/results",
-        },
-        {
-            title: "Rules",
-            href: "/rules",
-        },
-        {
-            title: "Jury",
-            href: "/jury",
-        },
-        {
-            title: "About us",
-            href: "/about",
-        },
-        {
-            title: "FAQ",
-            href: "/faq",
-        },
-        {
-            title: "Contact",
-            href: "/contact",
-        },
-        {
-            title: "Apply",
-            href: "/apply",
-        },
-    ];
 
     return (
         <div className="block lg:hidden">
@@ -54,24 +19,24 @@ const SideDrawer = () => {
                 <SheetTrigger>
                     <Menu />
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent className="w-[200px] sm:w-[300px]">
                     <SheetHeader>
                         <SheetTitle>
                             Europe Open
                         </SheetTitle>
                         <Separator />
                         <SheetDescription>
-                            {europeOpen.map(eu => (
-                                <Link
-                                    href={eu.href}
-                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                >
-                                    <SheetTrigger>
-                                        <p className="text-sm font-medium leading-none">
-                                            {eu.title}
-                                        </p>
-                                    </SheetTrigger>
-                                </Link>
+                            {drawerPages.map(eu => (
+                                    <Link
+                                        href={eu.href}
+                                        className="block select-none space-y-1 rounded-md leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                    >
+                                        <SheetTrigger className="w-full p-3">
+                                            <p className="sm:text-start w-full text-sm font-medium leading-none">
+                                                {eu.title}
+                                            </p>
+                                        </SheetTrigger>
+                                    </Link>
                             ))}
                         </SheetDescription>
                     </SheetHeader>

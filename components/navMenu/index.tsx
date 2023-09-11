@@ -8,49 +8,11 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { aboutPages } from "@/constants/aboutPages";
+import { competitionPages } from "@/constants/competitionPages";
+import { IListItem } from "@/types/listItem.interface";
 import Link from "next/link";
 import { Button } from "../ui/button";
-
-const competition : { title: string; href: string; description: string }[] = [
-  {
-    title: "Participants",
-    href: "/participants",
-    description: "Browse participants",
-  },
-  {
-    title: "Jury",
-    href: "/jury",
-    description: "Browse jury",
-  },
-  {
-    title: "Results",
-    href: "/results",
-    description: "Check results",
-  },
-  {
-    title: "Rules",
-    href: "/rules",
-    description: "Competition rules",
-  },
-];
-
-const about : { title: string; href: string; description: string }[] = [
-  {
-    title: "About us",
-    href: "/about",
-    description: "Learn more about our organization",
-  },
-  {
-    title: "FAQ",
-    href: "/faq",
-    description: "Check out some frequently asked questions",
-  },
-  {
-    title: "Contact",
-    href: "/contact",
-    description: "Contact us here",
-  },
-];
 
 export const NavMenu = () => {
   return (
@@ -75,7 +37,7 @@ export const NavMenu = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              {competition.map(competition => (
+              {competitionPages.map(competition => (
                 <ListItem
                   key={competition.title}
                   title={competition.title}
@@ -93,7 +55,7 @@ export const NavMenu = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              {about.map(about => (
+              {aboutPages.map(about => (
                   <ListItem
                     key={about.title}
                     title={about.title}
@@ -115,9 +77,9 @@ export const NavMenu = () => {
       </NavigationMenuList>
     </NavigationMenu>
   )
-}
+};
 
-const ListItem = (({ title, href, description }: { title: string, href: string, description: string }) => {
+const ListItem = (({ title, href, description }: IListItem) => {
   return (
     <li>
       <NavigationMenuItem asChild>
@@ -136,4 +98,4 @@ const ListItem = (({ title, href, description }: { title: string, href: string, 
       </NavigationMenuItem>
     </li>
   )
-})
+});
