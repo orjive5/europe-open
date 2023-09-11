@@ -1,14 +1,12 @@
 'use client'
 
-import { Page } from "@/types/page";
 import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "../modeToggle";
 import { Separator } from "@/components/ui/separator";
 import { NavMenu } from "../navMenu";
-import { Button } from "../ui/button";
 
-const Header = ({pages}: {pages: Page[]}) => {
+const Header = () => {
 
   return (
     <header className="flex justify-between items-center px-9">
@@ -33,38 +31,8 @@ const Header = ({pages}: {pages: Page[]}) => {
             </p>
         </div>
       </Link>
-      <div className="flex">
-        <Link href="/apply">
-          <Button variant='outline'>
-            Apply
-          </Button>
-        </Link>
-        <NavMenu />
-      </div>
+      <NavMenu />
       <ModeToggle />
-      {/* <div className="flex items-center">
-        {examplePages.map((page) => (
-          <Link
-            key={page}
-            href={`/${page}`}
-            className="py-7 px-9 responsive-base hover:bg-hoverBg h-full flex items-center"
-          >
-            {page}
-          </Link>
-        ))}
-      </div> */}
-      {/* pages from sanity */}
-      {/* <div className="flex items-center">
-        {pages.map((page) => (
-          <Link
-            key={page._id}
-            href={`/${page.slug}`}
-            className="py-7 px-9 responsive-base hover:bg-hoverBg h-full flex items-center"
-          >
-            {page.title}
-          </Link>
-        ))}
-      </div> */}
     </header>
   );
 };
