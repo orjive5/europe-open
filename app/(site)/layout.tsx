@@ -5,7 +5,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { ReactQueryProvider } from '@/lib/ReactQueryProvider';
 import { ThemeProvider } from "@/components/themeProvider";
-
+import NextTopLoader from 'nextjs-toploader';
 import { Montserrat } from 'next/font/google'
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -24,14 +24,18 @@ export default async function RootLayout({
   return (
     <ReactQueryProvider>
       <html lang="en">
-          <body style={montserrat.style} className="flex flex-col justify-between mx-auto h-screen min-w-full">
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <Header />
-                <main>
-                    {children}
-                </main>
-              <Footer />
-            </ThemeProvider>
+          <body>
+            <main style={montserrat.style} className="flex flex-col justify-between mx-auto h-screen min-w-full">
+              <NextTopLoader
+                color='#ea580c'
+                showSpinner={false}
+              />
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <Header />
+                {children}
+                <Footer />
+              </ThemeProvider>
+            </main>
           </body>
       </html>
     </ReactQueryProvider>
