@@ -10,8 +10,8 @@ import SideDrawer from "../sideDrawer";
 const Header = () => {
 
   return (
-    <header className="flex justify-between items-center px-4 sm:px-9">
-      <Link href="/" className="flex items-center gap-5 py-7 px-9">
+    <header className="flex justify-between items-center">
+      <Link href="/" className="flex items-center gap-5">
         <div className="relative w-12 h-12 sm:w-16 sm:h-16">
           <Image
               src="/europe-logo.png"
@@ -33,7 +33,9 @@ const Header = () => {
         </div>
       </Link>
       <NavMenu />
-      <ModeToggle />
+      <div className="hidden lg:inline-flex">
+        <ModeToggle />
+      </div>
       <SideDrawer />
     </header>
   );

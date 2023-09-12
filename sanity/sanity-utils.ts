@@ -1,5 +1,5 @@
-import { Page } from "@/types/page";
-import { Post } from "@/types/post";
+import { Page } from "@/types/page.interface";
+import { Post } from "@/types/post.interface";
 import { createClient, groq } from "next-sanity";
 import clientConfig from "./config/client-config";
 

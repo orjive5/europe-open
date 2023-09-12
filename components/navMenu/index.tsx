@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 
 export const NavMenu = () => {
+
   return (
     <NavigationMenu className="hidden lg:block">
       <NavigationMenuList>
