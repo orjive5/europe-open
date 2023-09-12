@@ -7,14 +7,16 @@ import {
 
 const Faq = () => {
   return (
-    <div className="sm:my-8 flex flex-col justify-center items-center">
-      <h1 className="sm:text-xl font-medium">
-        Frequently Asked Questions
-      </h1>
-      <p className="my-2 text-center">
-        Find answers to commonly asked questions
-      </p>
-      <Accordion type="single" collapsible className="w-full md:w-[400px]">
+    <div className="sm:my-8 gap-8 flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="sm:text-xl font-medium">
+          Frequently Asked Questions
+        </h1>
+        <p className="my-2 text-center">
+          Find answers to commonly asked questions
+        </p>
+      </div>
+      <Accordion type="single" collapsible className="w-full md:w-[500px]">
         <AccordionItem value="item-1">
           <AccordionTrigger>Is it accessible?</AccordionTrigger>
           <AccordionContent>
