@@ -33,7 +33,9 @@ const Header = () => {
         </div>
       </Link>
       <NavMenu />
-      <ModeToggle />
+      <div className="hidden lg:inline-flex">
+        <ModeToggle />
+      </div>
       <SideDrawer />
     </header>
   );

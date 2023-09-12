@@ -9,6 +9,7 @@ import {
 import { drawerPages } from "@/constants/drawerPages"
 import { Menu } from "lucide-react"
 import Link from "next/link"
+import { ModeToggle } from "../modeToggle"
 import { Separator } from "../ui/separator"
 
 const SideDrawer = () => {
@@ -28,6 +29,7 @@ const SideDrawer = () => {
                         <SheetDescription>
                             {drawerPages.map(eu => (
                                     <Link
+                                        key={eu.title}
                                         href={eu.href}
                                         className="block select-none space-y-1 rounded-md leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                     >
@@ -38,6 +40,9 @@ const SideDrawer = () => {
                                         </SheetTrigger>
                                     </Link>
                             ))}
+                            <div className="p-3">
+                                <ModeToggle />
+                            </div>
                         </SheetDescription>
                     </SheetHeader>
                 </SheetContent>
