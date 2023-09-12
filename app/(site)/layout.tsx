@@ -25,7 +25,7 @@ export default async function RootLayout({
     <ReactQueryProvider>
       <html lang="en">
           <body>
-            <main style={montserrat.style} className="flex flex-col justify-between mx-auto h-screen min-w-full">
+            <main style={montserrat.style} className="p-8 flex flex-col gap-8 mx-auto h-screen min-w-full">
               <NextTopLoader
                 color='#ea580c'
                 showSpinner={false}
