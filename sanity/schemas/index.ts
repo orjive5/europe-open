@@ -4,6 +4,7 @@ import participants_2023 from './participants_2023';
 import disciplines from './disciplines';
 import categories from './categories';
 import jury from './jury';
+import faq from './faq';
 
 const schemas = [
     post,
@@ -11,7 +12,8 @@ const schemas = [
     participants_2023,
     disciplines,
     categories,
-    jury
+    jury,
+    faq,
 ];
 
 export default schemas;
