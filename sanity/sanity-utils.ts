@@ -59,3 +59,28 @@ export async function getPage(slug: string): Promise<Page> {
         { slug }
     )
 }
+
+export async function getFaqs(): Promise<any[]> {
+    return createClient(clientConfig).fetch(
+        groq`*[_type == 'faq']{
+            _id,
+            _createdAt,
+            question,
+            'slug': slug.current,
+            answer,
+        } | order(_createdAt asc)`
+    )
+}
+
+export async function getFaq(slug: string): Promise<any> {
+    return createClient(clientConfig).fetch(
+        groq`*[_type == 'faq' && slug.current == $slug][0]{
+            _id,
+            _createdAt,
+            question,
+            'slug': slug.current,
+            answer,
+        }`,
+        { slug }
+    )
+}

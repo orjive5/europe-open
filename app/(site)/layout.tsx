@@ -1,6 +1,5 @@
 import '../globals.css'
 import type { Metadata } from 'next'
-import { getPages } from '@/sanity/sanity-utils';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { ReactQueryProvider } from '@/lib/ReactQueryProvider';
@@ -19,13 +18,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // // get all of our pages from Sanity
-  const pages = await getPages();
+
   return (
     <ReactQueryProvider>
       <html lang="en">
           <body>
-            <main style={montserrat.style} className="p-8 flex flex-col gap-8 mx-auto h-screen min-w-full">
+            <main style={montserrat.style} className="p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
               <NextTopLoader
                 color='#ea580c'
                 showSpinner={false}

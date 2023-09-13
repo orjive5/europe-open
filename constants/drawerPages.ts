@@ -2,6 +2,11 @@ import { IHeaderPages } from "@/types/headerPages.interface";
 
 export const drawerPages : IHeaderPages[] = [
     {
+        title: "Home",
+        href: "/",
+        description: 'Home page',
+    },
+    {
         title: "Participants",
         href: "/participants",
         description: 'Browse participants',
