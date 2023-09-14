@@ -1,12 +1,11 @@
-import PostsGrid from "@/components/postsGrid";
+import ParticipantsGrid from "@/components/participantsGrid";
 
-export default function Home() {
-
+const Home = () => {
   return (
-    <div className="flex justify-center py-10">
-      <div className="w-5/6 md:w-4/5 lg:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* <PostsGrid /> */}
-      </div>
+    <div className="flex flex-col justify-center items-center sm:my-8 gap-8">
+      <ParticipantsGrid />
     </div>
   )
 }
+
+export default Home;
