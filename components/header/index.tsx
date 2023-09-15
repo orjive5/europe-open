@@ -18,7 +18,7 @@ const Header = () => {
               alt="Europe Open logo"
               priority={true}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(min-width: 640px) 64px, 48px"
               className="object-cover box-border overflow-hidden"
           />
         </div>
