@@ -84,3 +84,30 @@ export async function getFaq(slug: string): Promise<any> {
         { slug }
     )
 }
+
+export async function getParticipants_2023(): Promise<any[]> {
+    return createClient(clientConfig).fetch(
+        groq`*[_type == 'participants_2023']{
+            _id,
+            _createdAt,
+            "discipline": discipline[]->title,
+            name_and_surname,
+            'slug': slug.current,
+            video_url,
+        } | order(_createdAt asc)`
+    )
+}
+
+export async function getParticipant_2023(slug: string): Promise<any> {
+    return createClient(clientConfig).fetch(
+        groq`*[_type == 'participants_2023' && slug.current == $slug][0]{
+            _id,
+            _createdAt,
+            discipline,
+            name_and_surname,
+            'slug': slug.current,
+            video_url,
+        }`,
+        { slug }
+    )
+}
