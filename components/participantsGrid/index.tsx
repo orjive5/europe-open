@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getParticipants_2023 } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
+import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 
 const ParticipantsGrid = () => {
   let participants_2023 = useQuery({
@@ -19,7 +20,7 @@ const ParticipantsGrid = () => {
     <div key={participant.name_and_surname+i} className="flex flex-col gap-2 w-full md:w-[300px]">
       <AspectRatio ratio={16 / 9}>
         <Image
-          src="/placeholder_dog.avif"
+          src={`http://img.youtube.com/vi/${getYoutubeVideoId(participant.video_link)}/0.jpg`}
           alt="Europe Open logo"
           priority={true}
           fill

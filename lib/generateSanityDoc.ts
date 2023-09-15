@@ -1,6 +1,6 @@
 'use client'
 
-import { ICategory } from "@/types/category";
+import { ICategory } from '@/types/category.interface';
 import { createClient } from "next-sanity";
 import clientConfig from '../sanity/config/client-config';
 
