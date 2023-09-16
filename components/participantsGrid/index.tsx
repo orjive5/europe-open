@@ -87,7 +87,6 @@ const ParticipantsGrid = () => {
           Browse Participants
         </Button>
       </Link>
-     
     </section>
   )
 }
