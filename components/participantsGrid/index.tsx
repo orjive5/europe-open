@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getParticipants_2023 } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
@@ -14,11 +13,11 @@ const ParticipantsGrid = () => {
   const participants_2023 = useQuery({
     queryKey: ['participants_2023'],
     queryFn: getParticipants_2023,
-  })
+  });
 
-  const displayParticipants = participants_2023.data?.slice(0,8).map((participant, i) => (
+  const displayParticipants = participants_2023.data?.slice(0,8).map(participant => (
     <Link
-      href={`/participants/${participant._id}`}
+      href={`/participants/${participant.slug}`}
       key={participant._id}
       className="group hover:cursor-pointer flex flex-col gap-2 w-full md:w-[300px]"
     >
@@ -41,11 +40,17 @@ const ParticipantsGrid = () => {
         </h2>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <h3 className="text-muted-foreground">Serbia</h3>
+            <Image
+              alt={participant.country}
+              src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${participant.country_code}.svg`}
+              priority={true}
+              width={21}
+              height={14}
+              className="object-cover rounded-md"
+            />
+            <h3 className="text-muted-foreground">
+              {participant.country}
+            </h3>
           </div>
           <Badge className="text-muted-foreground" variant="outline">
             {participant.discipline[0]}

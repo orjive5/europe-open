@@ -92,6 +92,8 @@ export async function getParticipants_2023(): Promise<any[]> {
             _createdAt,
             "discipline": discipline[]->title,
             name_and_surname,
+            country,
+            country_code,
             'slug': slug.current,
             video_link,
         } | order(_createdAt asc)`

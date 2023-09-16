@@ -1,4 +1,5 @@
-import {defineType, defineField, defineArrayMember} from 'sanity'
+import { slugHex } from '@/lib/slugHex';
+import {defineType, defineField, defineArrayMember} from 'sanity';
 
 const participants_2023 = defineType({
     name: 'participants_2023',
@@ -38,12 +39,16 @@ const participants_2023 = defineType({
             type: 'slug',
             options: {
                 source: 'name_and_surname',
-                maxLength: 100,
                 slugify: input => input
-                                    .toLowerCase()
-                                    .replace(/\s+/g, '-')
-                                    .slice(0, 100) + '-2023'
-            },
+                    .toLowerCase()
+                    .replace(/^/, slugHex())
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '') 
+                    .replace(/-+$/, '')
+                    .slice(0, 101) + `-${new Date().getFullYear()}`
+                },
         }),
         defineField({
             name: 'date_of_birth',
@@ -58,6 +63,16 @@ const participants_2023 = defineType({
         defineField({
             name: 'accompanist',
             title: 'Accompanist',
+            type: 'string',
+        }),
+        defineField({
+            name: 'country',
+            title: 'Country',
+            type: 'string',
+        }),
+        defineField({
+            name: 'country_code',
+            title: 'Country code',
             type: 'string',
         }),
         defineField({
