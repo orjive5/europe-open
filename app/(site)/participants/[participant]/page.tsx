@@ -1,6 +1,10 @@
+import YoutubeEmbed from "@/components/youtubeEmbed";
+
 const Participant = () => {
   return (
-    <div>Participant</div>
+    <main>
+      <YoutubeEmbed embedId="qX4LC1HBmag" />
+    </main>
   )
 }
 
