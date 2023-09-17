@@ -117,7 +117,7 @@ export async function getParticipant(slug: string): Promise<any> {
             institution_city_country,
             program,
             youtube_link,
-            poster_photo,
+            "poster_photo": poster_photo.asset->url,
         }`,
         { slug }
     )

@@ -39,7 +39,7 @@ const participants = defineType({
             type: 'slug',
             options: {
                 source: 'name_and_surname',
-                slugify: input => input
+                slugify: (input: string) => input
                     .toLowerCase()
                     .replace(/^/, slugHex())
                     .replace(/\s+/g, '-')

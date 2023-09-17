@@ -8,11 +8,13 @@ import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 import ParticipantsInfo from "@/components/participantsInfo";
 
 const Participant = ({params}: IParticipantParams) => {
-  console.log(params.participant);
+
   const { data, isLoading, isError } = useQuery(
     ['participant_2023', params.participant],
     () => getParticipant(params.participant)
   );
+
+  data && console.log(data)
 
   return (
     <main className="flex flex-col justify-center items-center">
@@ -24,9 +26,9 @@ const Participant = ({params}: IParticipantParams) => {
       }
       {
         data && (
-          <section className="flex justify-center items-center gap-8">
+          <section className="h-[500px] flex justify-center items-center gap-8">
             <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-            <ParticipantsInfo />
+            <ParticipantsInfo participant={data} />
           </section>
         )
       }
