@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { getParticipants_2023 } from "@/sanity/sanity-utils";
+import { getParticipants } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
 import ParticipantPreview from "../participantPreview";
 
 const ParticipantsGrid = () => {
   const {data, isLoading, isError } = useQuery({
-    queryKey: ['participants_2023'],
-    queryFn: getParticipants_2023,
+    queryKey: ['participants'],
+    queryFn: getParticipants,
   });
 
   return (

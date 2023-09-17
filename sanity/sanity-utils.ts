@@ -85,9 +85,9 @@ export async function getFaq(slug: string): Promise<any> {
     )
 }
 
-export async function getParticipants_2023(): Promise<any[]> {
+export async function getParticipants(): Promise<any[]> {
     return createClient(clientConfig).fetch(
-        groq`*[_type == 'participants_2023']{
+        groq`*[_type == 'participants']{
             _id,
             _createdAt,
             "discipline": discipline[]->title,
@@ -95,20 +95,20 @@ export async function getParticipants_2023(): Promise<any[]> {
             country,
             country_code,
             'slug': slug.current,
-            video_link,
+            youtube_link,
         } | order(_createdAt asc)`
     )
 }
 
-export async function getParticipant_2023(slug: string): Promise<any> {
+export async function getParticipant(slug: string): Promise<any> {
     return createClient(clientConfig).fetch(
-        groq`*[_type == 'participants_2023' && slug.current == $slug][0]{
+        groq`*[_type == 'participants' && slug.current == $slug][0]{
             _id,
             _createdAt,
             discipline,
             name_and_surname,
             'slug': slug.current,
-            video_link,
+            youtube_link,
         }`,
         { slug }
     )

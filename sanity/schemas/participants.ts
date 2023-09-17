@@ -1,9 +1,9 @@
 import { slugHex } from '@/lib/slugHex';
 import {defineType, defineField, defineArrayMember} from 'sanity';
 
-const participants_2023 = defineType({
-    name: 'participants_2023',
-    title: 'Participants 2023',
+const participants = defineType({
+    name: 'participants',
+    title: 'Participants',
     type: 'document',
     fields: [
         defineField({
@@ -105,6 +105,11 @@ const participants_2023 = defineType({
             title: 'Video URL',
             type: 'url',
         }),
+        defineField({
+            name: 'youtube_link',
+            title: 'Youtube URL',
+            type: 'url',
+        }),
         {
             name: 'identity_document',
             title: 'Identity document',
@@ -133,4 +138,4 @@ const participants_2023 = defineType({
     ]
 })
 
-export default participants_2023;
+export default participants;
