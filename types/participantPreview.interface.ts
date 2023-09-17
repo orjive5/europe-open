@@ -4,7 +4,7 @@ export interface IParticipantPreview {
     discipline: string[];
     name_and_surname: string;
     slug: string;
-    video_link: string;
+    youtube_link: string;
     _createdAt: string;
     _id: string;
 }

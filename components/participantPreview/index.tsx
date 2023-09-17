@@ -17,12 +17,12 @@ const ParticipantPreview = ({participant}: {participant: IParticipantPreview}) =
         ratio={16 / 9}
       >
         <Image
-          src={`http://img.youtube.com/vi/${getYoutubeVideoId(participant.video_link)}/0.jpg`}
+          src={`http://img.youtube.com/vi/${getYoutubeVideoId(participant.youtube_link)}/0.jpg`}
           alt="Participant's preview"
           priority={true}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="transition-all group-hover:scale-105 rounded-lg object-cover"
+          className="rounded-lg object-cover"
         />
       </AspectRatio>
       <div>
