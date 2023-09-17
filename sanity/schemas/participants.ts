@@ -110,11 +110,11 @@ const participants = defineType({
             title: 'Youtube URL',
             type: 'url',
         }),
-        {
+        defineField({
             name: 'identity_document',
             title: 'Identity document',
             type: 'file',
-        },
+        }),
         defineField({
             name: 'poster_photo',
             title: 'Photo for the poster',
@@ -130,11 +130,11 @@ const participants = defineType({
                 })
             ]
         }),
-        {
+        defineField({
             name: 'biography',
             title: 'Participant\'s biography',
             type: 'file',
-        }
+        }),
     ]
 })
 
