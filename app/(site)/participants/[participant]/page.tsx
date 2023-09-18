@@ -5,7 +5,7 @@ import { getParticipant } from "@/sanity/sanity-utils";
 import { IParticipantParams } from "@/types/participantParams.interface";
 import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
-import ParticipantsInfo from "@/components/participantsInfo";
+import ParticipantInfo from "@/components/participantInfo";
 
 const Participant = ({params}: IParticipantParams) => {
 
@@ -28,7 +28,7 @@ const Participant = ({params}: IParticipantParams) => {
         data && (
           <section className="h-[500px] flex justify-center items-center gap-8">
             <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-            <ParticipantsInfo participant={data} />
+            <ParticipantInfo participant={data} />
           </section>
         )
       }

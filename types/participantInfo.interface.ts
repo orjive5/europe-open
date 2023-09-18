@@ -1,4 +1,4 @@
-export interface IParticipantsInfo {
+export interface IParticipantInfo {
     participant: {
       accompanist: string | null;
       category: string[];
