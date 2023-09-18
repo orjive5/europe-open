@@ -15,8 +15,6 @@ const Participant = ({params}: IParticipantParams) => {
     () => getParticipant(params.participant)
   );
 
-  data && console.log(data)
-
   return (
     <main className="flex flex-col justify-center items-center">
       {
