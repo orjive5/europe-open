@@ -6,6 +6,7 @@ import { IParticipantParams } from "@/types/participantParams.interface";
 import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 import ParticipantInfo from "@/components/participantInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Participant = ({params}: IParticipantParams) => {
 
@@ -19,7 +20,12 @@ const Participant = ({params}: IParticipantParams) => {
   return (
     <main className="flex flex-col justify-center items-center">
       {
-        isLoading && <h2>Loading...</h2>
+        isLoading && (
+          <div className="h-[500px] w-full flex justify-center items-center gap-8">
+            <Skeleton className="aspect-video relative rounded h-full"/>
+            <Skeleton className="h-full w-[400px]"/>
+          </div>
+        )
       }
       {
         isError && <h2>Something went wrong...</h2>
