@@ -76,6 +76,11 @@ const participants = defineType({
             type: 'string',
         }),
         defineField({
+            name: 'place',
+            title: 'City/place',
+            type: 'string',
+        }),
+        defineField({
             name: 'institution_city_country',
             title: 'Institution, city, country',
             type: 'string',

@@ -95,6 +95,7 @@ export async function getParticipants(): Promise<any[]> {
             'slug': slug.current,
             country,
             country_code,
+            place,
             youtube_link,
         } | order(_createdAt asc)`
     )
@@ -102,22 +103,24 @@ export async function getParticipants(): Promise<any[]> {
 
 export async function getParticipant(slug: string): Promise<any> {
     return createClient(clientConfig).fetch(
-        groq`*[_type == 'participants' && slug.current == $slug][0]{
+        groq`*[_type == "participants" && slug.current == $slug][0]{
             _id,
             _createdAt,
             "discipline": discipline[]->title,
             "category": category[]->title,
             name_and_surname,
-            'slug': slug.current,
+            "slug": slug.current,
             date_of_birth,
             teacher_conductor_collective_leader,
             accompanist,
             country,
             country_code,
+            place,
             institution_city_country,
             program,
             youtube_link,
             "poster_photo": poster_photo.asset->url,
+            "biography": biography.asset->url
         }`,
         { slug }
     )

@@ -5,7 +5,8 @@ import { getParticipant } from "@/sanity/sanity-utils";
 import { IParticipantParams } from "@/types/participantParams.interface";
 import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
-import ParticipantsInfo from "@/components/participantsInfo";
+import ParticipantInfo from "@/components/participantInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Participant = ({params}: IParticipantParams) => {
 
@@ -14,12 +15,15 @@ const Participant = ({params}: IParticipantParams) => {
     () => getParticipant(params.participant)
   );
 
-  data && console.log(data)
-
   return (
     <main className="flex flex-col justify-center items-center">
       {
-        isLoading && <h2>Loading...</h2>
+        isLoading && (
+          <div className="h-[500px] w-full flex justify-center items-center gap-8">
+            <Skeleton className="aspect-video relative rounded h-full"/>
+            <Skeleton className="h-full w-[400px]"/>
+          </div>
+        )
       }
       {
         isError && <h2>Something went wrong...</h2>
@@ -28,7 +32,7 @@ const Participant = ({params}: IParticipantParams) => {
         data && (
           <section className="h-[500px] flex justify-center items-center gap-8">
             <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-            <ParticipantsInfo participant={data} />
+            <ParticipantInfo participant={data} />
           </section>
         )
       }

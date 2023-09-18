@@ -1,9 +1,10 @@
-export interface IParticipantsInfo {
+export interface IParticipantInfo {
     participant: {
       accompanist: string | null;
       category: string[];
       country: string;
       country_code: string;
+      place: string;
       date_of_birth: string;
       discipline: string[];
       institution_city_country: string;
@@ -13,6 +14,7 @@ export interface IParticipantsInfo {
       slug: string;
       teacher_conductor_collective_leader: string;
       youtube_link: string;
+      biography: string;
       _createdAt: string;
       _id: string;
     }
