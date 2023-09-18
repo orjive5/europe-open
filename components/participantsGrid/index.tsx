@@ -33,7 +33,7 @@ const ParticipantsGrid = () => {
         {
           data && data
             .slice(0,8)
-            .map(p => <ParticipantPreview participant={p}/>)
+            .map(p => <ParticipantPreview key={p.slug} participant={p}/>)
         }
       </div>
       <Link href='participants'>

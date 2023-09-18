@@ -14,6 +14,7 @@ export interface IParticipantsInfo {
       slug: string;
       teacher_conductor_collective_leader: string;
       youtube_link: string;
+      biography: string;
       _createdAt: string;
       _id: string;
     }

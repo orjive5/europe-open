@@ -11,8 +11,11 @@ import { User } from "lucide-react"
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "../ui/badge";
+import CountrySection from "../countrySection";
+import Link from "next/link";
 
 const ParticipantsInfo = ({participant}: IParticipantsInfo) => {
+  console.log(participant)
   return (
     <Card className="h-full w-[400px]">
       <ScrollArea className="flex flex-col justify-center items-center h-full w-full rounded-md">
@@ -36,47 +39,67 @@ const ParticipantsInfo = ({participant}: IParticipantsInfo) => {
           <CardTitle className="text-center">
             {participant.name_and_surname}
           </CardTitle>
-          <CardDescription className="gap-4 w-full flex justify-center items-center">
+          <div className="gap-4 w-full flex justify-center items-center">
+            <CountrySection participant={participant} />
             <Badge className="text-muted-foreground" variant="outline">
               {participant.discipline}
             </Badge>
-            <div className="flex items-center gap-2">
-              <Image
-                alt={participant.country}
-                src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${participant.country_code}.svg`}
-                priority={true}
-                width={21}
-                height={14}
-                className="object-cover rounded-md"
-              />
-              <h3 className="text-muted-foreground">
-                {participant.country}, {participant.place}
-              </h3>
-            </div>
-          </CardDescription>
+          </div>
         </CardHeader>
-        <CardContent>
-          <h2 className="text-center">
-            Section: {participant.category} category
-          </h2>
-          <h2 className="text-center">
-            Date of birth: {participant.date_of_birth.slice(0,4)}
-          </h2>
-          <h2 className="text-center">
-            Teacher: {participant.teacher_conductor_collective_leader}
-          </h2>
-          <h2 className="text-center">
-            Accompanist: {participant.accompanist}
-          </h2>
-          <h2 className="text-center">
-            Institution,place and country: {participant.institution_city_country}
-          </h2>
-          <h2 className="text-center">
-            Program: {participant.program}
-          </h2> 
+        <CardContent className="flex flex-col gap-2 text-center">
+          <div>
+            <h2 className="font-medium">
+              Section:
+            </h2>
+            <p>
+              {participant.category} category, {participant.date_of_birth.slice(0,4)}
+            </p>
+          </div>
+          <div>
+            <h2 className="font-medium">
+              Teacher:
+            </h2>
+            <p>
+              {participant.teacher_conductor_collective_leader}
+            </p>
+          </div>
+          {participant.accompanist && (<div>
+            <h2 className="font-medium">
+              Accompanist:
+            </h2>
+            <p>
+              {participant.accompanist}
+            </p>
+          </div>)}
+          <div>
+            <h2 className="font-medium">
+              Institution, place and country:
+            </h2>
+            <p>
+              {participant.institution_city_country}
+            </p>
+          </div>
+          <div>
+            <h2 className="font-medium">
+              Program:
+            </h2>
+            <p>
+              {participant.program}
+            </p>
+          </div>
         </CardContent>
         <CardFooter className="flex justify-center items-center">
-          card footer
+          <p>Download participant's biography</p>
+          &nbsp;
+          <Link
+            target="_blank"
+            rel="noreferrer"
+            download
+            href={`${participant.biography}?dl=`}
+            className='font-medium underline'
+          >
+              here
+          </Link>
         </CardFooter>
       </ScrollArea>
     </Card>

@@ -2,6 +2,7 @@ import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 import { IParticipantPreview } from "@/types/participantPreview.interface";
 import Image from "next/image";
 import Link from "next/link";
+import CountrySection from "../countrySection";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Badge } from "../ui/badge";
 
@@ -30,19 +31,7 @@ const ParticipantPreview = ({participant}: {participant: IParticipantPreview}) =
           {participant.name_and_surname}
         </h2>
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Image
-              alt={participant.country}
-              src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${participant.country_code}.svg`}
-              priority={true}
-              width={21}
-              height={14}
-              className="object-cover rounded-md"
-            />
-            <h3 className="text-muted-foreground">
-              {participant.country}, {participant.place}
-            </h3>
-          </div>
+          <CountrySection participant={participant} />
           <Badge className="text-muted-foreground" variant="outline">
             {participant.discipline[0]}
           </Badge>
