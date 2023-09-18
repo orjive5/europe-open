@@ -40,7 +40,7 @@ const ParticipantPreview = ({participant}: {participant: IParticipantPreview}) =
               className="object-cover rounded-md"
             />
             <h3 className="text-muted-foreground">
-              {participant.country}
+              {participant.country}, {participant.place}
             </h3>
           </div>
           <Badge className="text-muted-foreground" variant="outline">

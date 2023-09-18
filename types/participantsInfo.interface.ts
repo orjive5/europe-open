@@ -4,6 +4,7 @@ export interface IParticipantsInfo {
       category: string[];
       country: string;
       country_code: string;
+      place: string;
       date_of_birth: string;
       discipline: string[];
       institution_city_country: string;

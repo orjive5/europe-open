@@ -36,10 +36,23 @@ const ParticipantsInfo = ({participant}: IParticipantsInfo) => {
           <CardTitle className="text-center">
             {participant.name_and_surname}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="gap-4 w-full flex justify-center items-center">
             <Badge className="text-muted-foreground" variant="outline">
               {participant.discipline}
             </Badge>
+            <div className="flex items-center gap-2">
+              <Image
+                alt={participant.country}
+                src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${participant.country_code}.svg`}
+                priority={true}
+                width={21}
+                height={14}
+                className="object-cover rounded-md"
+              />
+              <h3 className="text-muted-foreground">
+                {participant.country}, {participant.place}
+              </h3>
+            </div>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -63,7 +76,7 @@ const ParticipantsInfo = ({participant}: IParticipantsInfo) => {
           </h2> 
         </CardContent>
         <CardFooter className="flex justify-center items-center">
-          <h2 className="text-center">{participant.country}</h2>
+          card footer
         </CardFooter>
       </ScrollArea>
     </Card>

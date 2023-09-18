@@ -1,6 +1,7 @@
 export interface IParticipantPreview {
     country: string;
     country_code: string;
+    place: string;
     discipline: string[];
     name_and_surname: string;
     slug: string;

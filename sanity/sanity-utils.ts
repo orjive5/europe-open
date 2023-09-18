@@ -95,6 +95,7 @@ export async function getParticipants(): Promise<any[]> {
             'slug': slug.current,
             country,
             country_code,
+            place,
             youtube_link,
         } | order(_createdAt asc)`
     )
@@ -114,6 +115,7 @@ export async function getParticipant(slug: string): Promise<any> {
             accompanist,
             country,
             country_code,
+            place,
             institution_city_country,
             program,
             youtube_link,
