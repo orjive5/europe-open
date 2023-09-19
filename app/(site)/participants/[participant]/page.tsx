@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 import ParticipantInfo from "@/components/participantInfo";
 import { Skeleton } from "@/components/ui/skeleton";
+import ParticipantsGrid from "@/components/participantsGrid";
 
 const Participant = ({params}: IParticipantParams) => {
 
@@ -16,12 +17,12 @@ const Participant = ({params}: IParticipantParams) => {
   );
 
   return (
-    <main className="flex flex-col justify-center items-center">
+    <main className="gap-8 flex flex-col justify-center items-center">
       {
         isLoading && (
-          <div className="h-[500px] w-full flex justify-center items-center gap-8">
-            <Skeleton className="aspect-video relative rounded h-full"/>
-            <Skeleton className="h-full w-[400px]"/>
+          <div className="flex flex-col 2xl:flex-row w-full lg:w-3/4 2xl:h-[500px] justify-center items-center gap-8">
+            <Skeleton className="aspect-video rounded w-full 2xl:w-auto 2xl:h-full" />
+            <Skeleton className="min-h-[700px] md:min-h-[434px] 2xl:h-full w-full 2xl:w-[400px]" />
           </div>
         )
       }
@@ -30,12 +31,13 @@ const Participant = ({params}: IParticipantParams) => {
       }
       {
         data && (
-          <section className="h-[500px] flex justify-center items-center gap-8">
-            <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-            <ParticipantInfo participant={data} />
-          </section>
+            <section className="w-full lg:w-3/4 2xl:w-auto flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
+              <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
+              <ParticipantInfo participant={data} />
+            </section>
         )
       }
+      <ParticipantsGrid heading="Latest participants"/>
     </main>
   )
 }
