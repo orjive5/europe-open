@@ -8,7 +8,7 @@ import ParticipantPreview from "../participantPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "../ui/aspect-ratio";
 
-const ParticipantsGrid = () => {
+const ParticipantsGrid = ({heading}: {heading: string}) => {
   const {data, isLoading, isError } = useQuery({
     queryKey: ['participants'],
     queryFn: getParticipants,
@@ -17,7 +17,7 @@ const ParticipantsGrid = () => {
   return (
     <section className="w-full flex flex-col justify-center items-center gap-8">
       <h1 className="sm:text-xl font-medium">
-        Participants
+        {heading}
       </h1>
       <div className="justify-items-center w-full md:w-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
         {
@@ -51,11 +51,6 @@ const ParticipantsGrid = () => {
             .map(p => <ParticipantPreview key={p.slug} participant={p}/>)
         }
       </div>
-      <Link href='participants'>
-        <Button>
-          Browse Participants
-        </Button>
-      </Link>
     </section>
   )
 }
