@@ -1,7 +1,10 @@
+import { ApplyForm } from "@/components/applyForm";
+
 const Apply = () => {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
         Apply
+        <ApplyForm />
     </div>
   )
 }

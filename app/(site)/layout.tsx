@@ -5,8 +5,9 @@ import Footer from '@/components/footer';
 import { ReactQueryProvider } from '@/lib/ReactQueryProvider';
 import { ThemeProvider } from "@/components/themeProvider";
 import NextTopLoader from 'nextjs-toploader';
-import { Montserrat } from 'next/font/google'
-const montserrat = Montserrat({ subsets: ['latin'] })
+import { Toaster } from "@/components/ui/toaster"
+import { Hanken_Grotesk } from 'next/font/google'
+const hanken = Hanken_Grotesk({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Europe Open',
@@ -23,7 +24,7 @@ export default async function RootLayout({
     <ReactQueryProvider>
       <html lang="en">
           <body>
-            <main style={montserrat.style} className="p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
+            <main style={hanken.style} className="p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
               <NextTopLoader
                 color='#ea580c'
                 showSpinner={false}
@@ -34,6 +35,7 @@ export default async function RootLayout({
                 <Footer />
               </ThemeProvider>
             </main>
+            <Toaster />
           </body>
       </html>
     </ReactQueryProvider>

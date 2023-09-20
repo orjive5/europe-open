@@ -5,7 +5,7 @@ import Link from "next/link";
 const Home = () => {
   return (
     <main className="flex flex-col md:items-center sm:my-8 gap-8">
-      <section className="flex flex-col md:items-center gap-8">
+      <section className="flex flex-col items-center gap-8">
         <ParticipantsGrid heading="Participants"/>
         <Link href='participants'>
           <Button>
