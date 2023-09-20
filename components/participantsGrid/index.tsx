@@ -1,7 +1,5 @@
 'use client'
 
-import Link from "next/link";
-import { Button } from "../ui/button";
 import { getParticipants } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
 import ParticipantPreview from "../participantPreview";
