@@ -35,6 +35,7 @@ import { useState } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
+import countryList from 'country-list'
 
 const formSchema = z.object({
     disciplines: z.string({
@@ -49,15 +50,17 @@ const formSchema = z.object({
     dob: z.date({
       required_error: "A date of birth is required.",
     }),
-    teacher: z.string().min(2, {
-      message: "Must be at least 2 characters.",
-    }).optional(),
-    conductor: z.string().min(2, {
-      message: "Must be at least 2 characters.",
-    }).optional(),
-    collective_leader: z.string().min(2, {
-      message: "Must be at least 2 characters.",
-    }).optional(),
+    teacher: z.string().optional(),
+    conductor: z.string().optional(),
+    collective_leader: z.string().optional(),
+    accompanist: z.string().optional(),
+    countries: z.string({
+      required_error: "Please select a country.",
+    }),
+    place: z.string().min(2, {
+      message: "City/place must be at least 2 characters.",
+    }),
+    institution: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -84,6 +87,7 @@ export const ApplyForm = () => {
   // Toggle popover on select
   const [disciplinesOpen, setDisciplinesOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [countriesOpen, setCountriesOpen] = useState(false);
 
   // Sanity data queries
   const disciplines = useQuery({
@@ -96,13 +100,16 @@ export const ApplyForm = () => {
     queryFn: getCategories,
   });
 
+  // Country list
+  const countries = countryList.getData()
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
-        {/* DISCIPLINES */}
+        {/* DISCIPLINE */}
         <FormField
           control={form.control}
           name="disciplines"
@@ -170,7 +177,7 @@ export const ApplyForm = () => {
           )}
         />
 
-        {/* CATEGORIES */}
+        {/* CATEGORY */}
         <FormField
           control={form.control}
           name="categories"
@@ -294,6 +301,9 @@ export const ApplyForm = () => {
                   />
                 </PopoverContent>
               </Popover>
+              <FormDescription>
+                For collectives, the age is determined by calculating the average age of the participants.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -344,6 +354,125 @@ export const ApplyForm = () => {
               </FormLabel>
               <FormControl>
                 <Input placeholder="Enter collective leader's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* ACCOMPANIST */}
+        <FormField
+          control={form.control}
+          name="accompanist"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Accompanist
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter accompanist's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* COUNTRY */}
+        <FormField
+          control={form.control}
+          name="countries"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+                <FormLabel>
+                    Country*
+                </FormLabel>
+              <Popover open={countriesOpen} onOpenChange={setCountriesOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {countries && (field.value
+                        ? countries.find(
+                            (country) => country.name === field.value
+                          )?.name
+                        : "Select country")}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <ScrollArea className="h-[500px]">
+                    <Command>
+                      <CommandInput placeholder="Search country..." />
+                      <CommandEmpty>
+                          No country found.
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {countries && countries.map((c) => (
+                          <CommandItem
+                            value={c.name}
+                            key={c.name}
+                            onSelect={() => {
+                              form.setValue("countries", c.name)
+                              form.clearErrors("countries");
+                              setCountriesOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                c.name === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {c.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </ScrollArea>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* CITY/ PLACE */}
+        <FormField
+          control={form.control}
+          name="place"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                City/ place*
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your city/ place" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* INSTITUTION */}
+        <FormField
+          control={form.control}
+          name="institution"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Institution
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your institution" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
