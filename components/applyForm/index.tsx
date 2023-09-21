@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
     Command,
@@ -13,9 +13,9 @@ import {
     CommandItem,
 } from "@/components/ui/command"
 import {
-Popover,
-PopoverContent,
-PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
@@ -30,41 +30,78 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
-import { getDisciplines } from "@/sanity/sanity-utils"
+import { getCategories, getDisciplines } from "@/sanity/sanity-utils"
+import { useState } from "react"
+import { ScrollArea } from "../ui/scroll-area"
+import { format } from "date-fns"
+import { Calendar } from "@/components/ui/calendar"
+import countryList from 'country-list'
 
 const formSchema = z.object({
     disciplines: z.string({
-        required_error: "Please select a disciplines.",
+        required_error: "Please select a discipline.",
+      }),
+    categories: z.string({
+        required_error: "Please select a category.",
       }),
     name_and_surname: z.string().min(2, {
         message: "Name and surname must be at least 2 characters.",
     }),
-})
+    dob: z.date({
+      required_error: "A date of birth is required.",
+    }),
+    teacher: z.string().optional(),
+    conductor: z.string().optional(),
+    collective_leader: z.string().optional(),
+    accompanist: z.string().optional(),
+    countries: z.string({
+      required_error: "Please select a country.",
+    }),
+    place: z.string().min(2, {
+      message: "City/place must be at least 2 characters.",
+    }),
+    institution: z.string().optional(),
+});
+
+type FormValues = z.infer<typeof formSchema>
 
 export const ApplyForm = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            disciplines: "Piano",
-            name_and_surname: "",
-        },
-    })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-                </pre>
-            ),
-        })
-    }
+  const form = useForm<FormValues>({
+      resolver: zodResolver(formSchema),
+  })
 
+  const onSubmit = (values: FormValues) => {
+      toast({
+          title: "You submitted the following values:",
+          description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                  <code className="text-white">
+                    {JSON.stringify(values, null, 2)}
+                  </code>
+              </pre>
+          ),
+      })
+  }
+
+  // Toggle popover on select
+  const [disciplinesOpen, setDisciplinesOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [countriesOpen, setCountriesOpen] = useState(false);
+
+  // Sanity data queries
   const disciplines = useQuery({
     queryKey: ['disciplines'],
     queryFn: getDisciplines,
   });
+
+  const categories = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+  });
+
+  // Country list
+  const countries = countryList.getData()
 
   return (
     <Form {...form}>
@@ -72,16 +109,16 @@ export const ApplyForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
-        {/* DISCIPLINES */}
+        {/* DISCIPLINE */}
         <FormField
           control={form.control}
           name="disciplines"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-                <FormLabel>
-                    Discipline
-                </FormLabel>
-              <Popover>
+              <FormLabel>
+                  Discipline*
+              </FormLabel>
+              <Popover open={disciplinesOpen} onOpenChange={setDisciplinesOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -101,60 +138,347 @@ export const ApplyForm = () => {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search discipline..." />
-                    <CommandEmpty>
-                        No discipline found.
-                    </CommandEmpty>
-                    <CommandGroup>
-                      {disciplines.data && disciplines.data.map((d) => (
-                        <CommandItem
-                          value={d.title}
-                          key={d.title}
-                          onSelect={() => {
-                            form.setValue("disciplines", d.title)
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              d.title === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {d.title}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
+                  <PopoverContent className="w-[200px] p-0">
+                    <ScrollArea className="h-[500px]">
+                      <Command>
+                        <CommandInput placeholder="Search discipline..." />
+                        <CommandEmpty>
+                            No discipline found.
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {disciplines.data && disciplines.data.map((d) => (
+                            <CommandItem
+                              value={d.title}
+                              key={d.title}
+                              onSelect={() => {
+                                form.setValue("disciplines", d.title);
+                                form.clearErrors("disciplines");
+                                setDisciplinesOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  d.title === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {d.title}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </ScrollArea>
                 </PopoverContent>
               </Popover>
-              {/* <FormDescription>
-                This is the discipline that will be used in your application.
-              </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* CATEGORY */}
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+                <FormLabel>
+                    Category*
+                </FormLabel>
+              <Popover open={categoriesOpen} onOpenChange={setCategoriesOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {categories.data && (field.value
+                        ? categories.data.find(
+                            (category) => category.title === field.value
+                          )?.title
+                        : "Select category")}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <ScrollArea className="h-[500px]">
+                    <Command>
+                      <CommandInput placeholder="Search category..." />
+                      <CommandEmpty>
+                          No category found.
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {categories.data && categories.data.map((c) => (
+                          <CommandItem
+                            value={c.title}
+                            key={c.title}
+                            onSelect={() => {
+                              form.setValue("categories", c.title)
+                              form.clearErrors("categories");
+                              setCategoriesOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                c.title === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {c.title}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </ScrollArea>
+                  
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* NAME AND SURNAME */}
         <FormField
           control={form.control}
           name="name_and_surname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name and Surname/ Ensemble Name</FormLabel>
+              <FormLabel>Name and Surname/ Ensemble Name*</FormLabel>
               <FormControl>
-                <Input placeholder="Name and surname" {...field} />
+                <Input placeholder="Enter your name and surname" {...field} />
               </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* DATE OF BIRTH */}
+        <FormField
+          control={form.control}
+          name="dob"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>
+                Date of birth*
+              </FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent align="start" className=" w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    captionLayout="dropdown-buttons"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    fromYear={1900}
+                    toYear={2030}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                For collectives, the age is determined by calculating the average age of the participants.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* TEACHER */}
+        <FormField
+          control={form.control}
+          name="teacher"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Teacher
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter teacher's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* CONDUCTOR */}
+        <FormField
+          control={form.control}
+          name="conductor"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Conductor
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter conductor's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* COLLECTIVE LEADER */}
+        <FormField
+          control={form.control}
+          name="collective_leader"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Collective leader
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter collective leader's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* ACCOMPANIST */}
+        <FormField
+          control={form.control}
+          name="accompanist"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Accompanist
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter accompanist's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* COUNTRY */}
+        <FormField
+          control={form.control}
+          name="countries"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+                <FormLabel>
+                    Country*
+                </FormLabel>
+              <Popover open={countriesOpen} onOpenChange={setCountriesOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {countries && (field.value
+                        ? countries.find(
+                            (country) => country.name === field.value
+                          )?.name
+                        : "Select country")}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <ScrollArea className="h-[500px]">
+                    <Command>
+                      <CommandInput placeholder="Search country..." />
+                      <CommandEmpty>
+                          No country found.
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {countries && countries.map((c) => (
+                          <CommandItem
+                            value={c.name}
+                            key={c.name}
+                            onSelect={() => {
+                              form.setValue("countries", c.name)
+                              form.clearErrors("countries");
+                              setCountriesOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                c.name === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {c.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </ScrollArea>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* CITY/ PLACE */}
+        <FormField
+          control={form.control}
+          name="place"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                City/ place*
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your city/ place" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* INSTITUTION */}
+        <FormField
+          control={form.control}
+          name="institution"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Institution
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your institution" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">
             Submit
         </Button>
