@@ -1,3 +1,4 @@
+import { ICategory } from "@/types/category.interface";
 import { IDiscipline } from "@/types/discipline.interface";
 import { Page } from "@/types/page.interface";
 import { Post } from "@/types/post.interface";
@@ -135,5 +136,16 @@ export async function getDisciplines(): Promise<IDiscipline[]> {
           title,
           "slug": slug.current,
       } | order(_createdAt desc)`
+    );
+}
+
+export async function getCategories(): Promise<ICategory[]> {
+    return createClient(clientConfig).fetch(
+      groq`*[_type == "categories"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+      } | order(_createdAt asc)`
     );
 }

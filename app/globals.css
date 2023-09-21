@@ -58,3 +58,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom shadcn calendar to change a year manualy */
+.rdp-vhidden {
+  @apply hidden;
+}
