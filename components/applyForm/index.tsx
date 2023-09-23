@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -32,21 +32,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
 import { getCategories, getDisciplines } from "@/sanity/sanity-utils"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import countryList from 'country-list'
 import { PopoverClose } from "@radix-ui/react-popover"
-
-// Image upload
-const MAX_IMAGE_SIZE = 5242880; // 5 MB
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/jpg",
-];
+import Dropzone, { useDropzone } from 'react-dropzone';
 
 // Zod form schema
 const formSchema = z.object({
@@ -121,22 +113,7 @@ const formSchema = z.object({
       required_error: "Video URL is required.",
     })
     .url({ message: "Please enter a valid URL." }),
-  images: z
-    .custom<FileList>((val) => val instanceof FileList, "Required")
-    .refine((files) => files.length > 0, `Required`)
-    .refine((files) => files.length <= 5, `Maximum of 5 images are allowed.`)
-    .refine(
-      (files) =>
-        Array.from(files).every((file) => file.size <= MAX_IMAGE_SIZE),
-      `Each file size should be less than 5 MB.`
-    )
-    .refine(
-      (files) =>
-        Array.from(files).every((file) =>
-          ALLOWED_IMAGE_TYPES.includes(file.type)
-        ),
-      "Only these types are allowed .jpg, .jpeg, .png and .webp"
-    ),
+  avatar: z.any()
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -196,6 +173,19 @@ export const ApplyForm = () => {
     setBiographyCharCount(e.target.value.length);
   }
 
+  // Drag&drop
+  const [selectedImages, setSelectedImages] = useState([]);
+  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    acceptedFiles.forEach((file) => {
+      setSelectedImages((prevState) => [...prevState, file]);
+    });
+  }, []);
+
+  useEffect(() => {
+    form.setValue('avatar', selectedImages)
+  }, [selectedImages])
+
+  console.log(form.getValues());
   return (
     <Form {...form}>
       <form
@@ -757,30 +747,91 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        {/* IMAGES */}
-        <FormField
-            control={form.control}
-            name="images"
-            render={({ field: { onChange }, ...field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Images</FormLabel>
-                  {/* File Upload */}
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      multiple={true}
-                      disabled={form.formState.isSubmitting}
-                      {...field}
-                      onChange={(event) => onChange(event.target.files)}
+        {/* AVATAR */}
+        {/* <FormField
+          control={form.control}
+          name="name_and_surname"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Name and Surname/Ensemble Name*
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your name and surname"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <Controller
+          control={form.control}
+          name="avatar"
+          render={({ field: { onChange, onBlur }, fieldState }) => (
+            <Dropzone 
+              noClick
+              accept={{
+                'image/*': []
+              }}
+              multiple
+              onDrop={onDrop}
+            >
+              {({
+                getRootProps,
+                getInputProps,
+                open,
+                isDragActive,
+                acceptedFiles,
+              }) => (
+                <div>
+                  <div
+                    className={`flex flex-col h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                    {...getRootProps()}
+                  >
+                    <input
+                      {...getInputProps({
+                        id: 'spreadsheet',
+                        onChange,
+                        onBlur,
+                      })}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+                    <p>
+                      <button type="button" onClick={open} className='cursor-pointer'>
+                        Choose a file
+                      </button>{' '}
+                      or drag and drop
+                    </p>{' '}
+                    <p>
+                      {acceptedFiles.length}
+                      {acceptedFiles.length
+                      ? acceptedFiles[0].name
+                      : 'No file selected.'}
+                    </p>
+                    <div>
+                      {fieldState.error && (
+                        <span role="alert">{fieldState.error.message}</span>
+                      )}
+                    </div>
+                  </div>
+                  {/* Preview images */}
+                  <div className="flex gap-4 w-24 p-4">
+                    {selectedImages.length > 0 &&
+                      selectedImages.map((image, index) => (
+                        <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+                      ))}
+                  </div>
+                </div>
+              )}
+            </Dropzone>
+          )}
+        />
+
         <Button type="submit">
             Submit
         </Button>
