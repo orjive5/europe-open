@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -28,39 +28,92 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
 import { getCategories, getDisciplines } from "@/sanity/sanity-utils"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import countryList from 'country-list'
+import { PopoverClose } from "@radix-ui/react-popover"
+import Dropzone, { useDropzone } from 'react-dropzone';
 
+// Zod form schema
 const formSchema = z.object({
-    disciplines: z.string({
-        required_error: "Please select a discipline.",
-      }),
-    categories: z.string({
-        required_error: "Please select a category.",
-      }),
-    name_and_surname: z.string().min(2, {
+  disciplines: z
+    .string({
+      required_error: "Please select a discipline.",
+    }),
+  categories: z
+    .string({
+      required_error: "Please select a category.",
+    }),
+  name_and_surname: z
+    .string({
+      required_error: 'Please, enter your name and surname.'
+    })
+    .min(2, {
         message: "Name and surname must be at least 2 characters.",
     }),
-    dob: z.date({
+  date_of_birth: z
+    .date({
       required_error: "A date of birth is required.",
     }),
-    teacher: z.string().optional(),
-    conductor: z.string().optional(),
-    collective_leader: z.string().optional(),
-    accompanist: z.string().optional(),
-    countries: z.string({
+  teacher: z
+    .string().optional(),
+  conductor: z
+    .string().optional(),
+  collective_leader: z
+    .string().optional(),
+  accompanist: z
+    .string().optional(),
+  countries: z
+    .string({
       required_error: "Please select a country.",
     }),
-    place: z.string().min(2, {
+  place: z
+    .string({
+      required_error: "Please select a city/place.",
+    })
+    .min(2, {
       message: "City/place must be at least 2 characters.",
     }),
-    institution: z.string().optional(),
+  institution: z
+    .string().optional(),
+  program: z
+    .string()
+    .min(5, {
+      message: "Program must be at least 5 characters.",
+    })
+    .max(300, {
+      message: "Program must not be longer than 300 characters.",
+    }),
+  biography: z
+    .string()
+    .min(5, {
+      message: "If not empty, biography must be at least 5 characters.",
+    })
+    .max(1500, {
+      message: "Biography must not be longer than 1500 characters.",
+    })
+    .optional(),
+  participants_email: z
+    .string({
+      required_error: "Email is required.",
+    })
+    .email("Please, enter a valid email."),
+  teachers_email: z
+    .string()
+    .email("Please, enter a valid email.")
+    .optional(),
+  video_link: z
+    .string({
+      required_error: "Video URL is required.",
+    })
+    .url({ message: "Please enter a valid URL." }),
+  avatar: z.any()
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -85,6 +138,7 @@ export const ApplyForm = () => {
   }
 
   // Toggle popover on select
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [disciplinesOpen, setDisciplinesOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [countriesOpen, setCountriesOpen] = useState(false);
@@ -101,8 +155,37 @@ export const ApplyForm = () => {
   });
 
   // Country list
-  const countries = countryList.getData()
+  const countries = countryList.getData();
+  // Overwrite Türkiye to Turkey
+  countryList.overwrite([{
+    code: 'TR',
+    name: 'Turkey',
+  }]);
 
+  //Remaining characters count for text areas
+  const [programCharCount, setProgramCharCount] = useState(0);
+  const handleProgramChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setProgramCharCount(e.target.value.length);
+  }
+
+  const [biographyCharCount, setBiographyCharCount] = useState(0);
+  const handleBiographyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setBiographyCharCount(e.target.value.length);
+  }
+
+  // Drag&drop
+  const [selectedImages, setSelectedImages] = useState([]);
+  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    acceptedFiles.forEach((file) => {
+      setSelectedImages((prevState) => [...prevState, file]);
+    });
+  }, []);
+
+  useEffect(() => {
+    form.setValue('avatar', selectedImages)
+  }, [selectedImages])
+
+  console.log(form.getValues());
   return (
     <Form {...form}>
       <form
@@ -125,7 +208,7 @@ export const ApplyForm = () => {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-[200px] justify-between h-auto",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -176,7 +259,6 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-
         {/* CATEGORY */}
         <FormField
           control={form.control}
@@ -245,32 +327,39 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-
         {/* NAME AND SURNAME */}
         <FormField
           control={form.control}
           name="name_and_surname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name and Surname/ Ensemble Name*</FormLabel>
+              <FormLabel>
+                Name and Surname/Ensemble Name*
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Enter your name and surname" {...field} />
+                <Input
+                  placeholder="Enter your name and surname"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* DATE OF BIRTH */}
         <FormField
           control={form.control}
-          name="dob"
+          name="date_of_birth"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                Date of birth*
+                Date of Birth*
               </FormLabel>
-              <Popover>
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -294,7 +383,10 @@ export const ApplyForm = () => {
                     mode="single"
                     captionLayout="dropdown-buttons"
                     selected={field.value}
-                    onSelect={field.onChange}
+                    onSelect={(e) => { 
+                      field.onChange(e);
+                      setCalendarOpen(false); 
+                    }}
                     fromYear={1900}
                     toYear={2030}
                     initialFocus
@@ -308,7 +400,6 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-
         {/* TEACHER */}
         <FormField
           control={form.control}
@@ -319,13 +410,19 @@ export const ApplyForm = () => {
                 Teacher
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter teacher's name" {...field} />
+                <Input
+                  placeholder="Enter teacher's name"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* CONDUCTOR */}
         <FormField
           control={form.control}
@@ -336,13 +433,19 @@ export const ApplyForm = () => {
                 Conductor
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter conductor's name" {...field} />
+                <Input
+                  placeholder="Enter conductor's name"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* COLLECTIVE LEADER */}
         <FormField
           control={form.control}
@@ -353,13 +456,19 @@ export const ApplyForm = () => {
                 Collective leader
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter collective leader's name" {...field} />
+                <Input
+                  placeholder="Enter collective leader's name"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* ACCOMPANIST */}
         <FormField
           control={form.control}
@@ -370,13 +479,19 @@ export const ApplyForm = () => {
                 Accompanist
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter accompanist's name" {...field} />
+                <Input
+                  placeholder="Enter accompanist's name"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* COUNTRY */}
         <FormField
           control={form.control}
@@ -393,7 +508,7 @@ export const ApplyForm = () => {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-[200px] justify-between h-auto",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -444,24 +559,29 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-
-        {/* CITY/ PLACE */}
+        {/* CITY/PLACE */}
         <FormField
           control={form.control}
           name="place"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                City/ place*
+                City/Place*
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter your city/ place" {...field} />
+                <Input
+                  placeholder="Enter your city/ place"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         {/* INSTITUTION */}
         <FormField
           control={form.control}
@@ -472,10 +592,243 @@ export const ApplyForm = () => {
                 Institution
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter your institution" {...field} />
+                <Input
+                  placeholder="Enter your institution"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
+          )}
+        />
+        {/* PROGRAM*/}
+        <FormField
+          control={form.control}
+          name="program"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Program*
+              </FormLabel>
+              <p className={`text-sm ${programCharCount > 300 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                {programCharCount}/300 characters
+              </p>
+              <FormControl>
+                <Textarea
+                  placeholder="Composer and the name of the piece"
+                  className="resize-none"
+                  {...field}
+                  onChange={(e) => {
+                    handleProgramChange(e)
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormDescription>
+                When entering your program, please follow this format: 
+                <br/>
+                1. M. Bruch - Violin Concerto No. 1
+                <br/>
+                2. H. Wieniawski - Romance
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* BIOGRAPHY */}
+        <FormField
+          control={form.control}
+          name="biography"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Brief Artistic Biography
+              </FormLabel>
+              <p className={`text-sm ${biographyCharCount > 1500 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                {biographyCharCount}/1500 characters
+              </p>
+              <FormControl>
+                <Textarea
+                  placeholder="Enter contestants artistic biography"
+                  className="resize-none"
+                  {...field}
+                  onChange={(e) => {
+                    handleBiographyChange(e)
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* PARTICIPANT'S EMAIL */}
+        <FormField
+          control={form.control}
+          name="participants_email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Your Email*
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type='email'
+                  placeholder="Enter your email"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* TEACHER'S EMAIL */}
+        <FormField
+          control={form.control}
+          name="teachers_email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Teacher's Email
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type='email'
+                  placeholder="Enter teacher's email"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* VIDEO LINK */}
+        <FormField
+          control={form.control}
+          name="video_link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Video Link*
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type='url'
+                  placeholder="Enter a link to download your video"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormDescription>
+                If you submit YouTube links,
+                be sure your video(s) have the proper settings:
+                YouTube Video Manager → Videos → Basic Info → from the drop-down menu, 
+                please choose "Public" or "Unlisted". 
+                Do not choose "Private".
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* AVATAR */}
+        {/* <FormField
+          control={form.control}
+          name="name_and_surname"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Name and Surname/Ensemble Name*
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your name and surname"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <Controller
+          control={form.control}
+          name="avatar"
+          render={({ field: { onChange, onBlur }, fieldState }) => (
+            <Dropzone 
+              noClick
+              accept={{
+                'image/*': []
+              }}
+              multiple
+              onDrop={onDrop}
+            >
+              {({
+                getRootProps,
+                getInputProps,
+                open,
+                isDragActive,
+                acceptedFiles,
+              }) => (
+                <div>
+                  <div
+                    className={`flex flex-col h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                    {...getRootProps()}
+                  >
+                    <input
+                      {...getInputProps({
+                        id: 'spreadsheet',
+                        onChange,
+                        onBlur,
+                      })}
+                    />
+                    <p>
+                      <button type="button" onClick={open} className='cursor-pointer'>
+                        Choose a file
+                      </button>{' '}
+                      or drag and drop
+                    </p>{' '}
+                    <p>
+                      {acceptedFiles.length}
+                      {acceptedFiles.length
+                      ? acceptedFiles[0].name
+                      : 'No file selected.'}
+                    </p>
+                    <div>
+                      {fieldState.error && (
+                        <span role="alert">{fieldState.error.message}</span>
+                      )}
+                    </div>
+                  </div>
+                  {/* Preview images */}
+                  <div className="flex gap-4 w-24 p-4">
+                    {selectedImages.length > 0 &&
+                      selectedImages.map((image, index) => (
+                        <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+                      ))}
+                  </div>
+                </div>
+              )}
+            </Dropzone>
           )}
         />
 
