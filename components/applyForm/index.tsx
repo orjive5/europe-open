@@ -39,6 +39,15 @@ import { Calendar } from "@/components/ui/calendar"
 import countryList from 'country-list'
 import { PopoverClose } from "@radix-ui/react-popover"
 
+// Image upload
+const MAX_IMAGE_SIZE = 5242880; // 5 MB
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/jpg",
+];
+
 // Zod form schema
 const formSchema = z.object({
   disciplines: z
@@ -79,36 +88,55 @@ const formSchema = z.object({
     .min(2, {
       message: "City/place must be at least 2 characters.",
     }),
-  // institution: z.
-  //   string().optional(),
-  // program: z
-  //   .string()
-  //   .min(5, {
-  //     message: "Program must be at least 5 characters.",
-  //   })
-  //   .max(300, {
-  //     message: "Program must not be longer than 300 characters.",
-  //   }),
-  // biography: z
-  //   .string()
-  //   .min(5, {
-  //     message: "Biography must be at least 5 characters.",
-  //   })
-  //   .max(1500, {
-  //     message: "Biography must not be longer than 1500 characters.",
-  //   })
-  //   .optional(),
-  // participants_email: z
-  //   .string()
-  //   .min(1, { message: "This field has to be filled." })
-  //   .email("Please, enter a valid email."),
-  // teachers_email: z
-  //   .string()
-  //   .email("Please, enter a valid email.")
-  //   .optional(),
-  // video_link: z
-  //   .string()
-  //   .url({ message: "Please enter a valid URL." }),
+  institution: z
+    .string().optional(),
+  program: z
+    .string()
+    .min(5, {
+      message: "Program must be at least 5 characters.",
+    })
+    .max(300, {
+      message: "Program must not be longer than 300 characters.",
+    }),
+  biography: z
+    .string()
+    .min(5, {
+      message: "If not empty, biography must be at least 5 characters.",
+    })
+    .max(1500, {
+      message: "Biography must not be longer than 1500 characters.",
+    })
+    .optional(),
+  participants_email: z
+    .string({
+      required_error: "Email is required.",
+    })
+    .email("Please, enter a valid email."),
+  teachers_email: z
+    .string()
+    .email("Please, enter a valid email.")
+    .optional(),
+  video_link: z
+    .string({
+      required_error: "Video URL is required.",
+    })
+    .url({ message: "Please enter a valid URL." }),
+  images: z
+    .custom<FileList>((val) => val instanceof FileList, "Required")
+    .refine((files) => files.length > 0, `Required`)
+    .refine((files) => files.length <= 5, `Maximum of 5 images are allowed.`)
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => file.size <= MAX_IMAGE_SIZE),
+      `Each file size should be less than 5 MB.`
+    )
+    .refine(
+      (files) =>
+        Array.from(files).every((file) =>
+          ALLOWED_IMAGE_TYPES.includes(file.type)
+        ),
+      "Only these types are allowed .jpg, .jpeg, .png and .webp"
+    ),
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -158,24 +186,14 @@ export const ApplyForm = () => {
   }]);
 
   //Remaining characters count for text areas
-  const [programValue, setProgramValue] = useState('');
   const [programCharCount, setProgramCharCount] = useState(0);
-  const calculateProgramCharacters = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setProgramCharCount(e.target.value.length);
-  };
   const handleProgramChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setProgramCharCount(e.target.value.length);
-    setProgramValue(e.target.value)
   }
 
-  const [biographyValue, setBiographyValue] = useState('')
   const [biographyCharCount, setBiographyCharCount] = useState(0);
-  const calculateBiographyCharacters = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setBiographyCharCount(e.target.value.length);
-  };
   const handleBiographyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setBiographyCharCount(e.target.value.length);
-    setBiographyValue(e.target.value)
   }
 
   return (
@@ -200,7 +218,7 @@ export const ApplyForm = () => {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-[200px] justify-between h-auto",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -326,14 +344,14 @@ export const ApplyForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Name and Surname/ Ensemble Name*
+                Name and Surname/Ensemble Name*
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your name and surname"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -349,7 +367,7 @@ export const ApplyForm = () => {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                Date of birth*
+                Date of Birth*
               </FormLabel>
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                 <PopoverTrigger asChild>
@@ -405,8 +423,8 @@ export const ApplyForm = () => {
                 <Input
                   placeholder="Enter teacher's name"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -428,8 +446,8 @@ export const ApplyForm = () => {
                 <Input
                   placeholder="Enter conductor's name"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -451,8 +469,8 @@ export const ApplyForm = () => {
                 <Input
                   placeholder="Enter collective leader's name"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -474,8 +492,8 @@ export const ApplyForm = () => {
                 <Input
                   placeholder="Enter accompanist's name"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -500,7 +518,7 @@ export const ApplyForm = () => {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-[200px] justify-between h-auto",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -551,21 +569,21 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        {/* CITY/ PLACE */}
+        {/* CITY/PLACE */}
         <FormField
           control={form.control}
           name="place"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                City/ place*
+                City/Place*
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your city/ place"
                   {...field}
-                  onChange={(event) => {
-                    field.onChange(event.target.value || undefined)
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
                   }}
                   value={field.value || ''}
                 />
@@ -575,7 +593,7 @@ export const ApplyForm = () => {
           )}
         />
         {/* INSTITUTION */}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="institution"
           render={({ field }) => (
@@ -584,14 +602,21 @@ export const ApplyForm = () => {
                 Institution
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter your institution" {...field} />
+                <Input
+                  placeholder="Enter your institution"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {/* PROGRAM*/}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="program"
           render={({ field }) => (
@@ -607,8 +632,11 @@ export const ApplyForm = () => {
                   placeholder="Composer and the name of the piece"
                   className="resize-none"
                   {...field}
-                  onChange={handleProgramChange}
-                  value={programValue || ''}
+                  onChange={(e) => {
+                    handleProgramChange(e)
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
                 />
               </FormControl>
               <FormDescription>
@@ -621,15 +649,15 @@ export const ApplyForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {/* BIOGRAPHY */}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="biography"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Brief artistic biography
+                Brief Artistic Biography
               </FormLabel>
               <p className={`text-sm ${biographyCharCount > 1500 ? 'text-destructive' : 'text-muted-foreground'}`}>
                 {biographyCharCount}/1500 characters
@@ -639,56 +667,67 @@ export const ApplyForm = () => {
                   placeholder="Enter contestants artistic biography"
                   className="resize-none"
                   {...field}
-                  onChange={handleBiographyChange}
-                  value={biographyValue || ''}
+                  onChange={(e) => {
+                    handleBiographyChange(e)
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {/* PARTICIPANT'S EMAIL */}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="participants_email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Your email*
+                Your Email*
               </FormLabel>
               <FormControl>
                 <Input
                   type='email'
                   placeholder="Enter your email"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {/* TEACHER'S EMAIL */}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="teachers_email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Teacher's email
+                Teacher's Email
               </FormLabel>
               <FormControl>
                 <Input
                   type='email'
                   placeholder="Enter teacher's email"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
         {/* VIDEO LINK */}
-        {/* <FormField
+        <FormField
           control={form.control}
           name="video_link"
           render={({ field }) => (
@@ -697,7 +736,15 @@ export const ApplyForm = () => {
                 Video Link*
               </FormLabel>
               <FormControl>
-                <Input type='url' placeholder="Enter a link to download your video" {...field} />
+                <Input
+                  type='url'
+                  placeholder="Enter a link to download your video"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value || undefined)
+                  }}
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormDescription>
                 If you submit YouTube links,
@@ -709,7 +756,31 @@ export const ApplyForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
+        {/* IMAGES */}
+        <FormField
+            control={form.control}
+            name="images"
+            render={({ field: { onChange }, ...field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Images</FormLabel>
+                  {/* File Upload */}
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      multiple={true}
+                      disabled={form.formState.isSubmitting}
+                      {...field}
+                      onChange={(event) => onChange(event.target.files)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
         <Button type="submit">
             Submit
         </Button>
