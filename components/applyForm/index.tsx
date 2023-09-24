@@ -40,6 +40,10 @@ import countryList from 'country-list'
 import { PopoverClose } from "@radix-ui/react-popover"
 import Dropzone, { useDropzone } from 'react-dropzone';
 
+// Image upload
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
 // Zod form schema
 const formSchema = z.object({
   disciplines: z
@@ -113,7 +117,14 @@ const formSchema = z.object({
       required_error: "Video URL is required.",
     })
     .url({ message: "Please enter a valid URL." }),
-  avatar: z.any()
+  identity_documents: z
+    .any()
+    .refine((files) => files?.length, "Document is required.")
+    .refine((files) => files.every((file: any) => file.size <= MAX_FILE_SIZE), `Max file size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png and .webp files are accepted."
+    ),
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -176,16 +187,18 @@ export const ApplyForm = () => {
   // Drag&drop
   const [selectedImages, setSelectedImages] = useState([]);
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    // form.trigger('identity_documents')
     acceptedFiles.forEach((file) => {
       setSelectedImages((prevState) => [...prevState, file]);
     });
   }, []);
 
   useEffect(() => {
-    form.setValue('avatar', selectedImages)
+    form.setValue('identity_documents', selectedImages);
   }, [selectedImages])
 
-  console.log(form.getValues());
+  // console.log(form.getFieldState('identity_documents'))
+
   return (
     <Form {...form}>
       <form
@@ -320,7 +333,6 @@ export const ApplyForm = () => {
                       </CommandGroup>
                     </Command>
                   </ScrollArea>
-                  
                 </PopoverContent>
               </Popover>
               <FormMessage />
@@ -747,91 +759,81 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        {/* AVATAR */}
-        {/* <FormField
-          control={form.control}
-          name="name_and_surname"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Name and Surname/Ensemble Name*
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter your name and surname"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+        {/* IDENTITY DOCUMENTS */}
         <Controller
           control={form.control}
-          name="avatar"
+          name="identity_documents"
           render={({ field: { onChange, onBlur }, fieldState }) => (
-            <Dropzone 
-              noClick
-              accept={{
-                'image/*': []
-              }}
-              multiple
-              onDrop={onDrop}
-            >
-              {({
-                getRootProps,
-                getInputProps,
-                open,
-                isDragActive,
-                acceptedFiles,
-              }) => (
-                <div>
-                  <div
-                    className={`flex flex-col h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
-                    {...getRootProps()}
-                  >
-                    <input
-                      {...getInputProps({
-                        id: 'spreadsheet',
-                        onChange,
-                        onBlur,
-                      })}
-                    />
-                    <p>
-                      <button type="button" onClick={open} className='cursor-pointer'>
-                        Choose a file
-                      </button>{' '}
-                      or drag and drop
-                    </p>{' '}
-                    <p>
-                      {acceptedFiles.length}
-                      {acceptedFiles.length
-                      ? acceptedFiles[0].name
-                      : 'No file selected.'}
-                    </p>
-                    <div>
-                      {fieldState.error && (
-                        <span role="alert">{fieldState.error.message}</span>
-                      )}
+            <div>
+              <FormLabel>
+                Documents confirming the identity*
+              </FormLabel>
+              <Dropzone 
+                noClick
+                accept={{
+                  'image/*': []
+                }}
+                multiple
+                onDrop={onDrop}
+              >
+                {({
+                  getRootProps,
+                  getInputProps,
+                  open,
+                  isDragActive,
+                  acceptedFiles,
+                }) => (
+                  <div className="mt-2">
+                    <div
+                      className={`flex flex-col h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      {...getRootProps()}
+                    >
+                      <input
+                        {...getInputProps({
+                          id: 'spreadsheet',
+                          onChange,
+                          onBlur,
+                        })}
+                      />
+                      <p>
+                        <button type="button" onClick={open} className='cursor-pointer'>
+                          Choose a file
+                        </button>{' '}
+                        or drag and drop
+                      </p>{' '}
+                      <p>
+                        {acceptedFiles.length}
+                        {acceptedFiles.length
+                        ? acceptedFiles[0].name
+                        : 'No file selected.'}
+                      </p>
+                    </div>
+                    {/* Preview uploaded images */}
+                    <div className="flex gap-4 w-24 mt-2">
+                      {selectedImages.length > 0 &&
+                        selectedImages.map((image, index) => (
+                          <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+                        ))}
                     </div>
                   </div>
-                  {/* Preview images */}
-                  <div className="flex gap-4 w-24 p-4">
-                    {selectedImages.length > 0 &&
-                      selectedImages.map((image, index) => (
-                        <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
-                      ))}
-                  </div>
-                </div>
-              )}
-            </Dropzone>
+                )}
+              </Dropzone>
+              <FormDescription>
+                A document confirming the identity and date of birth
+                is required for soloists (School ID card for example), 
+                and for collectives, a scanned list of participants with 
+                their dates of birth and the stamp of the institution.
+              </FormDescription>
+              <div className="text-red-600">
+                {fieldState.error && (
+                  <span role="alert">
+                    {fieldState.error.message}
+                  </span>
+                )}
+              </div>
+            </div>
           )}
         />
-
         <Button type="submit">
             Submit
         </Button>
