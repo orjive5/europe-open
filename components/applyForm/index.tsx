@@ -9,7 +9,9 @@ import * as z from "zod"
 import { 
   Check,
   ChevronsUpDown,
-  CalendarIcon 
+  CalendarIcon,
+  UploadCloud,
+  X
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
@@ -831,7 +833,7 @@ export const ApplyForm = () => {
                 }) => (
                   <div className="mt-2">
                     <div
-                      className={`flex flex-col h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      className={`text-muted-foreground cursor-pointer flex gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                       {...getRootProps()}
                     >
                       <input
@@ -841,35 +843,39 @@ export const ApplyForm = () => {
                           onBlur,
                         })}
                       />
+                      <UploadCloud />
                       <p>
-                          Click to choose a file
+                          Choose a file
                           or drag and drop
                       </p>{' '}
                     </div>
                     {/* Preview uploaded images */}
-                    <div className="flex gap-4 mt-2">
+                    <div className="flex flex-col items-start gap-4 mt-2">
                       {value &&
-                        value.map((image:any, index: number) => (
-                          <div className="flex flex-col gap-2 justify-center items-center">
-                            <Button
-                              type="button"
-                              onClick={() => {
-                                value.splice(index, 1)
-                                form.setValue('identity_documents', [...value])
-                              }}
-                            >
-                              Remove document
-                            </Button>
-                            <div key={index} className="relative w-24 h-24 sm:w-16 sm:h-16">
+                        value.map((image: any, index: number) => (
+                          <div className="flex gap-2 justify-center items-center">
+                            <div key={index} className="rounded relative w-12 h-12">
                               <Image
                                   src={`${URL.createObjectURL(image)}`}
                                   alt=""
                                   priority={true}
                                   fill
                                   sizes="(min-width: 640px) 64px, 48px"
-                                  className="object-cover box-border overflow-hidden"
+                                  className="rounded object-cover box-border overflow-hidden"
                               />
                             </div>
+                            <p
+                              className="text-sm text-muted-foreground"
+                            >
+                              {image.name}
+                            </p>
+                            <X
+                              className="w-5 h-5 text-muted-foreground"
+                              onClick={() => {
+                                value.splice(index, 1)
+                                form.setValue('identity_documents', [...value])
+                              }}
+                            />
                           </div>
                         ))}
                     </div>
