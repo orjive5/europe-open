@@ -1,9 +1,16 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
+import {
+  Controller,
+  useForm
+} from "react-hook-form"
 import * as z from "zod"
-import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react"
+import { 
+  Check,
+  ChevronsUpDown,
+  CalendarIcon 
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
     Command,
@@ -31,18 +38,31 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
-import { getCategories, getDisciplines } from "@/sanity/sanity-utils"
-import { useCallback, useEffect, useState } from "react"
+import {
+  getCategories,
+  getDisciplines
+} from "@/sanity/sanity-utils"
+import {
+  useCallback,
+  useEffect,
+  useState
+} from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import countryList from 'country-list'
 import { PopoverClose } from "@radix-ui/react-popover"
 import Dropzone, { useDropzone } from 'react-dropzone';
+import Image from "next/image"
 
 // Image upload
 const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp"
+];
 
 // Zod form schema
 const formSchema = z.object({
@@ -119,12 +139,12 @@ const formSchema = z.object({
     .url({ message: "Please enter a valid URL." }),
   identity_documents: z
     .any()
-    .refine((files) => files?.length, "Document is required.")
-    .refine((files) => files.every((file: any) => file.size <= MAX_FILE_SIZE), `Max file size is 5MB.`)
+    .refine((files) => files, "Document is required.")
+    .refine((files) => files?.every((file: any) => file.size <= MAX_FILE_SIZE), `Max file size is 5MB.`)
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
+    )
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -184,20 +204,18 @@ export const ApplyForm = () => {
     setBiographyCharCount(e.target.value.length);
   }
 
-  // Drag&drop
-  const [selectedImages, setSelectedImages] = useState([]);
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-    // form.trigger('identity_documents')
-    acceptedFiles.forEach((file) => {
-      setSelectedImages((prevState) => [...prevState, file]);
+  // Drag & Drop
+  const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
+    acceptedFiles.forEach((file: any) => {
+      form.setValue(
+        'identity_documents',
+        form.getValues().identity_documents ? [...form.getValues().identity_documents, file] : [file]
+      )
+      form.trigger('identity_documents')
     });
   }, []);
 
-  useEffect(() => {
-    form.setValue('identity_documents', selectedImages);
-  }, [selectedImages])
-
-  // console.log(form.getFieldState('identity_documents'))
+  console.log(form.getValues().identity_documents)
 
   return (
     <Form {...form}>
@@ -763,7 +781,7 @@ export const ApplyForm = () => {
         <Controller
           control={form.control}
           name="identity_documents"
-          render={({ field: { onChange, onBlur }, fieldState }) => (
+          render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <div>
               <FormLabel>
                 Documents confirming the identity*
@@ -801,18 +819,38 @@ export const ApplyForm = () => {
                         </button>{' '}
                         or drag and drop
                       </p>{' '}
-                      <p>
-                        {acceptedFiles.length}
-                        {acceptedFiles.length
-                        ? acceptedFiles[0].name
-                        : 'No file selected.'}
-                      </p>
+                      <Button
+                        type="button"
+                        onClick={() => console.log(form.getValues().identity_documents)}
+                      >
+                        Check form values
+                      </Button>
                     </div>
                     {/* Preview uploaded images */}
-                    <div className="flex gap-4 w-24 mt-2">
-                      {selectedImages.length > 0 &&
-                        selectedImages.map((image, index) => (
-                          <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+                    <div className="flex gap-4 mt-2">
+                      {value &&
+                        value.map((image:any, index: number) => (
+                          <div className="flex flex-col gap-2 justify-center items-center">
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                value.splice(index, 1)
+                                form.setValue('identity_documents', [...value])
+                              }}
+                            >
+                              Remove document
+                            </Button>
+                            <div key={index} className="relative w-24 h-24 sm:w-16 sm:h-16">
+                              <Image
+                                  src={`${URL.createObjectURL(image)}`}
+                                  alt=""
+                                  priority={true}
+                                  fill
+                                  sizes="(min-width: 640px) 64px, 48px"
+                                  className="object-cover box-border overflow-hidden"
+                              />
+                            </div>
+                          </div>
                         ))}
                     </div>
                   </div>
