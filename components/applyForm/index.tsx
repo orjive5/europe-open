@@ -54,6 +54,7 @@ import countryList from 'country-list'
 import { PopoverClose } from "@radix-ui/react-popover"
 import Dropzone, { useDropzone } from 'react-dropzone';
 import Image from "next/image"
+import { ToastAction } from "../ui/toast"
 
 // Image upload
 const MAX_FILE_SIZE = 5000000;
@@ -61,7 +62,7 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
   "image/png",
-  "image/webp"
+  "image/webp",
 ];
 
 // Zod form schema
@@ -139,7 +140,7 @@ const formSchema = z.object({
     .url({ message: "Please enter a valid URL." }),
   identity_documents: z
     .any()
-    .refine((files) => files, "Document is required.")
+    .refine((files) => files?.length, "Document is required.")
     .refine((files) => files?.every((file: any) => file.size <= MAX_FILE_SIZE), `Max file size is 5MB.`)
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
@@ -206,6 +207,30 @@ export const ApplyForm = () => {
 
   // Drag & Drop
   const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
+    if (form.getValues().identity_documents?.length >= 10) {
+      toast({
+        variant: 'destructive',
+        title: "Error",
+        description: "You can only upload up to 10 files.",
+        action: 
+          <ToastAction altText="Try again">
+            Try again
+          </ToastAction>,
+      })
+      return;
+    }
+    if (acceptedFiles[0].size > 5000000) {
+      toast({
+        variant: 'destructive',
+        title: "Error",
+        description: "Max file size is 5MB.",
+        action: 
+          <ToastAction altText="Try again">
+            Try again
+          </ToastAction>,
+      })
+      return;
+    }
     acceptedFiles.forEach((file: any) => {
       form.setValue(
         'identity_documents',
@@ -786,10 +811,13 @@ export const ApplyForm = () => {
               <FormLabel>
                 Documents confirming the identity*
               </FormLabel>
-              <Dropzone 
-                noClick
+              <Dropzone
+                maxSize={5000000}
                 accept={{
-                  'image/*': []
+                  'image/jpg': [],
+                  'image/jpeg': [],
+                  'image/png': [],
+                  'image/webp': [],
                 }}
                 multiple
                 onDrop={onDrop}
@@ -814,17 +842,9 @@ export const ApplyForm = () => {
                         })}
                       />
                       <p>
-                        <button type="button" onClick={open} className='cursor-pointer'>
-                          Choose a file
-                        </button>{' '}
-                        or drag and drop
+                          Click to choose a file
+                          or drag and drop
                       </p>{' '}
-                      <Button
-                        type="button"
-                        onClick={() => console.log(form.getValues().identity_documents)}
-                      >
-                        Check form values
-                      </Button>
                     </div>
                     {/* Preview uploaded images */}
                     <div className="flex gap-4 mt-2">
@@ -872,6 +892,7 @@ export const ApplyForm = () => {
             </div>
           )}
         />
+
         <Button type="submit">
             Submit
         </Button>
