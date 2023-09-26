@@ -57,6 +57,8 @@ import { PopoverClose } from "@radix-ui/react-popover"
 import Dropzone, { useDropzone } from 'react-dropzone';
 import Image from "next/image"
 import { ToastAction } from "../ui/toast"
+import { Checkbox } from "../ui/checkbox"
+import Link from "next/link"
 
 // Image upload
 const MAX_FILE_SIZE = 5000000;
@@ -147,7 +149,18 @@ const formSchema = z.object({
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       ".jpg, .jpeg, .png and .webp files are accepted."
-    )
+    ),
+  avatar: z
+    .any()
+    .optional(),
+  info_correct: z
+    .boolean()
+    .default(false)
+    .refine(info => info, 'This field is required.'),
+  agree_with_terms: z
+    .boolean()
+    .default(false)
+    .refine(agree => agree, 'This field is required.'),
 });
 
 type FormValues = z.infer<typeof formSchema>
@@ -207,42 +220,80 @@ export const ApplyForm = () => {
     setBiographyCharCount(e.target.value.length);
   }
 
-  // Drag & Drop
-  const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
-    if (form.getValues().identity_documents?.length >= 10) {
-      toast({
-        variant: 'destructive',
-        title: "Error",
-        description: "You can only upload up to 10 files.",
-        action: 
-          <ToastAction altText="Try again">
-            Try again
-          </ToastAction>,
+  const errorToast = ({title, description, action}: {title: string, description: string, action: string}) => toast({
+    variant: 'destructive',
+    title,
+    description,
+    action: 
+      <ToastAction altText="Try again">
+        {action}
+      </ToastAction>,
+  })
+
+  // Drag & Drop for documents
+  const onDocumentDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
+    if (acceptedFiles?.length + form.getValues().identity_documents?.length > 10) {
+      errorToast({
+        title:"Error",
+        description:"You can only upload up to 10 files.",
+        action:"Try again"
       })
       return;
-    }
-    if (acceptedFiles[0].size > 5000000) {
-      toast({
-        variant: 'destructive',
-        title: "Error",
-        description: "Max file size is 5MB.",
-        action: 
-          <ToastAction altText="Try again">
-            Try again
-          </ToastAction>,
+    } else if (acceptedFiles?.length && acceptedFiles?.[0].size > 5000000) {
+      errorToast({
+        title:"Error",
+        description:"Max file size is 5MB.",
+        action:"Try again"
       })
       return;
+    } else if (rejectedFiles && rejectedFiles?.length) {
+      errorToast({
+        title:"Error",
+        description: rejectedFiles[0]?.errors[0]?.message,
+        action:"Try again"
+      })
+      return;
+    } else {
+      acceptedFiles.forEach((file: any) => {
+        form.setValue(
+          'identity_documents',
+          form.getValues().identity_documents ? [...form.getValues().identity_documents, file] : [file]
+        )
+        form.trigger('identity_documents')
+      });
     }
-    acceptedFiles.forEach((file: any) => {
-      form.setValue(
-        'identity_documents',
-        form.getValues().identity_documents ? [...form.getValues().identity_documents, file] : [file]
-      )
-      form.trigger('identity_documents')
-    });
   }, []);
 
-  console.log(form.getValues().identity_documents)
+  // Drag & Drop for avatar
+  const onAvatarDrop = (acceptedFiles: any, rejectedFiles: any) => {
+    if (acceptedFiles.length > 1) {
+      errorToast({
+        title:"Error",
+        description:"You can only upload 1 file.",
+        action:"Try again"
+      })
+      return;
+    } else if (acceptedFiles && acceptedFiles[0]?.size >= 5000000) {
+      errorToast({
+        title:"Error",
+        description:"Max file size is 5 MB.",
+        action:"Try again"
+      })
+      return;
+    } else if (rejectedFiles && rejectedFiles?.length) {
+      errorToast({
+        title:"Error",
+        description: rejectedFiles[0]?.errors[0]?.message,
+        action:"Try again"
+      })
+      return;
+    } else {
+      form.setValue('avatar', acceptedFiles as unknown as FileList, {
+        shouldValidate: true,
+      });
+      form.trigger('avatar')
+    }
+  }
 
   return (
     <Form {...form}>
@@ -822,18 +873,16 @@ export const ApplyForm = () => {
                   'image/webp': [],
                 }}
                 multiple
-                onDrop={onDrop}
+                onDrop={onDocumentDrop}
               >
                 {({
                   getRootProps,
                   getInputProps,
-                  open,
                   isDragActive,
-                  acceptedFiles,
                 }) => (
                   <div className="mt-2">
                     <div
-                      className={`text-muted-foreground cursor-pointer flex gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                       {...getRootProps()}
                     >
                       <input
@@ -843,21 +892,28 @@ export const ApplyForm = () => {
                           onBlur,
                         })}
                       />
-                      <UploadCloud />
-                      <p>
-                          Choose a file
-                          or drag and drop
-                      </p>{' '}
+                      <div className="flex gap-2">
+                        <UploadCloud />
+                        <p>
+                            Choose a file
+                            or drag and drop
+                        </p>{' '}
+                      </div>
+                      <div className="flex gap-2">
+                        <p>Accepted file types: JPEG, PNG, WEBP</p>
+                        <p>Max file size: 5 MB</p>
+                        <p>File limit: 10</p>
+                      </div>
                     </div>
                     {/* Preview uploaded images */}
                     <div className="flex flex-col items-start gap-4 mt-2">
                       {value &&
                         value.map((image: any, index: number) => (
-                          <div className="flex gap-2 justify-center items-center">
-                            <div key={index} className="rounded relative w-12 h-12">
+                          <div key={index} className="flex gap-2 justify-center items-center">
+                            <div className="rounded relative w-12 h-12">
                               <Image
                                   src={`${URL.createObjectURL(image)}`}
-                                  alt=""
+                                  alt="Participant's document"
                                   priority={true}
                                   fill
                                   sizes="(min-width: 640px) 64px, 48px"
@@ -898,7 +954,156 @@ export const ApplyForm = () => {
             </div>
           )}
         />
-
+        {/* AVATAR */}
+        <Controller
+          control={form.control}
+          name="avatar"
+          render={({ field: { onChange, onBlur, value }, fieldState }) => (
+            <div>
+              <FormLabel>
+                Participant's photo
+              </FormLabel>
+              <Dropzone
+                maxSize={5000000}
+                accept={{
+                  'image/jpg': [],
+                  'image/jpeg': [],
+                  'image/png': [],
+                  'image/webp': [],
+                }}
+                onDrop={onAvatarDrop}
+              >
+                {({
+                  getRootProps,
+                  getInputProps,
+                  isDragActive,
+                }) => (
+                  <div className="mt-2">
+                    <div
+                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      {...getRootProps()}
+                    >
+                    <input
+                      {...getInputProps({
+                        id: 'spreadsheet',
+                        onChange,
+                        onBlur,
+                      })}
+                    />
+                      <div className="flex gap-2">
+                        <UploadCloud />
+                        <p>
+                            Choose a file
+                            or drag and drop
+                        </p>{' '}
+                      </div>
+                      <div className="flex gap-2">
+                        <p>Accepted file types: JPEG, PNG, WEBP</p>
+                        <p>Max file size: 5 MB</p>
+                        <p>File limit: 1</p>
+                      </div>
+                    </div>
+                    {/* Preview uploaded images */}
+                    <div className="flex flex-col items-start gap-4 mt-2">
+                      {value &&
+                        value.map((image: any, index: number) => (
+                          <div key={index} className="flex gap-2 justify-center items-center">
+                            <div className="rounded relative w-12 h-12">
+                              <Image
+                                  src={`${URL.createObjectURL(image)}`}
+                                  alt="Participant's photo"
+                                  priority={true}
+                                  fill
+                                  sizes="(min-width: 640px) 64px, 48px"
+                                  className="rounded object-cover box-border overflow-hidden"
+                              />
+                            </div>
+                            <p
+                              className="text-sm text-muted-foreground"
+                            >
+                              {image.name}
+                            </p>
+                            <X
+                              className="w-5 h-5 text-muted-foreground"
+                              onClick={() => {
+                                value.splice(index, 1)
+                                form.setValue('avatar', [...value])
+                              }}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </Dropzone>
+              <FormDescription>
+                Photo will be used for the posters and as an avatar on our website.
+              </FormDescription>
+              <div className="text-red-600">
+                {fieldState.error && (
+                  <span role="alert">
+                    {fieldState.error.message}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        />
+        {/* INFO CORRECT */}
+        <FormField
+          control={form.control}
+          name="info_correct"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  I confirm that the information I provided is true and accurate.*
+                </FormLabel>
+                <FormDescription>
+                  The information you provided will be used in diplomas 
+                  and will also be publicly displayed on our website. 
+                  It is not subject to subsequent change. 
+                  Please take your time to review it and check for 
+                  any mistakes. Thank you.
+                </FormDescription>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+        {/* AGREE WITH THE TERMS */}
+        <FormField
+          control={form.control}
+          name="agree_with_terms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                I agree with all the terms of the contest.*
+                </FormLabel>
+                <FormDescription>
+                  Read the competition rules{' '}
+                  <Link className="underline" href='/rules'>
+                    here
+                  </Link>
+                </FormDescription>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
         <Button type="submit">
             Submit
         </Button>
