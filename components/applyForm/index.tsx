@@ -193,7 +193,7 @@ export const ApplyForm = () => {
             name="disciplines"
             render={({ field }) => (
               <FormItem className="flex-grow flex flex-col">
-                <FormLabel>
+                <FormLabel className="w-auto">
                     Discipline*
                 </FormLabel>
                   <Popover
@@ -399,188 +399,197 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        {/* TEACHER */}
-        <FormField
-          control={form.control}
-          name="teacher"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Teacher
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter teacher's name"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* CONDUCTOR */}
-        <FormField
-          control={form.control}
-          name="conductor"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Conductor
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter conductor's name"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* COLLECTIVE LEADER */}
-        <FormField
-          control={form.control}
-          name="collective_leader"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Collective leader
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter collective leader's name"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* ACCOMPANIST */}
-        <FormField
-          control={form.control}
-          name="accompanist"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Accompanist
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter accompanist's name"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* COUNTRY */}
-        <FormField
-          control={form.control}
-          name="countries"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
+        <div className="flex w-full gap-4">
+          {/* TEACHER */}
+          <FormField
+            control={form.control}
+            name="teacher"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
                 <FormLabel>
-                    Country*
+                  Teacher
                 </FormLabel>
-              <Popover open={countriesOpen} onOpenChange={setCountriesOpen}>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "w-[200px] justify-between h-auto",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {countries && (field.value
-                        ? countries.find(
-                            (country) => country.name === field.value
-                          )?.name
-                        : "Select country")}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <ScrollArea className="h-[500px]">
-                    <Command>
-                      <CommandInput placeholder="Search country..." />
-                      <CommandEmpty>
-                          No country found.
-                      </CommandEmpty>
-                      <CommandGroup>
-                        {countries && countries.map((c) => (
-                          <CommandItem
-                            value={c.name}
-                            key={c.name}
-                            onSelect={() => {
-                              form.setValue("countries", c.name)
-                              form.clearErrors("countries");
-                              setCountriesOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                c.name === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {c.name}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </ScrollArea>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* CITY/PLACE */}
-        <FormField
-          control={form.control}
-          name="place"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                City/Place*
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter your city/ place"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormControl>
+                  <Input
+                    placeholder="Enter teacher's name"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* ACCOMPANIST */}
+          <FormField
+            control={form.control}
+            name="accompanist"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                  Accompanist
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter accompanist's name"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex w-full gap-4">
+          {/* CONDUCTOR */}
+          <FormField
+            control={form.control}
+            name="conductor"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                  Conductor
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter conductor's name"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* COLLECTIVE LEADER */}
+          <FormField
+            control={form.control}
+            name="collective_leader"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                  Collective leader
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter collective leader's name"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex w-full gap-4">
+          {/* COUNTRY */}
+          <div className="flex-grow flex flex-col">
+            <FormField
+              control={form.control}
+              name="countries"
+              render={({ field }) => (
+                <FormItem>
+                    <FormLabel>
+                        Country*
+                    </FormLabel>
+                  <Popover open={countriesOpen} onOpenChange={setCountriesOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between h-auto",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {countries && (field.value
+                            ? countries.find(
+                                (country) => country.name === field.value
+                              )?.name
+                            : "Select country")}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0">
+                      <ScrollArea className="h-[500px]">
+                        <Command>
+                          <CommandInput placeholder="Search country..." />
+                          <CommandEmpty>
+                              No country found.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {countries && countries.map((c) => (
+                              <CommandItem
+                                value={c.name}
+                                key={c.name}
+                                onSelect={() => {
+                                  form.setValue("countries", c.name)
+                                  form.clearErrors("countries");
+                                  setCountriesOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    c.name === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {c.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </ScrollArea>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* CITY/PLACE */}
+          <FormField
+            control={form.control}
+            name="place"
+            render={({ field }) => (
+              <FormItem className="gap-1 flex-grow flex flex-col justify-end">
+                <FormLabel>
+                  City/Place*
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your city/ place"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                    className='h-[42px]'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         {/* INSTITUTION */}
         <FormField
           control={form.control}

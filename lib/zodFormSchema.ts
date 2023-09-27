@@ -32,11 +32,11 @@ export const formSchema = z.object({
     }),
   teacher: z
     .string().optional(),
+  accompanist: z
+    .string().optional(),
   conductor: z
     .string().optional(),
   collective_leader: z
-    .string().optional(),
-  accompanist: z
     .string().optional(),
   countries: z
     .string({
