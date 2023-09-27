@@ -5,7 +5,7 @@ import {
   Controller,
   useForm
 } from "react-hook-form"
-import * as z from "zod"
+import { formSchema, FormValues } from "@/lib/zodFormSchema"
 import { 
   Check,
   ChevronsUpDown,
@@ -46,124 +46,17 @@ import {
 } from "@/sanity/sanity-utils"
 import {
   useCallback,
-  useEffect,
   useState
 } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
-import countryList from 'country-list'
-import { PopoverClose } from "@radix-ui/react-popover"
-import Dropzone, { useDropzone } from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import Image from "next/image"
 import { ToastAction } from "../ui/toast"
 import { Checkbox } from "../ui/checkbox"
 import Link from "next/link"
-
-// Image upload
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-// Zod form schema
-const formSchema = z.object({
-  disciplines: z
-    .string({
-      required_error: "Please select a discipline.",
-    }),
-  categories: z
-    .string({
-      required_error: "Please select a category.",
-    }),
-  name_and_surname: z
-    .string({
-      required_error: 'Please, enter your name and surname.'
-    })
-    .min(2, {
-        message: "Name and surname must be at least 2 characters.",
-    }),
-  date_of_birth: z
-    .date({
-      required_error: "A date of birth is required.",
-    }),
-  teacher: z
-    .string().optional(),
-  conductor: z
-    .string().optional(),
-  collective_leader: z
-    .string().optional(),
-  accompanist: z
-    .string().optional(),
-  countries: z
-    .string({
-      required_error: "Please select a country.",
-    }),
-  place: z
-    .string({
-      required_error: "Please select a city/place.",
-    })
-    .min(2, {
-      message: "City/place must be at least 2 characters.",
-    }),
-  institution: z
-    .string().optional(),
-  program: z
-    .string()
-    .min(5, {
-      message: "Program must be at least 5 characters.",
-    })
-    .max(300, {
-      message: "Program must not be longer than 300 characters.",
-    }),
-  biography: z
-    .string()
-    .min(5, {
-      message: "If not empty, biography must be at least 5 characters.",
-    })
-    .max(1500, {
-      message: "Biography must not be longer than 1500 characters.",
-    })
-    .optional(),
-  participants_email: z
-    .string({
-      required_error: "Email is required.",
-    })
-    .email("Please, enter a valid email."),
-  teachers_email: z
-    .string()
-    .email("Please, enter a valid email.")
-    .optional(),
-  video_link: z
-    .string({
-      required_error: "Video URL is required.",
-    })
-    .url({ message: "Please enter a valid URL." }),
-  identity_documents: z
-    .any()
-    .refine((files) => files?.length, "Document is required.")
-    .refine((files) => files?.every((file: any) => file.size <= MAX_FILE_SIZE), `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
-  avatar: z
-    .any()
-    .optional(),
-  info_correct: z
-    .boolean()
-    .default(false)
-    .refine(info => info, 'This field is required.'),
-  agree_with_terms: z
-    .boolean()
-    .default(false)
-    .refine(agree => agree, 'This field is required.'),
-});
-
-type FormValues = z.infer<typeof formSchema>
+import { countries } from "@/constants/countriesList"
 
 export const ApplyForm = () => {
 
@@ -200,14 +93,6 @@ export const ApplyForm = () => {
     queryKey: ['categories'],
     queryFn: getCategories,
   });
-
-  // Country list
-  const countries = countryList.getData();
-  // Overwrite Türkiye to Turkey
-  countryList.overwrite([{
-    code: 'TR',
-    name: 'Turkey',
-  }]);
 
   //Remaining characters count for text areas
   const [programCharCount, setProgramCharCount] = useState(0);
@@ -299,142 +184,147 @@ export const ApplyForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
+        className="w-full lg:w-3/4 xl:w-2/3 border p-8 rounded space-y-8"
       >
-        {/* DISCIPLINE */}
-        <FormField
-          control={form.control}
-          name="disciplines"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>
-                  Discipline*
-              </FormLabel>
-              <Popover open={disciplinesOpen} onOpenChange={setDisciplinesOpen}>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "w-[200px] justify-between h-auto",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {disciplines.data && (field.value
-                        ? disciplines.data.find(
-                            (discipline) => discipline.title === field.value
-                          )?.title
-                        : "Select discipline")}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
+        <div className="flex w-full gap-4">
+          {/* DISCIPLINE */}
+          <FormField
+            control={form.control}
+            name="disciplines"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                    Discipline*
+                </FormLabel>
+                  <Popover
+                    open={disciplinesOpen}
+                    onOpenChange={setDisciplinesOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between h-auto",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {disciplines.data && (field.value
+                            ? disciplines.data.find(
+                                (discipline) => discipline.title === field.value
+                              )?.title
+                            : "Select discipline")}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0">
+                      <ScrollArea className="h-[500px]">
+                        <Command>
+                          <CommandInput placeholder="Search discipline..." />
+                          <CommandEmpty>
+                              No discipline found.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {disciplines.data && disciplines.data.map((d) => (
+                              <CommandItem
+                                value={d.title}
+                                key={d.title}
+                                onSelect={() => {
+                                  form.setValue("disciplines", d.title);
+                                  form.clearErrors("disciplines");
+                                  setDisciplinesOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    d.title === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {d.title}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </ScrollArea>
+                    </PopoverContent>
+                  </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* CATEGORY */}
+          <FormField
+            control={form.control}
+            name="categories"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                  <FormLabel>
+                      Category*
+                  </FormLabel>
+                <Popover open={categoriesOpen} onOpenChange={setCategoriesOpen}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between h-auto",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {categories.data && (field.value
+                          ? categories.data.find(
+                              (category) => category.title === field.value
+                            )?.title
+                          : "Select category")}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
                     <ScrollArea className="h-[500px]">
                       <Command>
-                        <CommandInput placeholder="Search discipline..." />
+                        <CommandInput placeholder="Search category..." />
                         <CommandEmpty>
-                            No discipline found.
+                            No category found.
                         </CommandEmpty>
                         <CommandGroup>
-                          {disciplines.data && disciplines.data.map((d) => (
+                          {categories.data && categories.data.map((c) => (
                             <CommandItem
-                              value={d.title}
-                              key={d.title}
+                              value={c.title}
+                              key={c.title}
                               onSelect={() => {
-                                form.setValue("disciplines", d.title);
-                                form.clearErrors("disciplines");
-                                setDisciplinesOpen(false);
+                                form.setValue("categories", c.title)
+                                form.clearErrors("categories");
+                                setCategoriesOpen(false);
                               }}
                             >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  d.title === field.value
+                                  c.title === field.value
                                     ? "opacity-100"
                                     : "opacity-0"
                                 )}
                               />
-                              {d.title}
+                              {c.title}
                             </CommandItem>
                           ))}
                         </CommandGroup>
                       </Command>
                     </ScrollArea>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* CATEGORY */}
-        <FormField
-          control={form.control}
-          name="categories"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-                <FormLabel>
-                    Category*
-                </FormLabel>
-              <Popover open={categoriesOpen} onOpenChange={setCategoriesOpen}>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {categories.data && (field.value
-                        ? categories.data.find(
-                            (category) => category.title === field.value
-                          )?.title
-                        : "Select category")}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <ScrollArea className="h-[500px]">
-                    <Command>
-                      <CommandInput placeholder="Search category..." />
-                      <CommandEmpty>
-                          No category found.
-                      </CommandEmpty>
-                      <CommandGroup>
-                        {categories.data && categories.data.map((c) => (
-                          <CommandItem
-                            value={c.title}
-                            key={c.title}
-                            onSelect={() => {
-                              form.setValue("categories", c.title)
-                              form.clearErrors("categories");
-                              setCategoriesOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                c.title === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {c.title}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </ScrollArea>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         {/* NAME AND SURNAME */}
         <FormField
           control={form.control}
@@ -463,17 +353,17 @@ export const ApplyForm = () => {
           control={form.control}
           name="date_of_birth"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col items-start">
               <FormLabel>
                 Date of Birth*
               </FormLabel>
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                <PopoverTrigger asChild>
+                <PopoverTrigger className="w-full" asChild>
                   <FormControl>
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        " pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -486,7 +376,7 @@ export const ApplyForm = () => {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent align="start" className=" w-auto p-0">
+                <PopoverContent align="start" className="flex justify-center items-center w-full p-4">
                   <Calendar
                     mode="single"
                     captionLayout="dropdown-buttons"
@@ -502,7 +392,8 @@ export const ApplyForm = () => {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                For collectives, the age is determined by calculating the average age of the participants.
+                For collectives, the age is determined by calculating
+                the average age of the participants.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -722,7 +613,7 @@ export const ApplyForm = () => {
               <FormLabel>
                 Program*
               </FormLabel>
-              <p className={`text-sm ${programCharCount > 300 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              <p className={`text-base ${programCharCount > 300 ? 'text-destructive' : 'text-muted-foreground'}`}>
                 {programCharCount}/300 characters
               </p>
               <FormControl>
@@ -757,7 +648,7 @@ export const ApplyForm = () => {
               <FormLabel>
                 Brief Artistic Biography
               </FormLabel>
-              <p className={`text-sm ${biographyCharCount > 1500 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              <p className={`text-base ${biographyCharCount > 1500 ? 'text-destructive' : 'text-muted-foreground'}`}>
                 {biographyCharCount}/1500 characters
               </p>
               <FormControl>
@@ -882,7 +773,7 @@ export const ApplyForm = () => {
                 }) => (
                   <div className="mt-2">
                     <div
-                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                       {...getRootProps()}
                     >
                       <input
@@ -921,7 +812,7 @@ export const ApplyForm = () => {
                               />
                             </div>
                             <p
-                              className="text-sm text-muted-foreground"
+                              className="text-base text-muted-foreground"
                             >
                               {image.name}
                             </p>
@@ -980,7 +871,7 @@ export const ApplyForm = () => {
                 }) => (
                   <div className="mt-2">
                     <div
-                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                      className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                       {...getRootProps()}
                     >
                     <input
@@ -1019,7 +910,7 @@ export const ApplyForm = () => {
                               />
                             </div>
                             <p
-                              className="text-sm text-muted-foreground"
+                              className="text-base text-muted-foreground"
                             >
                               {image.name}
                             </p>
