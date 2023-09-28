@@ -11,7 +11,8 @@ import {
   ChevronsUpDown,
   CalendarIcon,
   UploadCloud,
-  X
+  X,
+  ShieldCheck
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
@@ -57,6 +58,7 @@ import { ToastAction } from "../ui/toast"
 import { Checkbox } from "../ui/checkbox"
 import Link from "next/link"
 import { countries } from "@/constants/countriesList"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export const ApplyForm = () => {
 
@@ -68,7 +70,7 @@ export const ApplyForm = () => {
       toast({
           title: "You submitted the following values:",
           description: (
-              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <pre className="mt-2 w-auto rounded-md bg-slate-950 p-4">
                   <code className="text-white">
                     {JSON.stringify(values, null, 2)}
                   </code>
@@ -576,7 +578,7 @@ export const ApplyForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter your city/ place"
+                    placeholder="Enter your city/place"
                     {...field}
                     onChange={(e) => {
                       field.onChange(e.target.value || undefined)
@@ -676,54 +678,57 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        {/* PARTICIPANT'S EMAIL */}
-        <FormField
-          control={form.control}
-          name="participants_email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Your Email*
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type='email'
-                  placeholder="Enter your email"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* TEACHER'S EMAIL */}
-        <FormField
-          control={form.control}
-          name="teachers_email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Teacher's Email
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type='email'
-                  placeholder="Enter teacher's email"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e.target.value || undefined)
-                  }}
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex w-full gap-4">
+          {/* PARTICIPANT'S EMAIL */}
+          <FormField
+            control={form.control}
+            name="participants_email"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                  Your Email*
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder="Enter your email"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* TEACHER'S EMAIL */}
+          <FormField
+            control={form.control}
+            name="teachers_email"
+            render={({ field }) => (
+              <FormItem className="flex-grow flex flex-col">
+                <FormLabel>
+                  Teacher's Email
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder="Enter teacher's email"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value || undefined)
+                    }}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
         {/* VIDEO LINK */}
         <FormField
           control={form.control}
@@ -745,11 +750,10 @@ export const ApplyForm = () => {
                 />
               </FormControl>
               <FormDescription>
-                If you submit YouTube links,
-                be sure your video(s) have the proper settings:
-                YouTube Video Manager → Videos → Basic Info → from the drop-down menu, 
-                please choose "Public" or "Unlisted". 
-                Do not choose "Private".
+                We prefer a link to a YouTube video.
+                <br />
+                If you submit YouTube link,
+                please make sure that is your video "Public".
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -949,6 +953,23 @@ export const ApplyForm = () => {
             </div>
           )}
         />
+        {/* DISCLAIMER */}
+        <Alert>
+          <div className="flex gap-2">
+            <ShieldCheck className="h-6 w-6"/>
+            <div>
+              <AlertTitle>Please read</AlertTitle>
+              <AlertDescription>
+                The information you provided will be used in diplomas
+                and will also be publicly displayed on our website.
+                It is not subject to subsequent change.
+                <br />
+                Please take your time to review it and check for
+                any mistakes. Thank you.
+              </AlertDescription>
+            </div>
+          </div>
+        </Alert>
         {/* INFO CORRECT */}
         <FormField
           control={form.control}
@@ -965,13 +986,6 @@ export const ApplyForm = () => {
                 <FormLabel>
                   I confirm that the information I provided is true and accurate.*
                 </FormLabel>
-                <FormDescription>
-                  The information you provided will be used in diplomas 
-                  and will also be publicly displayed on our website. 
-                  It is not subject to subsequent change. 
-                  Please take your time to review it and check for 
-                  any mistakes. Thank you.
-                </FormDescription>
                 <FormMessage />
               </div>
             </FormItem>
@@ -995,7 +1009,12 @@ export const ApplyForm = () => {
                 </FormLabel>
                 <FormDescription>
                   Read the competition rules{' '}
-                  <Link className="underline" href='/rules'>
+                  <Link
+                    className="underline"
+                    href='/rules'
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
                     here
                   </Link>
                 </FormDescription>
@@ -1004,8 +1023,8 @@ export const ApplyForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">
-            Submit
+        <Button className="w-full" type="submit">
+            Proceed to Payment
         </Button>
       </form>
     </Form>
