@@ -1,0 +1,44 @@
+import { IUploadedFile } from "./uploadedFile.interface";
+
+export interface IApplicationSlice {
+    discipline?: string;
+    setDiscipline(d: string): void;
+    category?: string;
+    setCategory(c: string): void;
+    name_and_surname?: string;
+    setNameAndSurname(n: string): void;
+    date_of_birth?: Date;
+    setDateOfBirth(d: Date): void;
+    teacher?: string;
+    setTeacher(t?: string): void;
+    accompanist?: string;
+    setAccompanist(a?: string): void;
+    conductor?: string;
+    setConductor(c?: string): void;
+    collective_leader?: string;
+    setCollectiveLeader(l?: string): void;
+    country?: string;
+    setCountry(c?: string): void;
+    place?: string;
+    setPlace(p: string): void;
+    institution?: string;
+    setInstitution(i?: string): void;
+    program?: string;
+    setProgram(p: string): void;
+    biography?: string;
+    setBiography(i?: string): void;
+    participants_email?: string;
+    setParticipantsEmail(e: string): void;
+    teachers_email?: string;
+    setTeachersEmail(t?: string): void;
+    video_link?: string;
+    setVideoLink(v: string): void;
+    identity_documents?: IUploadedFile[];
+    setIdentityDocuments(i: IUploadedFile[]): void;
+    avatar?: IUploadedFile;
+    setAvatar(i: IUploadedFile): void;
+    info_correct?: boolean;
+    setInfoCorrect(i?: boolean): void;
+    agree_with_terms?: boolean;
+    setAgreeWithTerms(a?: boolean): void;
+}
