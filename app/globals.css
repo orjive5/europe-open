@@ -63,3 +63,9 @@
 .rdp-vhidden {
   @apply hidden;
 }
+
+/* For popover content to match trigger size */
+.PopoverContent {
+  width: var(--radix-popover-trigger-width);
+  max-height: var(--radix-popover-content-available-height);
+}
