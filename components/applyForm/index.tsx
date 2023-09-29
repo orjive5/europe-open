@@ -59,24 +59,38 @@ import { Checkbox } from "../ui/checkbox"
 import Link from "next/link"
 import { countries } from "@/constants/countriesList"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useBoundStore } from "@/store"
 
 export const ApplyForm = () => {
 
   const form = useForm<FormValues>({
       resolver: zodResolver(formSchema),
-  })
+  });
+
+  const store = useBoundStore();
 
   const onSubmit = (values: FormValues) => {
-      toast({
-          title: "You submitted the following values:",
-          description: (
-              <pre className="mt-2 w-auto rounded-md bg-slate-950 p-4">
-                  <code className="text-white">
-                    {JSON.stringify(values, null, 2)}
-                  </code>
-              </pre>
-          ),
-      })
+    store.setDiscipline(values.disciplines);
+    store.setCategory(values.categories);
+    store.setNameAndSurname(values.name_and_surname);
+    store.setDateOfBirth(values.date_of_birth);
+    store.setTeacher(values.teacher);
+    store.setAccompanist(values.accompanist);
+    store.setConductor(values.conductor);
+    store.setCollectiveLeader(values.collective_leader);
+    const countryCode = countries.find(c => c.name === values.countries)?.code;
+    store.setCountry(countryCode);
+    store.setPlace(values.place);
+    store.setInstitution(values.institution);
+    store.setProgram(values.program);
+    store.setBiography(values.biography);
+    store.setParticipantsEmail(values.participants_email);
+    store.setTeachersEmail(values.teachers_email);
+    store.setVideoLink(values.video_link);
+    store.setIdentityDocuments(values.identity_documents);
+    store.setAvatar(values.avatar);
+    store.setInfoCorrect(values.info_correct);
+    store.setAgreeWithTerms(values.agree_with_terms);
   }
 
   // Toggle popover on select
@@ -194,7 +208,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="disciplines"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel className="w-auto">
                     Discipline*
                 </FormLabel>
@@ -264,7 +278,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="categories"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                   <FormLabel>
                       Category*
                   </FormLabel>
@@ -407,7 +421,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="teacher"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Teacher
                 </FormLabel>
@@ -430,7 +444,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="accompanist"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Accompanist
                 </FormLabel>
@@ -455,7 +469,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="conductor"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Conductor
                 </FormLabel>
@@ -478,7 +492,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="collective_leader"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Collective leader
                 </FormLabel>
@@ -572,7 +586,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="place"
             render={({ field }) => (
-              <FormItem className="gap-1 flex-grow flex flex-col justify-end">
+              <FormItem className="gap-1 flex-grow flex flex-col justify-end items-start">
                 <FormLabel>
                   City/Place*
                 </FormLabel>
@@ -684,7 +698,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="participants_email"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Your Email*
                 </FormLabel>
@@ -708,7 +722,7 @@ export const ApplyForm = () => {
             control={form.control}
             name="teachers_email"
             render={({ field }) => (
-              <FormItem className="flex-grow flex flex-col">
+              <FormItem className="flex-grow flex flex-col items-start">
                 <FormLabel>
                   Teacher's Email
                 </FormLabel>
@@ -728,7 +742,6 @@ export const ApplyForm = () => {
             )}
           />
         </div>
-        
         {/* VIDEO LINK */}
         <FormField
           control={form.control}
