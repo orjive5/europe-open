@@ -60,14 +60,15 @@ import Link from "next/link"
 import { countries } from "@/constants/countriesList"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useBoundStore } from "@/store"
+import { useRouter } from "next/navigation"
 
 export const ApplyForm = () => {
+  const store = useBoundStore();
+  const router = useRouter();
 
   const form = useForm<FormValues>({
-      resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema),
   });
-
-  const store = useBoundStore();
 
   const onSubmit = (values: FormValues) => {
     store.setDiscipline(values.disciplines);
@@ -91,6 +92,9 @@ export const ApplyForm = () => {
     store.setAvatar(values.avatar);
     store.setInfoCorrect(values.info_correct);
     store.setAgreeWithTerms(values.agree_with_terms);
+    store.setAmountToPay(30);
+    store.setReadyToCheckout(true);
+    router.push('/checkout');
   }
 
   // Toggle popover on select

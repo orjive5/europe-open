@@ -1,6 +1,7 @@
 'use client'
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import {CreateOrderData, CreateOrderActions} from '@paypal/paypal-js'
 
 const PaypalCheckoutButton = (props: any) => {
     const { product } = props;
@@ -32,13 +33,13 @@ const PaypalCheckoutButton = (props: any) => {
     }
 
     return (
-        <div className="flex-grow">
+        <div className="flex-grow w-full">
             <PayPalButtons
                 className="p-4 bg-white rounded"
                 style={{
                     tagline: false,
                 }}
-                createOrder={(data, actions) => {
+                createOrder={useCallback((data: CreateOrderData, actions: CreateOrderActions) => {
                     return actions.order
                         .create({
                             purchase_units: [
@@ -49,8 +50,9 @@ const PaypalCheckoutButton = (props: any) => {
                                     }
                                 }
                             ]
-                    })
-                }}
+                        })
+                }, [product.price])}
+                forceReRender={[product.price]}
                 onApprove={async (data, actions) => {
                     const order = await actions.order?.capture();
                     console.log("order", order)

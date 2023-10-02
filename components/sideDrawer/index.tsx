@@ -40,10 +40,10 @@ const SideDrawer = () => {
                                         </SheetTrigger>
                                     </Link>
                             ))}
-                            <div className="p-3">
-                                <ModeToggle />
-                            </div>
                         </SheetDescription>
+                        <div className="p-3">
+                            <ModeToggle />
+                        </div>
                     </SheetHeader>
                 </SheetContent>
             </Sheet>

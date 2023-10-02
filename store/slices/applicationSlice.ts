@@ -63,4 +63,10 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     agree_with_terms: undefined,
     setAgreeWithTerms: (state: boolean) =>
         set(() => ({agree_with_terms: state})),
+    ready_to_checkout: false,
+    setReadyToCheckout: (state: boolean) =>
+        set(() => ({ready_to_checkout: state})),
+    amount_to_pay: undefined,
+    setAmountToPay: (state: number) =>
+        set(() => ({amount_to_pay: state})),
 });
