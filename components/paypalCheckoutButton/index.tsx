@@ -11,7 +11,7 @@ const PaypalCheckoutButton = (props: any) => {
 
     const handleApprove = (orderId: string) => {
         // Call backend function to fulfill order
-
+        
         // If response is success
         setPaidFor(true)
         // Refresh user's account or subscription status

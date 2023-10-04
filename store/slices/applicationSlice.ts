@@ -69,4 +69,10 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     amount_to_pay: undefined,
     setAmountToPay: (state: number) =>
         set(() => ({amount_to_pay: state})),
+    diploma_by_post: false,
+    setDiplomaByPost: (state: boolean) =>
+        set(() => ({diploma_by_post: state})),
+    postal_address: undefined,
+    setPostalAddress: (state: string) =>
+        set(() => ({postal_address: state})),
 });

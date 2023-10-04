@@ -101,6 +101,22 @@ export const formSchema = z.object({
     .boolean()
     .default(false)
     .refine(agree => agree, 'This field is required.'),
-});
+  diploma_by_post: z
+    .boolean()
+    .default(false),
+  address: z
+      .string()
+      .optional()
+  }).refine(schema => {
+      if (schema.diploma_by_post === false) return true
+      if (schema.diploma_by_post === true && schema.address === undefined || schema.address === '') {
+          return false;
+      } else {
+          return true
+      }
+  }, {
+    message: 'Please, provide your address.', 
+    path: ['address'] 
+})
 
 export type FormValues = z.infer<typeof formSchema>
