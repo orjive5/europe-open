@@ -1,6 +1,7 @@
 import { useBoundStore } from "@/store";
 import { FormValues } from "./zodFormSchema";
 import { countries } from "@/constants/countriesList";
+
 const store = useBoundStore.getState();
 
 export const onSubmit = (values: FormValues) => {
@@ -25,9 +26,9 @@ export const onSubmit = (values: FormValues) => {
     store.setAvatar(values.avatar);
     store.setInfoCorrect(values.info_correct);
     store.setAgreeWithTerms(values.agree_with_terms);
-    store.setAmountToPay(30);
     store.setDiplomaByPost(values.diploma_by_post);
     store.setPostalAddress(values.address);
     store.setReadyToCheckout(true);
-    console.log(store.ready_to_checkout && 'to checkout')
+    store.setOpenCheckout(true);
+    store.diploma_by_post ? store.setAmountToPay(40) : store.setAmountToPay(30);
   }

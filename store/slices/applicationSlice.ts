@@ -75,4 +75,7 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     postal_address: undefined,
     setPostalAddress: (state: string) =>
         set(() => ({postal_address: state})),
+    open_checkout: false,
+    setOpenCheckout: (state: boolean) =>
+        set(() => ({open_checkout: state})),
 });

@@ -49,4 +49,6 @@ export interface IApplicationSlice {
     setDiplomaByPost(d?: boolean): void;
     postal_address?: string;
     setPostalAddress(a?: string): void;
+    open_checkout: boolean;
+    setOpenCheckout(d: boolean): void;
 }
