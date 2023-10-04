@@ -41,4 +41,14 @@ export interface IApplicationSlice {
     setInfoCorrect(i?: boolean): void;
     agree_with_terms?: boolean;
     setAgreeWithTerms(a?: boolean): void;
+    ready_to_checkout: boolean;
+    setReadyToCheckout(r: boolean): void;
+    amount_to_pay?: number;
+    setAmountToPay(a?: number): void;
+    diploma_by_post?: boolean;
+    setDiplomaByPost(d?: boolean): void;
+    postal_address?: string;
+    setPostalAddress(a?: string): void;
+    open_checkout: boolean;
+    setOpenCheckout(d: boolean): void;
 }

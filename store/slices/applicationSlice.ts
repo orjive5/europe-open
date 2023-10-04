@@ -63,4 +63,19 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     agree_with_terms: undefined,
     setAgreeWithTerms: (state: boolean) =>
         set(() => ({agree_with_terms: state})),
+    ready_to_checkout: false,
+    setReadyToCheckout: (state: boolean) =>
+        set(() => ({ready_to_checkout: state})),
+    amount_to_pay: undefined,
+    setAmountToPay: (state: number) =>
+        set(() => ({amount_to_pay: state})),
+    diploma_by_post: false,
+    setDiplomaByPost: (state: boolean) =>
+        set(() => ({diploma_by_post: state})),
+    postal_address: undefined,
+    setPostalAddress: (state: string) =>
+        set(() => ({postal_address: state})),
+    open_checkout: false,
+    setOpenCheckout: (state: boolean) =>
+        set(() => ({open_checkout: state})),
 });

@@ -21,23 +21,23 @@ export default async function RootLayout({
 }) {
 
   return (
-    <ReactQueryProvider>
-      <html lang="en">
-          <body>
-            <main style={hanken.style} className="p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
-              <NextTopLoader
-                color='#ea580c'
-                showSpinner={false}
-              />
-              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                <Header />
-                {children}
-                <Footer />
-              </ThemeProvider>
-            </main>
-            <Toaster />
-          </body>
-      </html>
-    </ReactQueryProvider>
+      <ReactQueryProvider>
+        <html lang="en">
+            <body>
+              <main style={hanken.style} className="p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
+                <NextTopLoader
+                  color='#ea580c'
+                  showSpinner={false}
+                />
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                  <Header />
+                  {children}
+                  <Footer />
+                </ThemeProvider>
+              </main>
+              <Toaster />
+            </body>
+        </html>
+      </ReactQueryProvider>
   )
 }
