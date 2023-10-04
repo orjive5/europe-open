@@ -60,48 +60,13 @@ import { Checkbox } from "../ui/checkbox"
 import Link from "next/link"
 import { countries } from "@/constants/countriesList"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { useBoundStore } from "@/store"
+import { onSubmit } from "@/lib/onApplicationSubmit"
 
 export const ApplyForm = () => {
-  const store = useBoundStore();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
-
-  const onSubmit = (values: FormValues) => {
-    store.setDiscipline(values.disciplines);
-    store.setCategory(values.categories);
-    store.setNameAndSurname(values.name_and_surname);
-    store.setDateOfBirth(values.date_of_birth);
-    store.setTeacher(values.teacher);
-    store.setAccompanist(values.accompanist);
-    store.setConductor(values.conductor);
-    store.setCollectiveLeader(values.collective_leader);
-    const countryCode = countries.find(c => c.name === values.countries)?.code;
-    store.setCountry(countryCode);
-    store.setPlace(values.place);
-    store.setInstitution(values.institution);
-    store.setProgram(values.program);
-    store.setBiography(values.biography);
-    store.setParticipantsEmail(values.participants_email);
-    store.setTeachersEmail(values.teachers_email);
-    store.setVideoLink(values.video_link);
-    store.setIdentityDocuments(values.identity_documents);
-    store.setAvatar(values.avatar);
-    store.setInfoCorrect(values.info_correct);
-    store.setAgreeWithTerms(values.agree_with_terms);
-    store.setAmountToPay(30);
-    store.setDiplomaByPost(values.diploma_by_post);
-    store.setPostalAddress(values.address);
-    store.setReadyToCheckout(true);
-    console.log(store.ready_to_checkout && 'to checkout')
-  }
-
-  const onSubmitError = () => {
-    console.log('submit error')
-    handleAddress()
-  }
 
   // Toggle popover on select
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -130,14 +95,15 @@ export const ApplyForm = () => {
   const handleBiographyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setBiographyCharCount(e.target.value.length);
   }
-
-  const errorToast = ({title, description, action}: {title: string, description: string, action: string}) => toast({
+  
+  // Error toast for drag & drop
+  const errorToast = ({description}: {description: string}) => toast({
     variant: 'destructive',
-    title,
+    title: "Error",
     description,
     action: 
       <ToastAction altText="Try again">
-        {action}
+        Try again
       </ToastAction>,
   })
 
@@ -145,23 +111,17 @@ export const ApplyForm = () => {
   const onDocumentDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
     if (acceptedFiles?.length + form.getValues().identity_documents?.length > 10) {
       errorToast({
-        title:"Error",
         description:"You can only upload up to 10 files.",
-        action:"Try again"
       })
       return;
     } else if (acceptedFiles?.length && acceptedFiles?.[0].size > 5000000) {
       errorToast({
-        title:"Error",
         description:"Max file size is 5MB.",
-        action:"Try again"
       })
       return;
     } else if (rejectedFiles && rejectedFiles?.length) {
       errorToast({
-        title:"Error",
         description: rejectedFiles[0]?.errors[0]?.message,
-        action:"Try again"
       })
       return;
     } else {
@@ -179,23 +139,17 @@ export const ApplyForm = () => {
   const onAvatarDrop = (acceptedFiles: any, rejectedFiles: any) => {
     if (acceptedFiles.length > 1) {
       errorToast({
-        title:"Error",
         description:"You can only upload 1 file.",
-        action:"Try again"
       })
       return;
     } else if (acceptedFiles && acceptedFiles[0]?.size >= 5000000) {
       errorToast({
-        title:"Error",
         description:"Max file size is 5 MB.",
-        action:"Try again"
       })
       return;
     } else if (rejectedFiles && rejectedFiles?.length) {
       errorToast({
-        title:"Error",
         description: rejectedFiles[0]?.errors[0]?.message,
-        action:"Try again"
       })
       return;
     } else {
@@ -206,13 +160,18 @@ export const ApplyForm = () => {
     }
   }
   
-  // Diploma by post and address - clear errors manually
+  // Diploma by post and address - need to clear errors manually
   const handleAddress = () => {
     (form.watch('diploma_by_post') && form.watch('address') === undefined || form.watch('address') === '') && form.setError('address', { type: 'custom', message: 'Please, provide your address.' })
   }
   useEffect(() => {
     form.watch('diploma_by_post') === false && form.clearErrors('address')
   }, [form.watch('diploma_by_post')]);
+
+  const onSubmitError = () => {
+    console.log('submit error')
+    handleAddress()
+  }
 
   return (
       <Form {...form}>
