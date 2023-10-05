@@ -11,30 +11,21 @@ const PaypalCheckoutButton = (props: any) => {
     const [{ isPending }] = usePayPalScriptReducer();
     const { product } = props;
 
-    // const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState<null | string>(null);
 
     const handleApprove = (orderId: string) => {
-        console.log(store.ready_to_checkout);
-        console.log('orderId', orderId);
-        router.push('/apply/success');
-        store.setReadyToCheckout(false);
-        store.setOpenCheckout(false);
         // Call backend function to fulfill order
         
         // If response is success
-        // setPaidFor(true)
+        // Display success message, modal or even redirect 
+        // user to the success page
+        router.push('/apply/success');
         // Refresh user's account or subscription status
-
+        store.setReadyToCheckout(false);
+        store.setOpenCheckout(false);
         // if response is error
-        // setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us at ...')
+        setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us.')
     };
-
-    // if (paidFor) {
-    //     // Display success message, modal or even redirect 
-    //     // user to the success page
-    //     alert('Thank you for your purchase!')
-    // }
 
     if (error) {
         // Display error message, modal or redirect
@@ -80,7 +71,6 @@ const PaypalCheckoutButton = (props: any) => {
                 }}
                 onError={(err) => {
                     setError('Something went wrong!');
-                    console.error("Paypal checkout onError", err)
                 }}
             />
         </div>
