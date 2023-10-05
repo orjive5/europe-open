@@ -1,14 +1,17 @@
 'use client'
 
+import { useBoundStore } from "@/store";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalCheckoutButton from "../paypalCheckoutButton";
 
 
 const PaypalCheckout = () => {
 
+    const store = useBoundStore();
+
     const product = {
         description: 'Europe Open participation fee',
-        price: form.getValues('diploma_by_post') ? 40 : 30
+        price: store.amount_to_pay
     }
 
     const initialOptions = {

@@ -1,32 +1,31 @@
 'use client'
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useCallback, useState } from "react";
-import {CreateOrderData, CreateOrderActions} from '@paypal/paypal-js'
-import { ScrollArea } from "../ui/scroll-area";
+import { CreateOrderData, CreateOrderActions } from '@paypal/paypal-js'
+import { useRouter } from "next/navigation";
+import { useBoundStore } from "@/store";
 
 const PaypalCheckoutButton = (props: any) => {
+    const store = useBoundStore();
+    const router = useRouter();
     const [{ isPending }] = usePayPalScriptReducer();
     const { product } = props;
 
-    const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState<null | string>(null);
 
     const handleApprove = (orderId: string) => {
         // Call backend function to fulfill order
         
         // If response is success
-        setPaidFor(true)
-        // Refresh user's account or subscription status
-
-        // if response is error
-        // setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us at ...')
-    };
-
-    if (paidFor) {
         // Display success message, modal or even redirect 
         // user to the success page
-        alert('Thank you for your purchase!')
-    }
+        router.push('/apply/success');
+        // Refresh user's account or subscription status
+        store.setReadyToCheckout(false);
+        store.setOpenCheckout(false);
+        // if response is error
+        setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us.')
+    };
 
     if (error) {
         // Display error message, modal or redirect
@@ -35,13 +34,18 @@ const PaypalCheckoutButton = (props: any) => {
     }
 
     return (
-        <ScrollArea className="flex-grow w-full h-[400px]">
-            {isPending ? <div className="spinner" /> : null}
+        <div className="flex-grow w-full">
+            {
+                isPending ? 
+                (<div className="w-full text-center flex justify-center items-center">
+                    <span className="loader"></span>
+                </div>) : null
+            }
+            {!isPending && <h2 className="text-center mb-4">
+                Choose your payment option:
+            </h2>}
             <PayPalButtons
                 className="p-4 bg-white rounded"
-                style={{
-                    tagline: false,
-                }}
                 createOrder={useCallback((data: CreateOrderData, actions: CreateOrderActions) => {
                     return actions.order
                         .create({
@@ -67,10 +71,9 @@ const PaypalCheckoutButton = (props: any) => {
                 }}
                 onError={(err) => {
                     setError('Something went wrong!');
-                    console.error("Paypal checkout onError", err)
                 }}
             />
-        </ScrollArea>
+        </div>
     )
 }
 
