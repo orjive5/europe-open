@@ -1,8 +1,7 @@
 'use client'
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useCallback, useState } from "react";
-import {CreateOrderData, CreateOrderActions} from '@paypal/paypal-js'
-import { ScrollArea } from "../ui/scroll-area";
+import { CreateOrderData, CreateOrderActions } from '@paypal/paypal-js'
 
 const PaypalCheckoutButton = (props: any) => {
     const [{ isPending }] = usePayPalScriptReducer();
@@ -35,8 +34,13 @@ const PaypalCheckoutButton = (props: any) => {
     }
 
     return (
-        <ScrollArea className="flex-grow w-full h-[400px]">
-            {isPending ? <div className="spinner" /> : null}
+        <div className="flex-grow w-full">
+            {
+                isPending ? <div className="text-center text-xl font-medium">Loading...</div> : null
+            }
+            {!isPending && <h2 className="text-center mb-4">
+                Choose your payment option:
+            </h2>}
             <PayPalButtons
                 className="p-4 bg-white rounded"
                 style={{
@@ -70,7 +74,7 @@ const PaypalCheckoutButton = (props: any) => {
                     console.error("Paypal checkout onError", err)
                 }}
             />
-        </ScrollArea>
+        </div>
     )
 }
 

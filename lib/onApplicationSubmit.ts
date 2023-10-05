@@ -30,5 +30,5 @@ export const onSubmit = (values: FormValues) => {
     store.setPostalAddress(values.address);
     store.setReadyToCheckout(true);
     store.setOpenCheckout(true);
-    store.diploma_by_post ? store.setAmountToPay(40) : store.setAmountToPay(30);
+    values.diploma_by_post ? store.setAmountToPay(40) : store.setAmountToPay(30);
   }
