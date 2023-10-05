@@ -18,8 +18,9 @@ const Success = () => {
                     Thank you for your order!
                 </CardTitle>
                 <CardDescription className='text-center'>
-                    <p>Please, check your email for order details.</p>
-                    <p>If your video is not posted on the website within 48 hours, contact the organizer immediately.</p>
+                    Please, check your email for order details.
+                    <br />
+                    If your video is not posted on the website within 48 hours, contact the organizer immediately.
                 </CardDescription>
             </CardHeader>
         </Card>

@@ -3,8 +3,10 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useCallback, useState } from "react";
 import { CreateOrderData, CreateOrderActions } from '@paypal/paypal-js'
 import { useRouter } from "next/navigation";
+import { useBoundStore } from "@/store";
 
 const PaypalCheckoutButton = (props: any) => {
+    const store = useBoundStore();
     const router = useRouter();
     const [{ isPending }] = usePayPalScriptReducer();
     const { product } = props;
@@ -13,8 +15,11 @@ const PaypalCheckoutButton = (props: any) => {
     const [error, setError] = useState<null | string>(null);
 
     const handleApprove = (orderId: string) => {
+        console.log(store.ready_to_checkout);
         console.log('orderId', orderId);
         router.push('/apply/success');
+        store.setReadyToCheckout(false);
+        store.setOpenCheckout(false);
         // Call backend function to fulfill order
         
         // If response is success
@@ -40,16 +45,16 @@ const PaypalCheckoutButton = (props: any) => {
     return (
         <div className="flex-grow w-full">
             {
-                isPending ? <div className="text-center text-xl font-medium">Loading...</div> : null
+                isPending ? 
+                (<div className="w-full text-center flex justify-center items-center">
+                    <span className="loader"></span>
+                </div>) : null
             }
             {!isPending && <h2 className="text-center mb-4">
                 Choose your payment option:
             </h2>}
             <PayPalButtons
                 className="p-4 bg-white rounded"
-                style={{
-                    tagline: false,
-                }}
                 createOrder={useCallback((data: CreateOrderData, actions: CreateOrderActions) => {
                     return actions.order
                         .create({
