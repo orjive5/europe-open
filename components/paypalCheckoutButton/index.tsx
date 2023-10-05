@@ -2,30 +2,34 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useCallback, useState } from "react";
 import { CreateOrderData, CreateOrderActions } from '@paypal/paypal-js'
+import { useRouter } from "next/navigation";
 
 const PaypalCheckoutButton = (props: any) => {
+    const router = useRouter();
     const [{ isPending }] = usePayPalScriptReducer();
     const { product } = props;
 
-    const [paidFor, setPaidFor] = useState(false);
+    // const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState<null | string>(null);
 
     const handleApprove = (orderId: string) => {
+        console.log('orderId', orderId);
+        router.push('/apply/success');
         // Call backend function to fulfill order
         
         // If response is success
-        setPaidFor(true)
+        // setPaidFor(true)
         // Refresh user's account or subscription status
 
         // if response is error
         // setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us at ...')
     };
 
-    if (paidFor) {
-        // Display success message, modal or even redirect 
-        // user to the success page
-        alert('Thank you for your purchase!')
-    }
+    // if (paidFor) {
+    //     // Display success message, modal or even redirect 
+    //     // user to the success page
+    //     alert('Thank you for your purchase!')
+    // }
 
     if (error) {
         // Display error message, modal or redirect

@@ -5,10 +5,6 @@ import PaypalCheckoutButton from "../paypalCheckoutButton";
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
 } from "@/components/ui/sheet"
 import { useBoundStore } from "@/store";
 import { Separator } from "../ui/separator";
