@@ -149,3 +149,11 @@ export async function getCategories(): Promise<ICategory[]> {
       } | order(_createdAt asc)`
     );
 }
+
+export async function deleteAllParticipants() {
+    return createClient(clientConfig).delete(
+        {
+            query: `*[_type == "participants"]`
+        }
+    )
+}

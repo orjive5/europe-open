@@ -84,6 +84,8 @@ export const ApplyForm = () => {
     queryFn: getDisciplines,
   });
 
+  disciplines && console.log(disciplines.data)
+
   const categories = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
