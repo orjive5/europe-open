@@ -11,7 +11,6 @@ import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "../ui/badge";
 import CountrySection from "../countrySection";
-import Link from "next/link";
 import {
   Accordion,
   AccordionContent,

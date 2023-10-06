@@ -20,4 +20,4 @@ export interface IParticipantInfo {
       _createdAt: string;
       _id: string;
     }
-  }
+}
