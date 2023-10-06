@@ -7,7 +7,7 @@ import clientConfig from "./config/client-config";
 
 export async function getPosts(): Promise<Post[]> {
   
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
       groq`*[_type == "post"]{
           _id,
           _createdAt,
@@ -22,7 +22,7 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getPost(slug: string): Promise<Post> {
 
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == "post" && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -39,7 +39,7 @@ export async function getPost(slug: string): Promise<Post> {
 }
 
 export async function getPages(): Promise<Page[]> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'page']{
             _id,
             _createdAt,
@@ -50,7 +50,7 @@ export async function getPages(): Promise<Page[]> {
 }
 
 export async function getPage(slug: string): Promise<Page> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'page' && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -63,7 +63,7 @@ export async function getPage(slug: string): Promise<Page> {
 }
 
 export async function getFaqs(): Promise<any[]> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'faq']{
             _id,
             _createdAt,
@@ -75,7 +75,7 @@ export async function getFaqs(): Promise<any[]> {
 }
 
 export async function getFaq(slug: string): Promise<any> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'faq' && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -88,7 +88,7 @@ export async function getFaq(slug: string): Promise<any> {
 }
 
 export async function getParticipants(): Promise<any[]> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'participants']{
             _id,
             _createdAt,
@@ -104,7 +104,7 @@ export async function getParticipants(): Promise<any[]> {
 }
 
 export async function getParticipant(slug: string): Promise<any> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == "participants" && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -113,23 +113,25 @@ export async function getParticipant(slug: string): Promise<any> {
             name_and_surname,
             "slug": slug.current,
             date_of_birth,
-            teacher_conductor_collective_leader,
+            teacher,
             accompanist,
+            conductor,
+            collective_leader,
             country,
             country_code,
             place,
-            institution_city_country,
+            institution,
             program,
             youtube_link,
             "poster_photo": poster_photo.asset->url,
-            "biography": biography.asset->url
+            biography
         }`,
         { slug }
     )
 }
 
 export async function getDisciplines(): Promise<IDiscipline[]> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
       groq`*[_type == "disciplines"]{
           _id,
           _createdAt,
@@ -140,7 +142,7 @@ export async function getDisciplines(): Promise<IDiscipline[]> {
 }
 
 export async function getCategories(): Promise<ICategory[]> {
-    return createClient(clientConfig).fetch(
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
       groq`*[_type == "categories"]{
           _id,
           _createdAt,

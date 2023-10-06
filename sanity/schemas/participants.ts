@@ -56,13 +56,23 @@ const participants = defineType({
             type: 'date',
         }),
         defineField({
-            name: 'teacher_conductor_collective_leader',
-            title: 'Teacher/ Conductor/ Collective leader',
+            name: 'teacher',
+            title: 'Teacher',
             type: 'string',
         }),
         defineField({
             name: 'accompanist',
             title: 'Accompanist',
+            type: 'string',
+        }),
+        defineField({
+            name: 'conductor',
+            title: 'Conductor',
+            type: 'string',
+        }),
+        defineField({
+            name: 'collective_leader',
+            title: 'Collective leader',
             type: 'string',
         }),
         defineField({
@@ -81,19 +91,14 @@ const participants = defineType({
             type: 'string',
         }),
         defineField({
-            name: 'institution_city_country',
-            title: 'Institution, city, country',
+            name: 'institution',
+            title: 'Institution',
             type: 'string',
         }),
         defineField({
             name: 'program',
-            title: 'Program (composer, composition title, duration)',
-            type: 'string',
-        }),
-        defineField({
-            name: 'diploma_by_postal_service',
-            title: 'Diplomas by the postal service (+10€)',
-            type: 'boolean',
+            title: 'Program',
+            type: 'text',
         }),
         defineField({
             name: 'teacher_email',
@@ -116,9 +121,10 @@ const participants = defineType({
             type: 'url',
         }),
         defineField({
-            name: 'identity_document',
-            title: 'Identity document',
-            type: 'file',
+            name: 'identity_documents',
+            title: 'Identity documents',
+            type: 'array',
+            of: [{type: 'file'}],
         }),
         defineField({
             name: 'poster_photo',
@@ -127,18 +133,21 @@ const participants = defineType({
             options: {
                 hotspot: true
             },
-            fields: [
-                defineField({
-                    name: 'alt',
-                    title: 'Alt',
-                    type: 'string',
-                })
-            ]
         }),
         defineField({
             name: 'biography',
             title: 'Participant\'s biography',
-            type: 'file',
+            type: 'text',
+        }),
+        defineField({
+            name: 'diploma_by_postal_service',
+            title: 'Diplomas by the postal service (+10€)',
+            type: 'boolean',
+        }),
+        defineField({
+            name: 'postal_address',
+            title: 'Postal address',
+            type: 'text',
         }),
     ]
 })
