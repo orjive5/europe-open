@@ -8,7 +8,6 @@ export async function generateCategory({title}: ICategory) {
 
     const doc = {
         _type: 'categories',
-        // _id: 'drafts.',
         title: title,
         slug: {
             _type: 'slug',
@@ -71,37 +70,29 @@ export async function generateParticipant({
         teacher_email,
         participant_email,
         video_link,
-        // identity_documents: [{}],
-        // poster_photo,
         biography,
         diploma_by_postal_service,
         postal_address,
     }
-    async function createParticipantDoc(
-        clientConfig: any, 
-        doc: any, 
-        poster_photo: any
-        ) {
+
+    async function createParticipantDoc(clientConfig: any, doc: any, identity_documents: any, poster_photo: any) {
         try {
             // Create the initial participant document
-            const participantClient = createClient(clientConfig);
-            const participantDoc = await participantClient.create(doc);
+            const client = createClient(clientConfig);
+            const participantDoc = await client.create(doc);
             const participantDocId = participantDoc._id;
     
             // Upload image and get the image asset
-            const imageClient = createClient(clientConfig).assets;
-            const imageAsset = await imageClient.upload('image', poster_photo, {filename: `${poster_photo}_image`});
+            const imageAsset = await client.assets.upload('image', poster_photo, {filename: `${poster_photo.name}`});
 
             // Upload identity docs and get the identity docs asset
-            const idDocsClient = createClient(clientConfig).assets;
             const idDocsAssets = await Promise.all(identity_documents.map(async (idDoc: any) => {
-                const idDocsAsset = await idDocsClient.upload('file', idDoc, { filename: `${idDoc.name}` });
+                const idDocsAsset = await client.assets.upload('file', idDoc, { filename: `${idDoc.name}` });
                 return idDocsAsset;
             }));
 
-            // Set the image asset reference in the initial document
-            const patchClient = createClient(clientConfig);
-            await patchClient
+            // Set the image asset and files reference in the initial document
+            await client
                 .patch(participantDocId)
                 .set({
                     identity_documents: idDocsAssets.map(idDocAsset => ({
@@ -122,9 +113,7 @@ export async function generateParticipant({
                         }
                     }
                 })
-                .commit();
-    
-            console.log("Images and docs uploaded!");
+            .commit();
 
         } catch (error) {
             console.error("Error:", error);
@@ -132,5 +121,5 @@ export async function generateParticipant({
     }
     
     // Call the function with appropriate arguments
-    createParticipantDoc(clientConfig, doc, poster_photo);
+    createParticipantDoc(clientConfig, doc, identity_documents, poster_photo);
 }

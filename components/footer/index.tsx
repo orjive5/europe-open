@@ -1,6 +1,6 @@
 'use client'
 import { deleteAllParticipants } from "@/sanity/sanity-utils";
-import { generateParticipant, generateCategory } from "@/lib/generateSanityDoc";
+import { generateParticipant } from "@/lib/generateSanityDoc";
 import { Button } from "../ui/button";
 import { useBoundStore } from "@/store";
 
@@ -36,7 +36,6 @@ const Footer = () => {
     })}>
         Generate participant
       </Button>
-      {/* <Button onClick={() => generateCategory({title: 'HHH'})}>Generate Category</Button> */}
       <Button onClick={() => deleteAllParticipants()}>
         Delete all participants
       </Button>
