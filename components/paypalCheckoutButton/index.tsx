@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { CreateOrderData, CreateOrderActions } from '@paypal/paypal-js'
 import { useRouter } from "next/navigation";
 import { useBoundStore } from "@/store";
+import { generateParticipant } from "@/lib/generateSanityDoc";
 
 const PaypalCheckoutButton = (props: any) => {
     const store = useBoundStore();
@@ -15,7 +16,29 @@ const PaypalCheckoutButton = (props: any) => {
 
     const handleApprove = (orderId: string) => {
         // Call backend function to fulfill order
-        
+        generateParticipant({
+            discipline: store.discipline,
+            category: store.category,
+            name_and_surname: store.name_and_surname,
+            date_of_birth: store.date_of_birth,
+            teacher: store.teacher,
+            accompanist: store.accompanist,
+            conductor: store.conductor,
+            collective_leader: store.collective_leader,
+            country: store.country,
+            country_code: store.country_code,
+            place: store.place,
+            institution: store.institution,
+            program: store.program,
+            teacher_email: store.teachers_email,
+            participant_email: store.participants_email,
+            video_link: store.video_link,
+            poster_photo: store.avatar && store.avatar[0],
+            identity_documents: store.identity_documents,
+            biography: store.biography,
+            diploma_by_postal_service: store.diploma_by_post,
+            postal_address: store.postal_address && store.postal_address,
+        })
         // If response is success
         // Display success message, modal or even redirect 
         // user to the success page
@@ -24,7 +47,7 @@ const PaypalCheckoutButton = (props: any) => {
         store.setReadyToCheckout(false);
         store.setOpenCheckout(false);
         // if response is error
-        setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us.')
+        // setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us.')
     };
 
     if (error) {

@@ -1,44 +1,7 @@
-'use client'
-import { deleteAllParticipants } from "@/sanity/sanity-utils";
-import { generateParticipant } from "@/lib/generateSanityDoc";
-import { Button } from "../ui/button";
-import { useBoundStore } from "@/store";
-
 const Footer = () => {
 
-  const store = useBoundStore();
-  console.log('avatar', store.avatar);
-  console.log('id docs', store.identity_documents);
   return (
     <div className="mt-auto flex justify-center">
-      <Button onClick={() => generateParticipant({
-        discipline: 'a83000ec-ae50-4f46-b46f-7307c706b49d',
-        category: '08fd04be-52d3-40b7-954b-5614220493f3',
-        name_and_surname: 'Paja Jovanovic',
-        date_of_birth: '2023-10-10',
-        teacher: 'Bajica Nenadic',
-        accompanist: 'Sinan Sakic',
-        conductor: 'Hajle Selasije',
-        collective_leader: 'Arthur Rubinstein',
-        country: 'Poland',
-        country_code: 'PL',
-        place: 'Warsaw',
-        institution: 'Warsaw Conservatory',
-        program: '1. M. Bruch - Violin Concerto No. 1 2. H. Wieniawski - Romance',
-        teacher_email: 'bajica@hotmail.com',
-        participant_email: 'paja@yahoo.com',
-        video_link: 'https://www.youtube.com/watch?v=4lTjSlwZW_0',
-        poster_photo: store.avatar && store.avatar[0],
-        identity_documents: store.identity_documents && store.identity_documents,
-        biography: 'I am famous Serbian romantic painter.',
-        diploma_by_postal_service: true,
-        postal_address: 'Vuka Karadzica bez broja',
-    })}>
-        Generate participant
-      </Button>
-      <Button onClick={() => deleteAllParticipants()}>
-        Delete all participants
-      </Button>
       <p className="text-center h-full flex items-center">
           &copy; 2023 Europe Open. All rights reserved
       </p>

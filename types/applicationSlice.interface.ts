@@ -7,8 +7,8 @@ export interface IApplicationSlice {
     setCategory(c: string): void;
     name_and_surname?: string;
     setNameAndSurname(n: string): void;
-    date_of_birth?: Date;
-    setDateOfBirth(d: Date): void;
+    date_of_birth?: Date | string;
+    setDateOfBirth(d: Date | string): void;
     teacher?: string;
     setTeacher(t?: string): void;
     accompanist?: string;
@@ -19,6 +19,8 @@ export interface IApplicationSlice {
     setCollectiveLeader(l?: string): void;
     country?: string;
     setCountry(c?: string): void;
+    country_code?: string;
+    setCountryCode(c?: string): void;
     place?: string;
     setPlace(p: string): void;
     institution?: string;
