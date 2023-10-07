@@ -30,6 +30,9 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     country: undefined,
     setCountry: (state: string) => 
         set(() => ({ country: state })),
+    country_code: undefined,
+    setCountryCode: (state: string) => 
+        set(() => ({ country: state })),
     place: undefined,
     setPlace: (state: string) => 
         set(() => ({ place: state })),
@@ -55,7 +58,7 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     setIdentityDocuments: (state: IUploadedFile[]) =>
         set(() => ({identity_documents: state})),
     avatar: undefined,
-    setAvatar: (state: IUploadedFile) =>
+    setAvatar: (state: IUploadedFile[]) =>
         set(() => ({avatar: state})),
     info_correct: undefined,
     setInfoCorrect: (state: boolean) =>

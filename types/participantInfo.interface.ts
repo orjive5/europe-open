@@ -7,15 +7,17 @@ export interface IParticipantInfo {
       place: string;
       date_of_birth: string;
       discipline: string[];
-      institution_city_country: string;
+      institution: string;
       name_and_surname: string;
       poster_photo: string | null;
       program: string;
       slug: string;
-      teacher_conductor_collective_leader: string;
+      teacher: string;
+      conductor: string;
+      collective_leader: string;
       youtube_link: string;
       biography: string;
       _createdAt: string;
       _id: string;
     }
-  }
+}
