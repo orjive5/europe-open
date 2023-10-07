@@ -77,21 +77,42 @@ export async function generateParticipant({
         diploma_by_postal_service,
         postal_address,
     }
-    async function uploadImageAndSetReference(clientConfig: any, doc: any, poster_photo: any) {
+    async function createParticipantDoc(
+        clientConfig: any, 
+        doc: any, 
+        poster_photo: any
+        ) {
         try {
-            // First createClient and create the initial document
-            const firstClient = createClient(clientConfig);
-            const firstRes = await firstClient.create(doc);
-            const firstResId = firstRes._id;
+            // Create the initial participant document
+            const participantClient = createClient(clientConfig);
+            const participantDoc = await participantClient.create(doc);
+            const participantDocId = participantDoc._id;
     
             // Upload image and get the image asset
             const imageClient = createClient(clientConfig).assets;
             const imageAsset = await imageClient.upload('image', poster_photo, {filename: `${poster_photo}_image`});
-    
+
+            // Upload identity docs and get the identity docs asset
+            const idDocsClient = createClient(clientConfig).assets;
+            const idDocsAssets = await Promise.all(identity_documents.map(async (idDoc: any) => {
+                const idDocsAsset = await idDocsClient.upload('file', idDoc, { filename: `${idDoc.name}` });
+                return idDocsAsset;
+            }));
+
             // Set the image asset reference in the initial document
             const patchClient = createClient(clientConfig);
             await patchClient
-                .patch(firstResId)
+                .patch(participantDocId)
+                .set({
+                    identity_documents: idDocsAssets.map(idDocAsset => ({
+                        _type: 'file',
+                        asset: {
+                            _type: "reference",
+                            _ref: idDocAsset._id
+                        },
+                        _key: idDocAsset._id
+                    }))
+                })
                 .set({
                     poster_photo: {
                         _type: 'image',
@@ -103,12 +124,13 @@ export async function generateParticipant({
                 })
                 .commit();
     
-            console.log("Done!");
+            console.log("Images and docs uploaded!");
+
         } catch (error) {
             console.error("Error:", error);
         }
     }
     
     // Call the function with appropriate arguments
-    uploadImageAndSetReference(clientConfig, doc, poster_photo);
+    createParticipantDoc(clientConfig, doc, poster_photo);
 }

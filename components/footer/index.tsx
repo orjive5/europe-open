@@ -8,6 +8,7 @@ const Footer = () => {
 
   const store = useBoundStore();
   console.log('avatar', store.avatar);
+  console.log('id docs', store.identity_documents);
   return (
     <div className="mt-auto flex justify-center">
       <Button onClick={() => generateParticipant({
@@ -28,6 +29,7 @@ const Footer = () => {
         participant_email: 'paja@yahoo.com',
         video_link: 'https://www.youtube.com/watch?v=4lTjSlwZW_0',
         poster_photo: store.avatar && store.avatar[0],
+        identity_documents: store.identity_documents && store.identity_documents,
         biography: 'I am famous Serbian romantic painter.',
         diploma_by_postal_service: true,
         postal_address: 'Vuka Karadzica bez broja',
