@@ -35,8 +35,8 @@ export interface IApplicationSlice {
     setVideoLink(v: string): void;
     identity_documents?: IUploadedFile[];
     setIdentityDocuments(i: IUploadedFile[]): void;
-    avatar?: IUploadedFile;
-    setAvatar(i: IUploadedFile): void;
+    avatar?: IUploadedFile[];
+    setAvatar(i: IUploadedFile[]): void;
     info_correct?: boolean;
     setInfoCorrect(i?: boolean): void;
     agree_with_terms?: boolean;

@@ -55,7 +55,7 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     setIdentityDocuments: (state: IUploadedFile[]) =>
         set(() => ({identity_documents: state})),
     avatar: undefined,
-    setAvatar: (state: IUploadedFile) =>
+    setAvatar: (state: IUploadedFile[]) =>
         set(() => ({avatar: state})),
     info_correct: undefined,
     setInfoCorrect: (state: boolean) =>
