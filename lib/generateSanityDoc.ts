@@ -71,15 +71,44 @@ export async function generateParticipant({
         teacher_email,
         participant_email,
         video_link,
-        // ovo fali
-        identity_documents,
-        // i ovo
-        poster_photo,
+        // identity_documents: [{}],
+        // poster_photo,
         biography,
         diploma_by_postal_service,
         postal_address,
     }
-    createClient(clientConfig)
-        .create(doc)
-        .then(res => console.log(res))
+    async function uploadImageAndSetReference(clientConfig: any, doc: any, poster_photo: any) {
+        try {
+            // First createClient and create the initial document
+            const firstClient = createClient(clientConfig);
+            const firstRes = await firstClient.create(doc);
+            const firstResId = firstRes._id;
+    
+            // Upload image and get the image asset
+            const imageClient = createClient(clientConfig).assets;
+            const imageAsset = await imageClient.upload('image', poster_photo, {filename: `${poster_photo}_image`});
+    
+            // Set the image asset reference in the initial document
+            const patchClient = createClient(clientConfig);
+            await patchClient
+                .patch(firstResId)
+                .set({
+                    poster_photo: {
+                        _type: 'image',
+                        asset: {
+                            _type: "reference",
+                            _ref: imageAsset._id
+                        }
+                    }
+                })
+                .commit();
+    
+            console.log("Done!");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    
+    // Call the function with appropriate arguments
+    uploadImageAndSetReference(clientConfig, doc, poster_photo);
 }
