@@ -9,16 +9,12 @@ import { generateParticipant } from "@/lib/generateSanityDoc";
 const PaypalCheckoutButton = (props: any) => {
     const store = useBoundStore();
     const router = useRouter();
-    const [{ isPending }] = usePayPalScriptReducer();
+    const [{ isPending, isRejected }] = usePayPalScriptReducer();
     const { product } = props;
 
     const [error, setError] = useState<null | string>(null);
 
-    console.log('checkout');
-    console.log('store.identity_documents', store.identity_documents)
-
     const handleApprove = (transactionId?: string) => {
-        // Call backend function to fulfill order
         generateParticipant({
             discipline: store.discipline,
             category: store.category,
@@ -43,34 +39,34 @@ const PaypalCheckoutButton = (props: any) => {
             postal_address: store.postal_address && store.postal_address,
             transaction_id: transactionId,
         })
-        // If response is success
-        // Display success message, modal or even redirect 
-        // user to the success page
         router.push('/apply/success');
-        // Refresh user's account or subscription status
         store.setReadyToCheckout(false);
         store.setOpenCheckout(false);
-        // if response is error
-        // setError('Your payment was processed successfully. However, we are unable to fulfill your purchase. Please, contact us.')
     };
 
     if (error) {
-        // Display error message, modal or redirect
-        // user to the error page
         alert(error)
     }
 
     return (
         <div className="flex-grow w-full">
             {
+                isRejected ? 
+                (<div className="w-full text-center flex justify-center items-center">
+                    <h2>Something went wrong, please reload and try again.</h2>
+                </div>) : null
+            }
+            {
                 isPending ? 
                 (<div className="w-full text-center flex justify-center items-center">
                     <span className="loader"></span>
                 </div>) : null
             }
-            {!isPending && <h2 className="text-center mb-4">
-                Choose your payment option:
-            </h2>}
+            {!isPending && 
+                <h2 className="text-center mb-4">
+                    Choose your payment option:
+                </h2>
+            }
             <PayPalButtons
                 className="p-4 bg-white rounded"
                 createOrder={useCallback((data: CreateOrderData, actions: CreateOrderActions) => {
@@ -90,15 +86,10 @@ const PaypalCheckoutButton = (props: any) => {
                 onApprove={async (data, actions) => {
                     const order = await actions.order?.capture();
                     const transactionId = order?.purchase_units?.[0]?.payments?.captures?.[0]?.id as string | undefined;
-                    console.log("order", order)
                     handleApprove(transactionId)
                 }}
-                onCancel={() => {
-                    // Display the cancel message, modal or redirect
-                    // user to cancel page or back to cart
-                }}
                 onError={(err) => {
-                    setError('Something went wrong!');
+                    setError('Something went wrong, please reload and try again.');
                 }}
             />
         </div>

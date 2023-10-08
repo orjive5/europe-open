@@ -74,6 +74,8 @@ export async function generateParticipant({
         biography,
         diploma_by_postal_service,
         postal_address,
+        competitive_year: 2023,
+        season: 'autumn',
         transaction_id,
     }
 
@@ -85,27 +87,32 @@ export async function generateParticipant({
             const participantDocId = participantDoc._id;
     
             // Upload image and get the image asset
-            const imageAsset = await client.assets.upload('image', poster_photo, {filename: `${poster_photo.name && poster_photo.name}-poster-photo`});
+            const imageAsset = poster_photo && await client.assets.upload('image', poster_photo, {filename: `${poster_photo?.name && poster_photo.name}-poster-photo`});
 
             // Upload identity docs and get the identity docs asset
-            const idDocsAssets = await Promise.all(identity_documents.map(async (idDoc: any) => {
-                const idDocsAsset = await client.assets.upload('file', idDoc, { filename: `${idDoc.name && idDoc.name}-identity-document` });
+            const idDocsAssets = identity_documents && await Promise.all(identity_documents.map(async (idDoc: any) => {
+                const idDocsAsset = await client.assets.upload('file', idDoc, { filename: `${idDoc?.name && idDoc.name}-identity-document` });
                 return idDocsAsset;
             }));
 
-            // Set the image asset and files reference in the initial document
-            await client
+            // Set files reference in the initial document
+            identity_documents && await client
                 .patch(participantDocId)
                 .set({
-                    identity_documents: idDocsAssets.map(idDocAsset => ({
+                    identity_documents: idDocsAssets.map((idDocAsset: any, index: any) => ({
                         _type: 'file',
                         asset: {
                             _type: "reference",
                             _ref: idDocAsset._id
                         },
-                        _key: idDocAsset._id
+                        _key: `${idDocAsset._id}${index}`
                     }))
                 })
+            .commit();
+
+            // Set the image asset in the initial document
+            poster_photo && await client
+                .patch(participantDocId)
                 .set({
                     poster_photo: {
                         _type: 'image',

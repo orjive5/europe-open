@@ -1,10 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  Controller,
-  useForm
-} from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { formSchema, FormValues } from "@/lib/zodFormSchema"
 import { 
   Check,
@@ -22,11 +19,7 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import {
@@ -41,15 +34,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
-import {
-  getCategories,
-  getDisciplines
-} from "@/sanity/sanity-utils"
-import {
-  useCallback,
-  useEffect,
-  useState
-} from "react"
+import { getCategories, getDisciplines } from "@/sanity/sanity-utils"
+import { useCallback, useEffect, useState } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
@@ -62,6 +48,7 @@ import { countries } from "@/constants/countriesList"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import CheckoutSheet from "../checkoutSheet"
 import { useBoundStore } from "@/store"
+import { convertDateFormat } from "@/lib/convertDateFormat"
 
 export const ApplyForm = () => {
 
@@ -172,74 +159,47 @@ export const ApplyForm = () => {
   }, [form.watch('diploma_by_post')]);
 
   const onSubmitError = () => {
-    console.log('submit error')
     handleAddress()
-  }
-
-  function convertDateFormat(initialDate: Date) {
-    const initialDateObj = new Date(initialDate);
-    const year = initialDateObj.getFullYear();
-    const month = String(initialDateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(initialDateObj.getDate()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}`;
   }
 
   const onSubmit = (values: FormValues) => {
     // Discipline
     const selectedDiscipline: any = disciplines?.data?.find(d => d.title === form.getValues('disciplines'));
     store.setDiscipline(selectedDiscipline._id);
+
     // Category
     const selectedCategory: any = categories?.data?.find(d => d.title === form.getValues('categories'));
     store.setCategory(selectedCategory._id);
-    // Name and surname
+
     store.setNameAndSurname(values.name_and_surname);
-    // Date of birth
     store.setDateOfBirth(convertDateFormat(values.date_of_birth));
-    // Teacher
     store.setTeacher(values.teacher);
-    // Accompanist
     store.setAccompanist(values.accompanist);
-    // Conductor
     store.setConductor(values.conductor);
-    // Collective leader
     store.setCollectiveLeader(values.collective_leader);
-    // Country
     store.setCountry(values.countries);
+
     // Country code
     const countryCode = countries.find(c => c.name === values.countries)?.code;
     store.setCountryCode(countryCode);
-    // Place
+
     store.setPlace(values.place);
-    // Institution
     store.setInstitution(values.institution);
-    // Program
     store.setProgram(values.program);
-    // Biography
     store.setBiography(values.biography);
-    // Participant's email
     store.setParticipantsEmail(values.participants_email);
-    // Teacher's email
     store.setTeachersEmail(values.teachers_email);
-    // Video link
     store.setVideoLink(values.video_link);
-    // Identity documents
     store.setIdentityDocuments(values.identity_documents);
-    // Avatar
     store.setAvatar(values.avatar);
-    // Info correct
     store.setInfoCorrect(values.info_correct);
-    // Agree with terms
     store.setAgreeWithTerms(values.agree_with_terms);
-    // Diploma by post
     store.setDiplomaByPost(values.diploma_by_post);
-    // Postal address
     store.setPostalAddress(values.address);
-    // Ready to checkout
     store.setReadyToCheckout(true);
-    // Open checkout sheet
     store.setOpenCheckout(true);
-    // Amount to pay
+    
+    // Set amount to pay
     values.diploma_by_post ? store.setAmountToPay(40) : store.setAmountToPay(30);
   }
   

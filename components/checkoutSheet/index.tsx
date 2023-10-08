@@ -2,32 +2,25 @@
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalCheckoutButton from "../paypalCheckoutButton";
-import {
-    Sheet,
-    SheetContent,
-} from "@/components/ui/sheet"
+import { Sheet, SheetContent} from "@/components/ui/sheet"
 import { useBoundStore } from "@/store";
 import { Separator } from "../ui/separator";
 
-const CheckoutSheet = (
-    {
-        open, onOpenChange
-    }: {
-        open: boolean, onOpenChange: any
-    }) => {
+const CheckoutSheet = ({ open, onOpenChange }: {open: boolean, onOpenChange: any}) => {
 
-        const store = useBoundStore();
-
-        const product = {
-            description: 'Europe Open participation fee',
-            price: store.amount_to_pay
-        }
+    const store = useBoundStore();
     
-        const initialOptions = {
-            clientId: `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&vault=true` ?? '',
-            currency: "EUR",
-            intent: "capture",
-        };
+    const product = {
+        description: 'Europe Open participation fee',
+        price: store.amount_to_pay
+    }
+
+    const initialOptions = {
+        clientId: `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&vault=true` ?? '',
+        currency: "EUR",
+        intent: "capture",
+    };
+
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="flex justify-center items-center" side='bottom'>
@@ -38,7 +31,9 @@ const CheckoutSheet = (
                         </h2>
                         <Separator />
                         <div>
-                            <p>Participation fee: <span className="font-medium">30 EUR</span></p>
+                            <p>
+                                Participation fee: <span className="font-medium">30 EUR</span>
+                            </p>
                             {
                                 store.diploma_by_post && (
                                 <p>
@@ -48,7 +43,9 @@ const CheckoutSheet = (
                             }
                         </div>
                         <Separator />
-                        <p className="font-medium">Total: {product.price} EUR</p>
+                        <p className="font-medium">
+                            Total: {product.price} EUR
+                        </p>
                     </section>
                         <PayPalScriptProvider
                             options={initialOptions}
