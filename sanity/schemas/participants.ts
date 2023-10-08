@@ -149,6 +149,11 @@ const participants = defineType({
             title: 'Postal address',
             type: 'text',
         }),
+        defineField({
+            name: 'transaction_id',
+            title: 'Transaction ID',
+            type: 'string',
+        }),
     ]
 })
 

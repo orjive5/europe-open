@@ -205,7 +205,7 @@ export const ApplyForm = () => {
     // Collective leader
     store.setCollectiveLeader(values.collective_leader);
     // Country
-    store.setCountry(values.countries)
+    store.setCountry(values.countries);
     // Country code
     const countryCode = countries.find(c => c.name === values.countries)?.code;
     store.setCountryCode(countryCode);

@@ -41,6 +41,7 @@ export async function generateParticipant({
         biography,
         diploma_by_postal_service,
         postal_address,
+        transaction_id,
     }: any) {
 
     const doc = {
@@ -73,6 +74,7 @@ export async function generateParticipant({
         biography,
         diploma_by_postal_service,
         postal_address,
+        transaction_id,
     }
 
     async function createParticipantDoc(clientConfig: any, doc: any, identity_documents: any, poster_photo: any) {
@@ -83,11 +85,11 @@ export async function generateParticipant({
             const participantDocId = participantDoc._id;
     
             // Upload image and get the image asset
-            const imageAsset = await client.assets.upload('image', poster_photo, {filename: `${poster_photo.name}`});
+            const imageAsset = await client.assets.upload('image', poster_photo, {filename: `${poster_photo.name && poster_photo.name}-poster-photo`});
 
             // Upload identity docs and get the identity docs asset
             const idDocsAssets = await Promise.all(identity_documents.map(async (idDoc: any) => {
-                const idDocsAsset = await client.assets.upload('file', idDoc, { filename: `${idDoc.name}` });
+                const idDocsAsset = await client.assets.upload('file', idDoc, { filename: `${idDoc.name && idDoc.name}-identity-document` });
                 return idDocsAsset;
             }));
 

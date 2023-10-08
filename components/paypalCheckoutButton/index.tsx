@@ -14,7 +14,10 @@ const PaypalCheckoutButton = (props: any) => {
 
     const [error, setError] = useState<null | string>(null);
 
-    const handleApprove = (orderId: string) => {
+    console.log('checkout');
+    console.log('store.identity_documents', store.identity_documents)
+
+    const handleApprove = (transactionId?: string) => {
         // Call backend function to fulfill order
         generateParticipant({
             discipline: store.discipline,
@@ -34,10 +37,11 @@ const PaypalCheckoutButton = (props: any) => {
             participant_email: store.participants_email,
             video_link: store.video_link,
             poster_photo: store.avatar && store.avatar[0],
-            identity_documents: store.identity_documents,
+            identity_documents: store.identity_documents && store.identity_documents,
             biography: store.biography,
             diploma_by_postal_service: store.diploma_by_post,
             postal_address: store.postal_address && store.postal_address,
+            transaction_id: transactionId,
         })
         // If response is success
         // Display success message, modal or even redirect 
@@ -85,8 +89,9 @@ const PaypalCheckoutButton = (props: any) => {
                 forceReRender={[product.price]}
                 onApprove={async (data, actions) => {
                     const order = await actions.order?.capture();
+                    const transactionId = order?.purchase_units?.[0]?.payments?.captures?.[0]?.id as string | undefined;
                     console.log("order", order)
-                    handleApprove(data.orderID)
+                    handleApprove(transactionId)
                 }}
                 onCancel={() => {
                     // Display the cancel message, modal or redirect

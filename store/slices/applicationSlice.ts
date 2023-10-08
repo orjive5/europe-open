@@ -32,7 +32,7 @@ export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
         set(() => ({ country: state })),
     country_code: undefined,
     setCountryCode: (state: string) => 
-        set(() => ({ country: state })),
+        set(() => ({ country_code: state })),
     place: undefined,
     setPlace: (state: string) => 
         set(() => ({ place: state })),
