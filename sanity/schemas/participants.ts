@@ -1,5 +1,11 @@
 import { slugHex } from '@/lib/slugHex';
-import {defineType, defineField, defineArrayMember} from 'sanity';
+import {defineType, defineField, defineArrayMember, Rule, SlugRule} from 'sanity';
+
+const seasonEnum = [
+    { title: 'Autumn', value: 'autumn' },
+    { title: 'Spring', value: 'spring' },
+    { title: 'Summer', value: 'summer' },
+  ];
 
 const participants = defineType({
     name: 'participants',
@@ -13,9 +19,10 @@ const participants = defineType({
             of: [
                 defineArrayMember({
                     type: 'reference',
-                    to: [{ type: 'disciplines' }]
+                    to: [{ type: 'disciplines' }],
                 })
-            ]
+            ],
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'category',
@@ -24,14 +31,16 @@ const participants = defineType({
             of: [
                 defineArrayMember({
                     type: 'reference',
-                    to: [{ type: 'categories' }]
+                    to: [{ type: 'categories' }],
                 })
-            ]
+            ],
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'name_and_surname',
             title: 'Name and surname',
             type: 'string',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'slug',
@@ -48,12 +57,14 @@ const participants = defineType({
                     .replace(/^-+/, '') 
                     .replace(/-+$/, '')
                     .slice(0, 101) + `-${new Date().getFullYear()}`
-                },
+            },
+            validation: (Rule: SlugRule) => Rule.required()
         }),
         defineField({
             name: 'date_of_birth',
             title: 'Date of birth',
             type: 'date',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'teacher',
@@ -79,16 +90,19 @@ const participants = defineType({
             name: 'country',
             title: 'Country',
             type: 'string',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'country_code',
             title: 'Country code',
             type: 'string',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'place',
             title: 'City/place',
             type: 'string',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'institution',
@@ -99,6 +113,7 @@ const participants = defineType({
             name: 'program',
             title: 'Program',
             type: 'text',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'teacher_email',
@@ -109,6 +124,7 @@ const participants = defineType({
             name: 'participant_email',
             title: 'Participant\'s e-mail',
             type: 'email',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'video_link',
@@ -119,6 +135,7 @@ const participants = defineType({
             name: 'youtube_link',
             title: 'Youtube URL',
             type: 'url',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'identity_documents',
@@ -148,6 +165,33 @@ const participants = defineType({
             name: 'postal_address',
             title: 'Postal address',
             type: 'text',
+        }),
+        defineField({
+            name: 'competitive_year',
+            title: 'Competitive year',
+            type: 'number',
+            initialValue: 2023,
+            validation: Rule => Rule.required()
+        }),
+        defineField({
+            name: 'season',
+            title: 'Season',
+            type: 'string',
+            options: {
+              list: seasonEnum,
+            },
+            initialValue: 'autumn',
+            validation: Rule => Rule.required()
+        }),
+        defineField({
+            name: 'points',
+            title: 'Points',
+            type: 'number',
+        }),
+        defineField({
+            name: 'transaction_id',
+            title: 'Transaction ID',
+            type: 'string',
         }),
     ]
 })
