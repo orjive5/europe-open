@@ -39,7 +39,7 @@ const About = () => {
             </p>
           </CardContent>
           <CardFooter>
-            <p>European Association of Music Educators and Performers & Producer Agency MIR Production</p>
+            <p className="font-medium">European Association of Music Educators and Performers & Producer Agency MIR Production</p>
           </CardFooter>
         </Card>
       </section>
