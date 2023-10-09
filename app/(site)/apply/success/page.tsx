@@ -1,9 +1,7 @@
 import { CheckCircle } from 'lucide-react';
 import {
     Card,
-    CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
@@ -15,12 +13,12 @@ const Success = () => {
             <CardHeader className='flex flex-col gap-4 justify-center items-center'>
                 <CheckCircle className='w-20 h-20 text-primary' />
                 <CardTitle>
-                    Thank you for your order!
+                    Payment Successful!
                 </CardTitle>
                 <CardDescription className='text-center'>
-                    Please, check your email for order details.
+                    We've received your application and it is currently under review. 
                     <br />
-                    If your video is not posted on the website within 48 hours, contact the organizer immediately.
+                    Your video should be posted on the website within 48 hours. If not, please contact us immediately.
                 </CardDescription>
             </CardHeader>
         </Card>
