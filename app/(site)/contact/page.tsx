@@ -20,7 +20,7 @@ const Contact = () => {
               Europe Open Online Music Competition
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex gap-8">
+          <CardContent className="flex flex-wrap justify-center items-center gap-8">
             <div className="flex flex-col gap-2 justify-center items-center">
               <div className="flex gap-2">
                 <Mail />
@@ -37,7 +37,9 @@ const Contact = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <p className="font-medium">European Association of Music Educators and Performers & Producer Agency MIR Production</p>
+            <p className="font-medium">
+              European Association of Music Educators and Performers & Producer Agency MIR Production
+            </p>
           </CardFooter>
         </Card>
       </section>
