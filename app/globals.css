@@ -64,6 +64,10 @@
   @apply hidden;
 }
 
+.styled-link-parent a {
+  @apply underline text-primary;
+}
+
 /* For popover content to match trigger size */
 .PopoverContent {
   width: var(--radix-popover-trigger-width);

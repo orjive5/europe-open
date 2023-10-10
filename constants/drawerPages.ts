@@ -27,7 +27,7 @@ export const drawerPages : IHeaderPages[] = [
         description: 'Browse jury',
     },
     {
-        title: "About us",
+        title: "About",
         href: "/about",
         description: 'Learn more about our us',
     },

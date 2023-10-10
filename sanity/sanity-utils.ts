@@ -2,6 +2,8 @@ import { ICategory } from "@/types/category.interface";
 import { IDiscipline } from "@/types/discipline.interface";
 import { Page } from "@/types/page.interface";
 import { Post } from "@/types/post.interface";
+import { Result } from "@/types/result.interface";
+import { Rule } from "@/types/rule.interface";
 import { createClient, groq } from "next-sanity";
 import clientConfig from "./config/client-config";
 
@@ -158,4 +160,43 @@ export async function deleteAllParticipants() {
             query: `*[_type == "participants"]`
         }
     )
+}
+
+export async function getSoloistsRules(): Promise<Rule[]> {
+  
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
+      groq`*[_type == "rules_soloists"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+          content
+      } | order(_createdAt asc)`
+    );
+}
+
+export async function getCollectivesRules(): Promise<Rule[]> {
+  
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
+      groq`*[_type == "rules_collectives"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+          content
+      } | order(_createdAt asc)`
+    );
+}
+
+export async function getResults(): Promise<Result[]> {
+  
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
+      groq`*[_type == "results"]{
+          _id,
+          _createdAt,
+          title,
+          competitive_year,
+          "results": results.asset->url
+      } | order(_createdAt asc)`
+    );
 }
