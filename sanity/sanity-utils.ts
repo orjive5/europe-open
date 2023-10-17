@@ -1,6 +1,7 @@
 import { ICategory } from "@/types/category.interface";
 import { IDiscipline } from "@/types/discipline.interface";
 import { Page } from "@/types/page.interface";
+import { IParticipantData } from "@/types/participantData.interface";
 import { Post } from "@/types/post.interface";
 import { Result } from "@/types/result.interface";
 import { Rule } from "@/types/rule.interface";
@@ -89,7 +90,7 @@ export async function getFaq(slug: string): Promise<any> {
     )
 }
 
-export async function getParticipants(): Promise<any[]> {
+export async function getParticipants(): Promise<IParticipantData[]> {
     return createClient({...clientConfig, perspective: 'published'}).fetch(
         groq`*[_type == 'participants']{
             _id,
@@ -101,6 +102,8 @@ export async function getParticipants(): Promise<any[]> {
             country_code,
             place,
             youtube_link,
+            competitive_year,
+            season,
         } | order(_createdAt asc)`
     )
 }
