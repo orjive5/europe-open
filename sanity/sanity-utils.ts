@@ -105,7 +105,7 @@ export async function getParticipants(): Promise<IParticipantData[]> {
             youtube_link,
             competitive_year,
             season,
-        } | order(_createdAt asc)`
+        } | order(_createdAt desc)`
     )
 }
 

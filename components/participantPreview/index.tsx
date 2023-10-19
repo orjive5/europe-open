@@ -26,11 +26,11 @@ const ParticipantPreview = ({participant}: {participant: IParticipantPreview}) =
           className="rounded-lg object-cover"
         />
       </AspectRatio>
-      <div>
-        <h2 className="group-hover:underline font-medium">
+      <div className="flex flex-col items-start">
+        <h2 className="group-hover:underline font-medium text-start">
           {participant.name_and_surname}
         </h2>
-        <div className="flex justify-between items-center">
+        <div className="text-start gap-1 flex flex-col justify-between items-start">
           <CountrySection participant={participant} />
           <Badge className="text-muted-foreground" variant="outline">
             {participant.discipline[0]}

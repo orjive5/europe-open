@@ -29,10 +29,12 @@ const ParticipantsGrid = ({heading}: {heading: string}) => {
                     className="h-full w-full"
                   />
                 </AspectRatio>
-                <Skeleton className="h-4 w-[200px]" />
-                <div className="flex justify-between items-center">
-                  <Skeleton className="h-4 w-[150px]" />
-                  <Skeleton className="h-4 w-[50px]" />
+                <div className="flex flex-col items-start gap-1">
+                  <Skeleton className="h-4 w-[200px]" />
+                  <div className="text-start gap-1 flex flex-col justify-between items-start">
+                    <Skeleton className="h-4 w-[150px]" />
+                    <Skeleton className="h-4 w-[50px]" />
+                  </div>
                 </div>
               </div>
           ))
