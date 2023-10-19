@@ -87,6 +87,7 @@ const Participants = () => {
  
   function onSubmit(value: z.infer<typeof FormSchema>) {
     data && setParticipants(() => {
+
       const filteredByYear = value.competitive_year === 'All years'
         ? data
         : data?.filter(p => p.competitive_year.toString() === value.competitive_year);
@@ -101,6 +102,7 @@ const Participants = () => {
 
       return searchedParticipant;
     });
+    setPageNumber(0);
   }
 
   // Pagination
@@ -109,7 +111,7 @@ const Participants = () => {
   const participantsPerPage = 16;
   const pagesVisited = pageNumber * participantsPerPage;
 
-  const pageCount = Math.ceil((data && data) ? data.length / participantsPerPage : 0);
+  const pageCount = Math.ceil((participants && participants) ? participants.length / participantsPerPage : 0);
 
   const changePage = ({selected}: {selected: number}) => {
     setPageNumber(selected)
@@ -300,17 +302,19 @@ const Participants = () => {
           }
           {displayParticipants && displayParticipants}
         </div>
-        <ReactPaginate
-          breakLabel={"..."}
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 text-base"}
-          disabledClassName={"text-muted-foreground"}
-          disabledLinkClassName={"cursor-not-allowed"}
-          activeClassName={"text-primary"}
-        />
+        {pageCount > 1 && (
+          <ReactPaginate
+            breakLabel={"..."}
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 text-base"}
+            disabledClassName={"text-muted-foreground"}
+            disabledLinkClassName={"cursor-not-allowed"}
+            activeClassName={"text-primary"}
+          />
+        )}
       </section>
     </main>
   )

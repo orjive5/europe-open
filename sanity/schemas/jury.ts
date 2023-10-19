@@ -1,4 +1,5 @@
-import {defineType, defineField, defineArrayMember} from 'sanity'
+import { slugHex } from '@/lib/slugHex';
+import {defineType, defineField, defineArrayMember, SlugRule} from 'sanity'
 
 const jury = defineType({
     name: 'jury',
@@ -9,29 +10,56 @@ const jury = defineType({
             name: 'name_and_surname',
             title: 'Name and surname',
             type: 'string',
+            validation: Rule => Rule.required()
         }),
         defineField({
             name: 'slug',
             title: 'Slug',
             type: 'slug',
             options: {
-                source: 'name_and_surname'
+                source: 'name_and_surname',
+                slugify: (input: string) => input
+                    .toLowerCase()
+                    .replace(/^/, slugHex())
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '') 
+                    .replace(/-+$/, '')
+                    .slice(0, 101) + `-${new Date().getFullYear()}`
             },
+            validation: (Rule: SlugRule) => Rule.required()
         }),
         defineField({
-            name: 'image',
-            title: 'Image',
+            name: 'country',
+            title: 'Country',
+            type: 'string',
+            validation: Rule => Rule.required()
+        }),
+        defineField({
+            name: 'country_code',
+            title: 'Country code',
+            type: 'string',
+            validation: Rule => Rule.required()
+        }),
+        defineField({
+            name: 'place',
+            title: 'City/place',
+            type: 'string',
+            validation: Rule => Rule.required()
+        }),
+        defineField({
+            name: 'institution',
+            title: 'Institution',
+            type: 'string',
+        }),
+        defineField({
+            name: 'portrait_photo',
+            title: 'Portrait photo',
             type: 'image',
             options: {
                 hotspot: true
             },
-            fields: [
-                defineField({
-                    name: 'alt',
-                    title: 'Alt',
-                    type: 'string',
-                })
-            ]
         }),
         defineField({
             name: 'biography',
@@ -53,16 +81,6 @@ const jury = defineType({
                     to: [{ type: 'disciplines' }]
                 })
             ]
-        }),
-        defineField({
-            name: 'place',
-            title: 'City/place',
-            type: 'string',
-        }),
-        defineField({
-            name: 'country',
-            title: 'Country',
-            type: 'string',
         }),
     ]
 })

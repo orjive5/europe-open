@@ -1,5 +1,6 @@
 import { ICategory } from "@/types/category.interface";
 import { IDiscipline } from "@/types/discipline.interface";
+import { IJury } from "@/types/jury.interface";
 import { Page } from "@/types/page.interface";
 import { IParticipantData } from "@/types/participantData.interface";
 import { Post } from "@/types/post.interface";
@@ -202,4 +203,41 @@ export async function getResults(): Promise<Result[]> {
           "results": results.asset->url
       } | order(_createdAt asc)`
     );
+}
+
+export async function getJury(): Promise<IJury[]> {
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
+        groq`*[_type == 'jury']{
+            _id,
+            _createdAt,
+            "discipline": discipline[]->title,
+            name_and_surname,
+            'slug': slug.current,
+            country,
+            country_code,
+            place,
+            institution,
+            "portrait_photo": portrait_photo.asset->url,
+            biography,
+        } | order(_createdAt asc)`
+    )
+}
+
+export async function getJuryMember(slug: string): Promise<IJury> {
+    return createClient({...clientConfig, perspective: 'published'}).fetch(
+        groq`*[_type == "jury" && slug.current == $slug][0]{
+            _id,
+            _createdAt,
+            "discipline": discipline[]->title,
+            name_and_surname,
+            'slug': slug.current,
+            country,
+            country_code,
+            place,
+            institution,
+            "portrait_photo": portrait_photo.asset->url,
+            biography,
+        }`,
+        { slug }
+    )
 }
