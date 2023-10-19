@@ -80,7 +80,7 @@ const JuryMember = ({params}: IJuryParams) => {
                   className="rounded-lg object-cover"
                 />
               </AspectRatio>
-              <h2 className="text-lg md:text-2xl font-medium">
+              <h2 className="text-start text-lg md:text-2xl font-medium">
                 {data.name_and_surname}
               </h2>
               <h3 className="text-start">

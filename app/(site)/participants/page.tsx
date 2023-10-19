@@ -115,6 +115,7 @@ const Participants = () => {
 
   const changePage = ({selected}: {selected: number}) => {
     setPageNumber(selected)
+    window.scrollTo({top: 0})
   }
 
   // Display participants

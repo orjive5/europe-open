@@ -87,7 +87,8 @@ const Jury = () => {
   const pageCount = Math.ceil((jury && jury) ? jury.length / juryPerPage : 0);
 
   const changePage = ({selected}: {selected: number}) => {
-    setPageNumber(selected)
+    setPageNumber(selected);
+    window.scrollTo({top: 0})
   }
 
   // Display jury
@@ -215,7 +216,7 @@ const Jury = () => {
                     />
                   </AspectRatio>
                   <section className="flex flex-col gap-2">
-                    <div>
+                    <div className="flex flex-col gap-1">
                       <Skeleton className="h-4 w-[200px]" />
                       <Skeleton className="h-4 w-[250px]" />
                     </div>
