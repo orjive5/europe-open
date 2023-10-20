@@ -1,3 +1,4 @@
+import { MapChart } from "@/components/mapChart";
 import ParticipantsGrid from "@/components/participantsGrid";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,6 +14,7 @@ const Home = () => {
           </Button>
         </Link>
       </section>
+      <MapChart />
     </main>
   )
 }
