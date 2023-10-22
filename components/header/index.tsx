@@ -10,7 +10,7 @@ import SideDrawer from "../sideDrawer";
 const Header = () => {
 
   return (
-    <header className="flex justify-between items-center">
+    <header className="flex w-full justify-between items-center">
       <Link href="/" className="flex items-center gap-5">
         <div className="relative w-12 h-12 sm:w-16 sm:h-16">
           <Image

@@ -12,22 +12,23 @@ export function MapChart() {
     const {data, isLoading, isError } = useQuery({
         queryKey: ['participants'],
         queryFn: getParticipants,
-      });
+    });
 
     // Calculate number of participants from each country
     function countCountries(array: IParticipantData[]) {
-    const countryCountMap: { [country: string]: number } = {};
-    
-    for (const item of array) {
-        const country = item.country;
-        countryCountMap[country] 
-        ? countryCountMap[country]++ 
-        : countryCountMap[country] = 1        
+        const countryCountMap: { [country: string]: number } = {};
+        
+        for (const item of array) {
+            const country = item.country;
+            countryCountMap[country] 
+            ? countryCountMap[country]++ 
+            : countryCountMap[country] = 1        
+        }
+        
+        const result = Object.entries(countryCountMap).map(([country, count]) => [country, count]);
+        return [["Country", "Number of participants"], ...result]
     }
-    
-    const result = Object.entries(countryCountMap).map(([country, count]) => [country, count]);
-    return [["Country", "Number of participants"], ...result]
-    }
+
     const originalWarn = console.warn;
 
     // Ignore console warning
@@ -35,12 +36,13 @@ export function MapChart() {
         const arg = args && args[0];
     
         if (arg && arg.includes('Attempting to load version \'51\' of Google Charts')) return;
+        if (arg && arg.includes('Google Maps JavaScript API has been loaded directly without a callback')) return;
     
         originalWarn(...args);
     };
 
     return (
-        <section className="2xl:w-1/2 xl:w-2/3 lg:w-3/4 w-full flex flex-col justify-center items-center gap-8">
+        <section className="w-full xl:w-5/6 flex flex-col justify-center items-center gap-8">
             <h1 className="sm:text-xl font-medium">
                 Participant's Geography
             </h1>
@@ -49,6 +51,7 @@ export function MapChart() {
                         width='100%'
                         chartType="GeoChart"
                         data={countCountries(data)}
+                        mapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
                         options={{
                             backgroundColor: `${theme === 'dark' ? '#0c0a09' : 'white'}`,
                             datalessRegionColor: "#f5f5f5",
