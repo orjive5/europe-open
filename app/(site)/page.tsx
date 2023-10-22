@@ -1,6 +1,7 @@
 import Hero from "@/components/hero";
 import { MapChart } from "@/components/mapChart";
 import ParticipantsGrid from "@/components/participantsGrid";
+import SeparatorImage from "@/components/separatorImage";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -15,6 +16,7 @@ const Home = () => {
               Browse Participants
             </Button>
           </Link>
+          <SeparatorImage />
         </section>
         <MapChart />
     </main>

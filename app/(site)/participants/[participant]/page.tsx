@@ -31,13 +31,15 @@ const Participant = ({params}: IParticipantParams) => {
       }
       {
         data && (
-            <section className="w-full lg:w-3/4 2xl:w-auto flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
+            <section className="w-full lg:w-5/6 flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
               <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
               <ParticipantInfo participant={data} />
             </section>
         )
       }
-      <ParticipantsGrid heading="Latest participants"/>
+      <section className="w-5/6">
+        <ParticipantsGrid heading="Latest participants"/>
+      </section>
     </main>
   )
 }

@@ -12,7 +12,7 @@ const ParticipantPreview = ({participant}: {participant: IParticipantPreview}) =
       href={`/participants/${participant.slug}`}
       key={participant._id}
       className="group hover:cursor-pointer flex flex-col gap-2 w-full"
-      // className="group hover:cursor-pointer flex flex-col gap-2 w-full sm:w-10/12 md:w-[300px]"
+      // className='group hover:cursor-pointer flex flex-col gap-2 w-full sm:w-10/12 md:w-[300px]'
     >
       <AspectRatio
         className="overflow-hidden rounded-lg"
