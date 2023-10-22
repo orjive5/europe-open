@@ -1,15 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { AspectRatio } from '../ui/aspect-ratio';
 import { Button } from '../ui/button';
 
 const Hero = () => {
 
     return (
-        <section className="w-10/12 flex justify-center items-center gap-8">
-            <div className='w-1/2 flex flex-col text-start gap-8'>
-                <h2 className='text-4xl'>
-                    <span className='font-bold text-8xl'>Europe Open </span>
+        <section className="xl:h-[calc(100vh-192px)] w-5/6 flex flex-col xl:flex-row justify-center items-center gap-8">
+            <div className='xl:w-1/2 flex flex-col text-center xl:text-start gap-4 xl:gap-8'>
+                <h2 className='text-2xl xl:text-4xl'>
+                    <span className='font-bold text-4xl xl:text-8xl'>Europe Open </span>
                     <br/>
                     Online Music Competition
                 </h2>
@@ -19,7 +18,7 @@ const Hero = () => {
                 <p className='font-medium text-xl'>
                     Applications are being accepted now!
                 </p>
-                <div className='flex gap-4'>
+                <div className='flex justify-center xl:justify-start items-center gap-4'>
                     <Link href="/apply">
                         <Button>
                             Apply
@@ -32,21 +31,13 @@ const Hero = () => {
                     </Link>
                 </div>
             </div>
-            <div className='relative w-[800px] h-[573px]'>
-                {/* <AspectRatio
-                    className="overflow-hidden rounded-lg w-[800px] h-[573px]"
-                    ratio={1 / 1}
-                > */}
-                    <Image
-                        src='/hero1.png'
-                        alt="Hero image"
-                        priority={true}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="rounded-lg object-cover"
-                    />
-                {/* </AspectRatio> */}
-            </div>
+            <Image
+                src="/hero1.png"
+                width={800}
+                height={800}
+                alt="Hero banner"
+                className='rounded'
+            />
         </section>
     )
 }

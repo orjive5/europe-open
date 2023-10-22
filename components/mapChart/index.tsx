@@ -40,7 +40,7 @@ export function MapChart() {
     };
 
     return (
-        <section className="2xl:w-1/2 xl:w-2/3 lg:w-3/4 w-full flex flex-col justify-center items-center gap-8">
+        <section className="w-full xl:w-5/6 flex flex-col justify-center items-center gap-8">
             <h1 className="sm:text-xl font-medium">
                 Participant's Geography
             </h1>
