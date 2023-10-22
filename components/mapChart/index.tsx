@@ -51,7 +51,7 @@ export function MapChart() {
                         width='100%'
                         chartType="GeoChart"
                         data={countCountries(data)}
-                        mapsApiKey='AIzaSyCKfaqU0BJfCUPtb3_Rh3qHxMcQav7B-2Q'
+                        mapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
                         options={{
                             backgroundColor: `${theme === 'dark' ? '#0c0a09' : 'white'}`,
                             datalessRegionColor: "#f5f5f5",
