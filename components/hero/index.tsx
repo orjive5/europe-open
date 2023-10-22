@@ -31,13 +31,16 @@ const Hero = () => {
                     </Link>
                 </div>
             </div>
-            <Image
-                src="/hero1.png"
-                width={800}
-                height={800}
-                alt="Hero banner"
-                className='rounded'
-            />
+            <div className='relative w-full xl:w-[800px]'>
+                <Image
+                    src="/hero1.png"
+                    width="0"
+                    height="0"
+                    sizes="100vw"
+                    className="w-full h-auto rounded"
+                    alt="Hero banner"
+                />
+            </div>
         </section>
     )
 }
