@@ -18,7 +18,7 @@ const Home = () => {
           </Link>
           <SeparatorImage />
         </section>
-        <MapChart />
+        {/* <MapChart /> */}
     </main>
   )
 }
