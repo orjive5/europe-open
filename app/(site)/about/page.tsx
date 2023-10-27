@@ -38,9 +38,6 @@ const About = () => {
               The creator and director of EUROPE OPEN MUSIC COMPETITION is the charismatic and purposeful Mr. Milomir Doјčinović, President of the European Association of Music Educators and Performers & Producer Agency MIR Production, and under his leadership a well-coordinated team of professionals and a number of specialized consultants work.
             </p>
           </CardContent>
-          <CardFooter>
-            <p className="font-medium">European Association of Music Educators and Performers & Producer Agency MIR Production</p>
-          </CardFooter>
         </Card>
       </section>
     )

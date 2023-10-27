@@ -36,11 +36,6 @@ const Contact = () => {
               <p className="font-medium">+381 64 064 81 47</p>
             </div>
           </CardContent>
-          <CardFooter>
-            <p className="font-medium">
-              European Association of Music Educators and Performers & Producer Agency MIR Production
-            </p>
-          </CardFooter>
         </Card>
       </section>
     )

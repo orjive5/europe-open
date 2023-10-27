@@ -24,7 +24,7 @@ export default async function RootLayout({
       <ReactQueryProvider>
         <html lang="en">
             <body>
-              <main style={hanken.style} className="p-2 sm:p-4 md:p-8 flex flex-col gap-8 mx-auto min-h-screen w-full">
+              <main style={hanken.style} className="p-2 sm:p-4 md:p-8 flex flex-col items-center gap-8 mx-auto min-h-screen w-full">
                 <NextTopLoader
                   color='#ea580c'
                   showSpinner={false}

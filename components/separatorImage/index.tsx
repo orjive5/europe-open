@@ -6,7 +6,7 @@ import Image from 'next/image';
 const SeparatorImage = () => {
   const {theme} = useTheme();
   return (
-    <div className='relative w-full xl:w-[800px]'>
+    <div className='relative w-full xl:w-[900px]'>
         <Image
             src={`${theme === 'dark' ? "/separatorDark.png" : '/separatorLight.png'}`}
             width="0"

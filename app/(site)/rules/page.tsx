@@ -28,12 +28,12 @@ const Rules = async () => {
 
     return (
       <section className="flex flex-col justify-center items-center">
-        <Card className="w-full lg:w-3/4 xl:w-2/3 lg:p-8 flex flex-col justify-center items-center text-justify">
+        <Card className="lg:p-8 flex flex-col justify-center items-center text-justify">
           <CardHeader>
             <CardTitle className="text-center">
               Rules and regulations for all nominations
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="max-w-[600px] text-center">
               Europe Open Online Music Competition is held completely online, in such form where the jury views of video recordings of participants' performances. Performers from all over the world are invited to participate in the competition. The competition is held annually, applications are accepted 365 days a year.
             </CardDescription>
           </CardHeader>
@@ -49,8 +49,8 @@ const Rules = async () => {
               </TabsList>
               <TabsContent value="soloists">
                 <Accordion type="single" collapsible className="w-full md:w-[600px]">
-                  {soloistsRules.map((rule, index) =>  (
-                    <AccordionItem key={`${index}-${rule.title}-soloists`} value={`${index}-${rule.title}-soloists`}>
+                  {soloistsRules.map((rule, index, ar) =>  (
+                    <AccordionItem className={`${index === ar.length-1 && 'border-b-0'}`} key={`${index}-${rule.title}-soloists`} value={`${index}-${rule.title}-soloists`}>
                       <AccordionTrigger className="text-justify gap-8">
                         {rule.title}
                       </AccordionTrigger>
@@ -63,8 +63,8 @@ const Rules = async () => {
               </TabsContent>
               <TabsContent value="collectives">
                 <Accordion type="single" collapsible className="w-full md:w-[600px]">
-                    {collectivesRules.map((rule, index) =>  (
-                      <AccordionItem key={`${index}-${rule.title}-collectives`} value={`${index}-${rule.title}-collectives`}>
+                    {collectivesRules.map((rule, index, ar) =>  (
+                      <AccordionItem className={`${index === ar.length-1 && 'border-b-0'}`} key={`${index}-${rule.title}-collectives`} value={`${index}-${rule.title}-collectives`}>
                         <AccordionTrigger className="text-justify gap-8">
                           {rule.title}
                         </AccordionTrigger>
@@ -77,11 +77,6 @@ const Rules = async () => {
               </TabsContent>
             </Tabs>
           </CardContent>
-          <CardFooter>
-            <p className="font-medium">
-              European Association of Music Educators and Performers & Producer Agency MIR Production
-            </p>
-          </CardFooter>
         </Card>
       </section>
     )

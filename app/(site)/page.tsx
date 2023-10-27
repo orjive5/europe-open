@@ -1,5 +1,6 @@
 import Hero from "@/components/hero";
-import { MapChart } from "@/components/mapChart";
+import JuryGrid from "@/components/juryGrid";
+// import { MapChart } from "@/components/mapChart";
 import ParticipantsGrid from "@/components/participantsGrid";
 import SeparatorImage from "@/components/separatorImage";
 import { Button } from "@/components/ui/button";
@@ -16,9 +17,17 @@ const Home = () => {
               Browse Participants
             </Button>
           </Link>
-          <SeparatorImage />
         </section>
-        <MapChart />
+        <SeparatorImage />
+        <section className="w-5/6 flex flex-col items-center gap-8">
+          <JuryGrid />
+          <Link href='jury'>
+            <Button>
+              Browse Jury
+            </Button>
+          </Link>
+        </section>
+        {/* <MapChart /> */}
     </main>
   )
 }

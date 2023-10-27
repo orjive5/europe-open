@@ -21,7 +21,7 @@ const Faq = async () => {
 
   return (
     <section className="flex flex-col justify-center items-center">
-      <Card className="w-full lg:w-3/4 xl:w-2/3 lg:p-8 flex flex-col justify-center items-center text-justify">
+      <Card className="w-full lg:p-8 flex flex-col justify-center items-center text-justify">
         <CardHeader>
           <CardTitle className="text-center">
             Frequently Asked Questions
@@ -32,8 +32,8 @@ const Faq = async () => {
         </CardHeader>
         <CardContent className="flex gap-8">
         <Accordion type="single" collapsible className="w-full md:w-[600px]">
-          {faqs.map((faq, index) =>  (
-              <AccordionItem key={faq.question} value={`item-${index}`}>
+          {faqs.map((faq, index, ar) =>  (
+              <AccordionItem className={`${index === ar.length-1 && 'border-b-0'}`} key={faq.question} value={`item-${index}`}>
                 <AccordionTrigger className="text-justify gap-8">
                   {index+1}. {faq.question}
                 </AccordionTrigger>
@@ -46,9 +46,6 @@ const Faq = async () => {
             ))}
           </Accordion>
         </CardContent>
-        <CardFooter>
-          <p className="font-medium">European Association of Music Educators and Performers & Producer Agency MIR Production</p>
-        </CardFooter>
       </Card>
     </section>
   )
