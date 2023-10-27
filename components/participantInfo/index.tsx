@@ -22,7 +22,7 @@ const ParticipantInfo = ({participant}: IParticipantInfo) => {
   return (
     <Card className="h-full w-full">
       <ScrollArea className="flex justify-center items-center h-full w-full rounded-md">
-        <div className="flex flex-col md:flex-row 2xl:flex-col items-start justify-center">
+        <div className="flex flex-col md:flex-row 2xl:flex-col items-start 2xl:items-center justify-center">
           <CardHeader className="gap-2 min-w-max w-full md:w-auto 2xl:w-full flex flex-col justify-center items-center">
             {participant.poster_photo &&
               (<div className="relative w-full h-72 md:w-80 lg:h-80 lg:w-[500px] xl:h-96 xl:w-[600px] 2xl:h-72 2xl:w-full md:h-60">
