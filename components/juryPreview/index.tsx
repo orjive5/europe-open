@@ -5,12 +5,12 @@ import CountrySection from "../countrySection";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Badge } from "../ui/badge";
 
-const JuryPreview = ({member}: {member: IJury}) => {
+const JuryPreview = ({member, landingPage}: {member: IJury, landingPage?: boolean}) => {
   return (
     <Link
       href={`/jury/${member.slug}`}
       key={member._id}
-      className="group hover:cursor-pointer flex flex-col gap-2 w-full sm:w-10/12 md:w-[300px]"
+      className={`group hover:cursor-pointer flex flex-col gap-2 ${landingPage ? '' : 'sm:w-10/12 md:w-[300px]'} w-full`}
     >
       <AspectRatio
         className="overflow-hidden rounded-lg"
