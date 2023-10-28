@@ -1,4 +1,9 @@
 import { ApplyForm } from "@/components/applyForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Europe Open | Apply',
+}
 
 const Apply = () => {
 

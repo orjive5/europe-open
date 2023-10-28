@@ -20,6 +20,11 @@ import {
 } from "@/components/ui/tabs";
 import { getCollectivesRules, getSoloistsRules } from "@/sanity/sanity-utils";
 import { PortableText } from "@portabletext/react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Europe Open | Rules',
+}
 
 const Rules = async () => {
 

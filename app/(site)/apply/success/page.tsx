@@ -5,6 +5,11 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Europe Open | Success',
+}
 
 const Success = () => {
   return (
