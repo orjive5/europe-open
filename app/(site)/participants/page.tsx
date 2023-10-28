@@ -275,7 +275,7 @@ const Participants = () => {
             </div>
             )
         }
-        <div className="justify-items-center w-full md:w-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
+        <div className="justify-items-center w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
           {
             isLoading && [...Array(16)].map((el, i) => (
               <div key={i} className="flex flex-col gap-2 w-full sm:w-10/12 md:w-[300px]">
