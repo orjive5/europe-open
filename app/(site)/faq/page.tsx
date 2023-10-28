@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/card"
 import { getFaqs } from "@/sanity/sanity-utils";
 import { PortableText } from "@portabletext/react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Europe Open | FAQ',
+}
 
 const Faq = async () => {
 

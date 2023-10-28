@@ -7,6 +7,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {Mail, Smartphone} from 'lucide-react'
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Europe Open | Contact',
+}
 
 const Contact = () => {
     return (
