@@ -1,5 +1,5 @@
 import page from './pages';
-import post from './posts';
+import awards from './awards';
 import participants from './participants';
 import disciplines from './disciplines';
 import categories from './categories';
@@ -10,7 +10,7 @@ import rules_collectives from './rules_collectives';
 import results from './results';
 
 const schemas = [
-    post,
+    awards,
     page,
     participants,
     disciplines,

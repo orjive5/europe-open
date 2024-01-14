@@ -3,19 +3,20 @@ import { IDiscipline } from "@/types/discipline.interface";
 import { IJury } from "@/types/jury.interface";
 import { Page } from "@/types/page.interface";
 import { IParticipantData } from "@/types/participantData.interface";
-import { Post } from "@/types/post.interface";
+import { Award } from "@/types/award.interface";
 import { Result } from "@/types/result.interface";
 import { Rule } from "@/types/rule.interface";
 import { createClient, groq } from "next-sanity";
 import clientConfig from "./config/client-config";
 
-export async function getPosts(): Promise<Post[]> {
-  
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "post"]{
+export async function getAwards(): Promise<Award[]> {
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "award"]{
           _id,
           _createdAt,
-          name,
+          title,
+          description,
           "slug": slug.current,
           "image": image.asset->url,
           URLs,
@@ -24,13 +25,14 @@ export async function getPosts(): Promise<Post[]> {
     );
 }
 
-export async function getPost(slug: string): Promise<Post> {
+export async function getAward(slug: string): Promise<Award> {
 
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-        groq`*[_type == "post" && slug.current == $slug][0]{
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "award" && slug.current == $slug][0]{
             _id,
             _createdAt,
-            name,
+            title,
+            description,
             "slug": slug.current,
             "image": image.asset->url,
             URLs,
@@ -43,7 +45,7 @@ export async function getPost(slug: string): Promise<Post> {
 }
 
 export async function getPages(): Promise<Page[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'page']{
             _id,
             _createdAt,
@@ -54,7 +56,7 @@ export async function getPages(): Promise<Page[]> {
 }
 
 export async function getPage(slug: string): Promise<Page> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'page' && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -67,7 +69,7 @@ export async function getPage(slug: string): Promise<Page> {
 }
 
 export async function getFaqs(): Promise<any[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'faq']{
             _id,
             _createdAt,
@@ -79,7 +81,7 @@ export async function getFaqs(): Promise<any[]> {
 }
 
 export async function getFaq(slug: string): Promise<any> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'faq' && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -92,7 +94,7 @@ export async function getFaq(slug: string): Promise<any> {
 }
 
 export async function getParticipants(): Promise<IParticipantData[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'participants']{
             _id,
             _createdAt,
@@ -110,7 +112,7 @@ export async function getParticipants(): Promise<IParticipantData[]> {
 }
 
 export async function getParticipant(slug: string): Promise<any> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "participants" && slug.current == $slug][0]{
             _id,
             _createdAt,
@@ -137,8 +139,8 @@ export async function getParticipant(slug: string): Promise<any> {
 }
 
 export async function getDisciplines(): Promise<IDiscipline[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "disciplines"]{
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "disciplines"]{
           _id,
           _createdAt,
           title,
@@ -148,8 +150,8 @@ export async function getDisciplines(): Promise<IDiscipline[]> {
 }
 
 export async function getCategories(): Promise<ICategory[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "categories"]{
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "categories"]{
           _id,
           _createdAt,
           title,
@@ -167,9 +169,9 @@ export async function deleteAllParticipants() {
 }
 
 export async function getSoloistsRules(): Promise<Rule[]> {
-  
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "rules_soloists"]{
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "rules_soloists"]{
           _id,
           _createdAt,
           title,
@@ -180,9 +182,9 @@ export async function getSoloistsRules(): Promise<Rule[]> {
 }
 
 export async function getCollectivesRules(): Promise<Rule[]> {
-  
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "rules_collectives"]{
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "rules_collectives"]{
           _id,
           _createdAt,
           title,
@@ -193,9 +195,9 @@ export async function getCollectivesRules(): Promise<Rule[]> {
 }
 
 export async function getResults(): Promise<Result[]> {
-  
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
-      groq`*[_type == "results"]{
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "results"]{
           _id,
           _createdAt,
           title,
@@ -206,7 +208,7 @@ export async function getResults(): Promise<Result[]> {
 }
 
 export async function getJury(): Promise<IJury[]> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == 'jury']{
             _id,
             _createdAt,
@@ -224,7 +226,7 @@ export async function getJury(): Promise<IJury[]> {
 }
 
 export async function getJuryMember(slug: string): Promise<IJury> {
-    return createClient({...clientConfig, perspective: 'published'}).fetch(
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "jury" && slug.current == $slug][0]{
             _id,
             _createdAt,
