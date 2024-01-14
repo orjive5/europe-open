@@ -1,9 +1,10 @@
 import { PortableTextBlock } from "sanity";
 
-export type Post = {
+export type Award = {
     _id: string;
     _createdAt: Date;
-    name: string;
+    title: string;
+    description: string;
     slug: string;
     image: string;
     URLs: string[];

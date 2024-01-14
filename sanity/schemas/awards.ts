@@ -1,8 +1,9 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { slugHex } from "@/lib/slugHex";
+import { defineArrayMember, defineField, defineType, SlugRule } from "sanity";
 
-const post = defineType({
-    name: 'post',
-    title: 'Posts',
+const award = defineType({
+    name: 'award',
+    title: 'Awards',
     type: 'document',
     fields: [
         defineField({
@@ -11,12 +12,27 @@ const post = defineType({
             type: 'string',
         }),
         defineField({
+            name: 'description',
+            title: 'Description',
+            type: 'string',
+        }),
+        defineField({
             name: 'slug',
             title: 'Slug',
             type: 'slug',
             options: {
-                source: 'name'
+                source: 'title',
+                slugify: (input: string) => input
+                    .toLowerCase()
+                    .replace(/^/, slugHex())
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '')
+                    .replace(/-+$/, '')
+                    .slice(0, 101) + `-${new Date().getFullYear()}`
             },
+            validation: (Rule: SlugRule) => Rule.required()
         }),
         defineField({
             name: 'image',
@@ -46,4 +62,4 @@ const post = defineType({
     ]
 })
 
-export default post;
+export default award;

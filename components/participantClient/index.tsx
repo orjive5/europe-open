@@ -11,7 +11,7 @@ import ParticipantsGrid from "@/components/participantsGrid";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const ParticipantClient = ({params}: IParticipantParams) => {
+const ParticipantClient = ({ params }: IParticipantParams) => {
 
   const { data, isLoading, isError } = useQuery(
     ['participant_2023', params.participant],
@@ -33,19 +33,19 @@ const ParticipantClient = ({params}: IParticipantParams) => {
       }
       {
         data && (
-            <section className="w-full flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
-              <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-              <ParticipantInfo participant={data} />
-            </section>
+          <section className="w-full flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
+            <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
+            <ParticipantInfo participant={data} />
+          </section>
         )
       }
       <section className="w-full flex flex-col items-center gap-8">
-        <ParticipantsGrid heading="Latest participants" />
-          <Link href='participants'>
-            <Button>
-              Browse Participants
-            </Button>
-          </Link>
+        <ParticipantsGrid heading="LATEST PARTICIPANTS" />
+        <Link href='participants'>
+          <Button>
+            Browse Participants
+          </Button>
+        </Link>
       </section>
     </main>
   )

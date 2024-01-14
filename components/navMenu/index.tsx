@@ -25,7 +25,7 @@ export const NavMenu = () => {
             <NavigationMenuLink>
               <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                 <p className="text-base font-medium leading-none">
-                  Home
+                  HOME
                 </p>
               </div>
             </NavigationMenuLink>
@@ -34,7 +34,7 @@ export const NavMenu = () => {
         {/* COMPETITION */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            Competition
+            COMPETITION
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -52,17 +52,17 @@ export const NavMenu = () => {
         {/* ABOUT */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            About
+            ABOUT
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               {aboutPages.map(about => (
-                  <ListItem
-                    key={about.title}
-                    title={about.title}
-                    href={about.href}
-                    description={about.description}
-                  />
+                <ListItem
+                  key={about.title}
+                  title={about.title}
+                  href={about.href}
+                  description={about.description}
+                />
               ))}
             </ul>
           </NavigationMenuContent>
@@ -71,7 +71,7 @@ export const NavMenu = () => {
         <NavigationMenuItem>
           <Link href="/apply">
             <Button variant='outline'>
-              Apply
+              APPLY
             </Button>
           </Link>
         </NavigationMenuItem>

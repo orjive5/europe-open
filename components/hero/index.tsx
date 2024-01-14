@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import CountdownTimer from '../countdownTimer';
 import HeroImage from '../heroImage';
 
 const Hero = () => {
-    
+
     return (
         <section className="xl:h-[calc(100vh-192px)] w-5/6 flex flex-col xl:flex-row justify-center items-center gap-8">
             <div className='xl:w-1/2 flex flex-col text-center xl:text-start gap-4 xl:gap-8'>
@@ -20,12 +19,6 @@ const Hero = () => {
                 <p className='font-medium text-lg md:text-xl'>
                     Applications are being accepted now!
                 </p>
-                <div className='flex flex-col justify-center items-center xl:items-start'>
-                    <h2 className='font-medium flex'>
-                        Time left until next season
-                    </h2>
-                    <CountdownTimer />
-                </div>
                 <div className='flex flex-wrap justify-center xl:justify-start items-center gap-4'>
                     <Link href="/apply" draggable="false" aria-labelledby="title" className="relative py-2 px-6 md:py-3 md:px-7 rounded group text-white bg-primary">
                         <span id="title" className="text-lg md:text-xl tracking-wider">Apply</span>
