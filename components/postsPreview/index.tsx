@@ -1,15 +1,12 @@
-// import { IJury } from "@/types/jury.interface";
 import Image from "next/image";
 import Link from "next/link";
-// import CountrySection from "../countrySection";
 import { AspectRatio } from "../ui/aspect-ratio";
-// import { Badge } from "../ui/badge";
 
 const PostsPreview = ({ post, landingPage }: any) => {
-  console.log(post)
+
   return (
     <Link
-      href={`/${post}s/${post.slug}`}
+      href={`/${post._type}s/${post.slug}`}
       key={post._id}
       className={`group hover:cursor-pointer flex flex-col gap-2 ${landingPage ? '' : 'sm:w-10/12 md:w-[300px]'} w-full`}
     >
@@ -28,7 +25,7 @@ const PostsPreview = ({ post, landingPage }: any) => {
       </AspectRatio>
       <section className="flex flex-col gap-2">
         <div>
-          <h2 className="sm:text-xl font-medium hover:underline">
+          <h2 className="group-hover:underline sm:text-xl font-medium">
             {post.title}
           </h2>
           <h3 className="text-muted-foreground">

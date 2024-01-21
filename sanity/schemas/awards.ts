@@ -56,6 +56,12 @@ const award = defineType({
             of: [
                 defineArrayMember({
                     type: 'block'
+                }),
+                defineArrayMember({
+                    type: 'image'
+                }),
+                defineArrayMember({
+                    type: 'youtube'
                 })
             ]
         })
