@@ -8,6 +8,7 @@ import faq from './faq';
 import rules_soloists from './rules_soloists';
 import rules_collectives from './rules_collectives';
 import results from './results';
+import { youtube } from './youtube';
 
 const schemas = [
     awards,
@@ -20,6 +21,7 @@ const schemas = [
     rules_soloists,
     rules_collectives,
     results,
+    youtube,
 ];
 
 export default schemas;

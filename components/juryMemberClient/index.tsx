@@ -23,8 +23,8 @@ interface IJuryParams {
   }
 }
 
-const JuryMemberClient = ({params}: IJuryParams) => {
-  
+const JuryMemberClient = ({ params }: IJuryParams) => {
+
   // Get jury member data
   const { data, isLoading, isError } = useQuery(
     ['jury_member', params.member],
@@ -65,46 +65,46 @@ const JuryMemberClient = ({params}: IJuryParams) => {
         isError && <h2>Something went wrong...</h2>
       }
       {data && (
-          <Card className="gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8 flex flex-col sm:flex-row sm:items-start justify-center items-center text-justify">
-            <section className="w-full sm:w-1/4">
-              <AspectRatio
-                className="overflow-hidden rounded-lg"
-                ratio={1 / 1}
-              >
-                <Image
-                  src={data.portrait_photo}
-                  alt="Jury member portrait"
-                  priority={true}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="rounded-lg object-cover"
-                />
-              </AspectRatio>
-              <h2 className="text-start text-lg md:text-2xl font-medium">
-                {data.name_and_surname}
-              </h2>
-              <h3 className="text-start">
-                {data.institution}
-              </h3>
-              <div className="gap-1 flex flex-col justify-between items-start w-full">
-                <CountrySection participant={data} />
-                <div className="flex gap-2 flex-wrap">
-                  {data.discipline?.map(d => (
-                    <Badge key={d} className="text-muted-foreground" variant="outline">
-                      {d}
-                    </Badge>
-                  ))}
-                </div>
+        <Card className="gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8 flex flex-col sm:flex-row sm:items-start justify-center items-center text-justify">
+          <section className="w-full sm:w-1/4">
+            <AspectRatio
+              className="overflow-hidden rounded-lg"
+              ratio={1 / 1}
+            >
+              <Image
+                src={data.portrait_photo}
+                alt="Jury member portrait"
+                priority={true}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="rounded-lg object-cover"
+              />
+            </AspectRatio>
+            <h2 className="text-start text-lg md:text-2xl font-medium">
+              {data.name_and_surname}
+            </h2>
+            <h3 className="text-start">
+              {data.institution}
+            </h3>
+            <div className="gap-1 flex flex-col justify-between items-start w-full">
+              <CountrySection participant={data} />
+              <div className="flex gap-2 flex-wrap">
+                {data.discipline?.map(d => (
+                  <Badge key={d} className="text-muted-foreground" variant="outline">
+                    {d}
+                  </Badge>
+                ))}
               </div>
-            </section>
-            <section className="sm:w-3/4">
-              <PortableText value={data.biography} />
-            </section>
-          </Card>
-        )
+            </div>
+          </section>
+          <section className="sm:w-3/4">
+            <PortableText value={data.biography} />
+          </section>
+        </Card>
+      )
       }
     </section>
   )
 }
-  
+
 export default JuryMemberClient;

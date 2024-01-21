@@ -13,6 +13,7 @@ export async function getAwards(): Promise<Award[]> {
 
     return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "award"]{
+          _type,
           _id,
           _createdAt,
           title,
