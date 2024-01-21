@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { AspectRatio } from "../ui/aspect-ratio";
 import urlBuilder from '@sanity/image-url'
 
 export const PostImage = ({ value }: any) => {
