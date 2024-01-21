@@ -6,14 +6,14 @@ export const PostImage = ({ value }: any) => {
         { projectId: '3vogqwic', dataset: 'production' }
     ).image(source).url();
     return (
-        <div className='rounded relative w-2/3 h-[500px]'>
+        <div className='rounded relative w-full h-auto'>
             <Image
                 src={urlFor(value)}
-                alt="Post image"
                 width="0"
                 height="0"
                 sizes="100vw"
-                className="w-auto h-full rounded object-cover object-top box-border overflow-hidden"
+                className="w-full h-full rounded object-cover object-top box-border overflow-hidden"
+                alt="Separator image"
             />
         </div>
     )

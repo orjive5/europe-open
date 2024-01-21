@@ -49,24 +49,24 @@ const PostClient = ({ params }: any) => {
         isError && <h2>Something went wrong...</h2>
       }
       {data && (
-        <Card className="gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8">
-          <CardHeader className="w-full text-center flex justify-center items-center gap-2 sm:gap-4">
+        <Card className="flex flex-col gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8">
+          <CardHeader className="w-full text-center flex justify-center items-center gap-2 sm:gap-4 p-0">
             <div>
               <CardTitle className="text-4xl font-semibold">{data.title}</CardTitle>
               <CardDescription className="text-xl">{data.description}</CardDescription>
             </div>
-            <div className='rounded relative w-2/3 h-[500px]'>
+            <div className='rounded relative w-full h-auto'>
               <Image
                 src={data.image}
                 width="0"
                 height="0"
                 sizes="100vw"
-                className="w-auto h-full rounded object-cover object-top box-border overflow-hidden"
+                className="w-full h-full rounded object-cover object-top box-border overflow-hidden"
                 alt="Separator image"
               />
             </div>
           </CardHeader>
-          <CardContent className="styled-link-parent text-justify w-full">
+          <CardContent className="styled-link-parent text-justify w-full flex flex-col justify-center items-start p-0">
             <PortableText
               components={{
                 types: {
@@ -80,8 +80,8 @@ const PostClient = ({ params }: any) => {
                   youtube: ({ value }) => {
                     const { url } = value;
                     return (
-                      <div className="my-2 sm:my-4 w-full flex justify-center items-center">
-                        <ReactPlayer url={url} />
+                      <div className="rounded my-2 sm:my-4 w-full sm:w-2/3">
+                        <ReactPlayer width="100%" url={url} />
                       </div>)
                   }
                 },
@@ -89,8 +89,6 @@ const PostClient = ({ params }: any) => {
               value={data.content}
             />
           </CardContent>
-          <CardFooter className="flex justify-between">
-          </CardFooter>
         </Card>
       )
       }
