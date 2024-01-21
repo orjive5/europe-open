@@ -36,7 +36,7 @@ const FormSchema = z.object({
 
 const ResultsClient = () => {
 
-  const {data, isError } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ['results'],
     queryFn: getResults,
   });
@@ -46,7 +46,7 @@ const ResultsClient = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
- 
+
   function onSubmit(value: z.infer<typeof FormSchema>) {
     setChosenResults({
       title: data && data.find(d => d.competitive_year.toString() === value.competitive_year)?.title,
@@ -54,10 +54,10 @@ const ResultsClient = () => {
       results: data && data.find(d => d.competitive_year.toString() === value.competitive_year)?.results,
     })
   }
- 
+
   return (
     <div className="flex flex-col gap-8 justify-center items-center">
-      {isError ? 
+      {isError ?
         (<h2>
           Something went wrong, please, reload and try again.
         </h2>) : (
@@ -103,7 +103,7 @@ const ResultsClient = () => {
             </Form>
             {chosenResults && (
               <div className="styled-link-parent flex gap-2">
-                <DownloadCloud className="text-primary"/>
+                <DownloadCloud className="text-primary" />
                 <a
                   href={`${chosenResults.results}?dl`}
                   target="_blank"
