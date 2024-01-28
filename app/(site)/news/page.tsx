@@ -2,11 +2,11 @@ import PostsClient from "@/components/postsClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Europe Open | Awards',
+  title: 'Europe Open | News',
 }
 
-const Awards = () => {
-  return <PostsClient postType="awards" />
+const News = () => {
+  return <PostsClient postType="news" />
 }
 
-export default Awards;
+export default News;

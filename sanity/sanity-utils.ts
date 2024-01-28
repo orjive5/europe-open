@@ -3,13 +3,13 @@ import { IDiscipline } from "@/types/discipline.interface";
 import { IJury } from "@/types/jury.interface";
 import { Page } from "@/types/page.interface";
 import { IParticipantData } from "@/types/participantData.interface";
-import { Award } from "@/types/award.interface";
+import { Post } from "@/types/post.interface";
 import { Result } from "@/types/result.interface";
 import { Rule } from "@/types/rule.interface";
 import { createClient, groq } from "next-sanity";
 import clientConfig from "./config/client-config";
 
-export async function getAwards(): Promise<Award[]> {
+export async function getAwards(): Promise<Post[]> {
 
     return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "award"]{
@@ -26,10 +26,44 @@ export async function getAwards(): Promise<Award[]> {
     );
 }
 
-export async function getAward(slug: string): Promise<Award> {
+export async function getAward(slug: string): Promise<Post> {
 
     return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "award" && slug.current == $slug][0]{
+            _id,
+            _createdAt,
+            title,
+            description,
+            "slug": slug.current,
+            "image": image.asset->url,
+            URLs,
+            content
+        }`,
+        {
+            slug
+        },
+    )
+}
+
+export async function getNews(): Promise<Post[]> {
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "news"]{
+          _type,
+          _id,
+          _createdAt,
+          title,
+          description,
+          "slug": slug.current,
+          "image": image.asset->url,
+          URLs,
+          content
+      } | order(_createdAt desc)`
+    );
+}
+
+export async function getNewsArticle(slug: string): Promise<Post> {
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "news" && slug.current == $slug][0]{
             _id,
             _createdAt,
             title,

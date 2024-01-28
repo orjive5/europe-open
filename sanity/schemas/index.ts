@@ -10,9 +10,11 @@ import rules_collectives from './rules_collectives';
 import results from './results';
 import { youtube } from './youtube';
 import _break from './break';
+import news from './news';
 
 const schemas = [
     awards,
+    news,
     page,
     participants,
     disciplines,

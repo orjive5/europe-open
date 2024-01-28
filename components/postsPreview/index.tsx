@@ -6,7 +6,7 @@ const PostsPreview = ({ post, landingPage }: any) => {
 
   return (
     <Link
-      href={`/${post._type}s/${post.slug}`}
+      href={`/${post._type}${post._type === 'news' ? '' : 's'}/${post.slug}`}
       key={post._id}
       className={`group hover:cursor-pointer flex flex-col gap-2 ${landingPage ? '' : 'sm:w-10/12 md:w-[300px]'} w-full`}
     >
