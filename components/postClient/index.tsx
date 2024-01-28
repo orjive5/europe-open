@@ -1,5 +1,6 @@
 'use client'
 
+import { useAwardQuery, useNewsArticleQuery } from "@/app/queries/queries";
 import {
   Card,
   CardContent,
@@ -9,19 +10,27 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAward } from "@/sanity/sanity-utils";
 import { PortableText } from "@portabletext/react";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import ReactPlayer from "react-player";
 import { PostImage } from "../postImage";
 
-const PostClient = ({ params }: any) => {
+const PostClient = ({ params, postType }: any) => {
 
-  const { data, isLoading, isError } = useQuery(
-    ['award', params],
-    () => getAward(params.award)
-  );
+  let query = useAwardQuery;
+
+  if (postType === "awards") {
+    query = useAwardQuery;
+  }
+
+  if (postType === "news_article") {
+    query = useNewsArticleQuery
+  }
+
+  // Get posts data
+  const { data, isLoading, isError } = query({ params });
+
+  data && console.log(data)
 
   return (
     <section className="w-full flex flex-col justify-center items-center">

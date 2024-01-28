@@ -1,19 +1,25 @@
 'use client'
 
-import { getAwards } from "@/sanity/sanity-utils";
-import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Link from "next/link";
 import PostsPreview from "../postsPreview";
+import { useAwardsQuery, useNewsQuery } from "@/app/queries/queries";
 
 const PostsGrid = ({ heading, href }: { heading: string; href: string }) => {
 
-    // Get awards data
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ['awards'],
-        queryFn: getAwards,
-    });
+    let query = useAwardsQuery;
+
+    if (href === "awards") {
+        query = useAwardsQuery
+    }
+
+    if (href === "news") {
+        query = useNewsQuery
+    }
+
+    // Get posts data
+    const { data, isLoading, isError } = query()
 
     return (
         <section className="w-full flex flex-col justify-center items-center gap-8">

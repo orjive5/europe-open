@@ -45,6 +45,14 @@ const Home = () => {
           MAKE A BEAUTIFUL AND HIGH-QUALITY VIDEO - RECOMMENDATIONS!
         </Link>
       </section>
+      <section className="w-5/6 flex flex-col items-center gap-8">
+        <PostsGrid heading="NEWS" href="news" />
+        <Link href='news'>
+          <Button>
+            Browse News
+          </Button>
+        </Link>
+      </section>
       <MapChart />
     </main>
   )

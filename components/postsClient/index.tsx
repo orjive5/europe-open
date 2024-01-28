@@ -1,6 +1,6 @@
 'use client'
 
-import { useAwardsQuery } from "@/app/queries/queries";
+import { useAwardsQuery, useNewsQuery } from "@/app/queries/queries";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
@@ -9,10 +9,15 @@ import ReactPaginate from 'react-paginate';
 import PostsPreview from "../postsPreview";
 
 const PostsClient = ({ postType }: { postType: string }) => {
+
   let query = useAwardsQuery;
 
   if (postType === "awards") {
     query = useAwardsQuery
+  }
+
+  if (postType === "news") {
+    query = useNewsQuery
   }
 
   // Get posts data
