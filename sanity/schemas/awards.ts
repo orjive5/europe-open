@@ -62,7 +62,10 @@ const award = defineType({
                 }),
                 defineArrayMember({
                     type: 'youtube'
-                })
+                }),
+                defineArrayMember({
+                    type: 'break'
+                }),
             ]
         })
     ]

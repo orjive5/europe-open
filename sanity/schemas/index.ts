@@ -9,6 +9,7 @@ import rules_soloists from './rules_soloists';
 import rules_collectives from './rules_collectives';
 import results from './results';
 import { youtube } from './youtube';
+import _break from './break';
 
 const schemas = [
     awards,
@@ -22,6 +23,7 @@ const schemas = [
     rules_collectives,
     results,
     youtube,
+    _break,
 ];
 
 export default schemas;

@@ -27,21 +27,21 @@ const PostClient = ({ params }: any) => {
     <section className="w-full flex flex-col justify-center items-center">
       {
         isLoading && (
-          <Card className="gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8">
-            <CardHeader className="w-full text-center flex justify-center items-center gap-2 sm:gap-4">
+          <Card className="flex flex-col gap-2 sm:gap-4 w-full p-2 sm:p-4 lg:w-3/4 xl:w-2/3 lg:p-8">
+            <CardHeader className="w-full text-center flex justify-center items-center gap-2 sm:gap-4 p-0">
               <div className="flex flex-col justify-center items-center gap-2 w-full">
                 <Skeleton className="h-8 w-2/3" />
                 <Skeleton className="h-4 w-1/3" />
               </div>
-              <div className='rounded relative w-2/3 h-[500px]'>
+              <div className='rounded relative w-full h-screen'>
                 <Skeleton className="h-full w-full" />
               </div>
             </CardHeader>
-            <CardContent className="text-justify w-full">
-              <Skeleton className="h-96 w-full" />
+            <CardContent className="styled-link-parent text-justify w-full flex flex-col justify-center items-start p-0">
+              <CardContent className="text-justify w-full">
+                <Skeleton className="h-96 w-full" />
+              </CardContent>
             </CardContent>
-            <CardFooter className="flex justify-between">
-            </CardFooter>
           </Card>
         )
       }
@@ -83,7 +83,8 @@ const PostClient = ({ params }: any) => {
                       <div className="rounded my-2 sm:my-4 w-full sm:w-2/3">
                         <ReactPlayer width="100%" url={url} />
                       </div>)
-                  }
+                  },
+                  break: ({ value }) => value.style === "break" ? <br /> : null
                 },
               }}
               value={data.content}
