@@ -15,7 +15,7 @@ const ParticipantClient = ({ params }: IParticipantParams) => {
 
   const { data, isLoading, isError } = useQuery(
     ['participant_2023', params.participant],
-    () => getParticipant(params.participant)
+    () => getParticipant(params.participant),
   );
 
   return (
@@ -33,20 +33,22 @@ const ParticipantClient = ({ params }: IParticipantParams) => {
       }
       {
         data && (
-          <section className="w-full flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
-            <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
-            <ParticipantInfo participant={data} />
-          </section>
+          <>
+            <section className="w-full flex flex-col 2xl:flex-row 2xl:h-[500px] justify-center items-center gap-8">
+              <YoutubeEmbed embedId={getYoutubeVideoId(data.youtube_link)} />
+              <ParticipantInfo participant={data} />
+            </section>
+            <section className="w-full flex flex-col items-center gap-8">
+              <ParticipantsGrid text heading={`LATEST PARTICIPANTS - ${data.discipline[0].toUpperCase()}`} discipline={data.discipline[0]} />
+              <Link href='/participants'>
+                <Button>
+                  Browse Participants
+                </Button>
+              </Link>
+            </section>
+          </>
         )
       }
-      <section className="w-full flex flex-col items-center gap-8">
-        <ParticipantsGrid heading="LATEST PARTICIPANTS" />
-        <Link href='participants'>
-          <Button>
-            Browse Participants
-          </Button>
-        </Link>
-      </section>
     </main>
   )
 }

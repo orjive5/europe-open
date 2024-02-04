@@ -24,8 +24,8 @@ import {
 import { getResults } from "@/sanity/sanity-utils"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { DownloadCloud } from "lucide-react"
-import { IChosenResults } from "@/types/chosenResults.interface"
+import { ExternalLink } from "lucide-react"
+import { Result } from "@/types/result.interface"
 
 const FormSchema = z.object({
   competitive_year: z
@@ -41,18 +41,16 @@ const ResultsClient = () => {
     queryFn: getResults,
   });
 
-  const [chosenResults, setChosenResults] = useState<IChosenResults | null>(null);
+  const [chosenResults, setChosenResults] = useState<Result[] | null>(null);
+
+  const competitiveYears = [...new Set(data?.map(item => item.competitive_year))];
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   function onSubmit(value: z.infer<typeof FormSchema>) {
-    setChosenResults({
-      title: data && data.find(d => d.competitive_year.toString() === value.competitive_year)?.title,
-      year: value.competitive_year,
-      results: data && data.find(d => d.competitive_year.toString() === value.competitive_year)?.results,
-    })
+    data && setChosenResults(data.filter(item => item.competitive_year === Number(value.competitive_year)));
   }
 
   return (
@@ -82,11 +80,13 @@ const ResultsClient = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {data && data.map(r => (
-                            <SelectItem key={r._id} value={`${r.competitive_year}`}>
-                              {r.competitive_year}
-                            </SelectItem>
-                          ))}
+                          {competitiveYears && competitiveYears.map(item => {
+                            return (
+                              <SelectItem key={item} value={`${item}`}>
+                                {item}
+                              </SelectItem>
+                            )
+                          })}
                         </SelectContent>
                       </Select>
                       <FormDescription>
@@ -101,19 +101,18 @@ const ResultsClient = () => {
                 </Button>
               </form>
             </Form>
-            {chosenResults && (
-              <div className="styled-link-parent flex gap-2">
-                <DownloadCloud className="text-primary" />
+            {chosenResults?.map(item => {
+              return <div key={item._id} className="styled-link-parent flex gap-2">
+                <ExternalLink className="text-primary" />
                 <a
-                  href={`${chosenResults.results}?dl`}
+                  href={item.results}
                   target="_blank"
                   rel="noopener noreferrer"
-                  download
                 >
-                  {chosenResults.title}
+                  {item.title}
                 </a>
               </div>
-            )}
+            })}
           </>
         )
       }
