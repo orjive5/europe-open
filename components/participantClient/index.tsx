@@ -39,7 +39,7 @@ const ParticipantClient = ({ params }: IParticipantParams) => {
               <ParticipantInfo participant={data} />
             </section>
             <section className="w-full flex flex-col items-center gap-8">
-              <ParticipantsGrid heading={`LATEST PARTICIPANTS - ${data.discipline[0].toUpperCase()}`} discipline={data.discipline[0]} />
+              <ParticipantsGrid text heading={`LATEST PARTICIPANTS - ${data.discipline[0].toUpperCase()}`} discipline={data.discipline[0]} />
               <Link href='/participants'>
                 <Button>
                   Browse Participants

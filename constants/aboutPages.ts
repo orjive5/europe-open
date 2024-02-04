@@ -4,7 +4,7 @@ export const aboutPages: IHeaderPages[] = [
   {
     title: "ABOUT",
     href: "/about",
-    description: "Learn more about our us",
+    description: "Learn more about us",
   },
   {
     title: "FAQ",

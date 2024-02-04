@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IParticipantData } from "@/types/participantData.interface";
 
-const ParticipantsGrid = ({ heading, discipline }: { heading?: string, discipline?: string }) => {
+const ParticipantsGrid = ({ heading, discipline, text }: { heading?: string, discipline?: string, text?: boolean }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['participants'],
     queryFn: getParticipants,
@@ -28,11 +28,15 @@ const ParticipantsGrid = ({ heading, discipline }: { heading?: string, disciplin
 
   return (
     <section className="w-full flex flex-col justify-center items-center gap-8">
-      <Link href='/participants'>
-        <h1 className="sm:text-xl font-medium hover:underline">
+      {text ? (
+        <h1 className="sm:text-xl font-medium">
           {heading}
-        </h1>
-      </Link>
+        </h1>) : (
+        <Link href='/participants'>
+          <h1 className="sm:text-xl font-medium hover:underline">
+            {heading}
+          </h1>
+        </Link>)}
       <div className="justify-items-center w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
         {
           isLoading && [...Array(8)].map((el, i) => (
