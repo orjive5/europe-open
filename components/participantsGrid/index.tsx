@@ -6,12 +6,25 @@ import ParticipantPreview from "../participantPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { IParticipantData } from "@/types/participantData.interface";
 
-const ParticipantsGrid = ({ heading }: { heading?: string }) => {
+const ParticipantsGrid = ({ heading, discipline }: { heading?: string, discipline?: string }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['participants'],
     queryFn: getParticipants,
   });
+
+  const [sortedByDiscipline, setSortedByDiscipline] = useState<IParticipantData[] | null>(null);
+
+  useEffect(() => {
+    if (discipline) {
+      data && setSortedByDiscipline(data.filter(item => item.discipline[0] === discipline))
+    }
+  }, [data])
+
+  data && console.log(data);
+  discipline && data && console.log('discipline', sortedByDiscipline)
 
   return (
     <section className="w-full flex flex-col justify-center items-center gap-8">
@@ -49,9 +62,12 @@ const ParticipantsGrid = ({ heading }: { heading?: string }) => {
           </h2>
         }
         {
-          data && data
+          sortedByDiscipline ? (sortedByDiscipline
             .slice(0, 8)
-            .map(p => <ParticipantPreview key={p.slug} participant={p} />)
+            .map(p => <ParticipantPreview key={p.slug} participant={p} />)) :
+            (data && data
+              .slice(0, 8)
+              .map(p => <ParticipantPreview key={p.slug} participant={p} />))
         }
       </div>
     </section>
