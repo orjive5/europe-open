@@ -200,7 +200,7 @@ export const ApplyForm = () => {
     store.setOpenCheckout(true);
 
     // Set amount to pay
-    values.diploma_by_post ? store.setAmountToPay(40) : store.setAmountToPay(30);
+    values.diploma_by_post ? store.setAmountToPay(47) : store.setAmountToPay(37);
   }
 
   return (
