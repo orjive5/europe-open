@@ -2,7 +2,6 @@ import Hero from "@/components/hero";
 import { MapChart } from "@/components/mapChart";
 import ParticipantsGrid from "@/components/participantsGrid";
 import PostsGrid from "@/components/postsGrid";
-import SeparatorImage from "@/components/separatorImage";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -18,7 +17,6 @@ const Home = () => {
           </Button>
         </Link>
       </section>
-      <SeparatorImage />
       <section className="w-5/6 flex flex-col items-center gap-8">
         <PostsGrid heading="AWARDS" href="awards" />
         <Link href='awards'>
