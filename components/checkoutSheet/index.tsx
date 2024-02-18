@@ -2,14 +2,14 @@
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalCheckoutButton from "../paypalCheckoutButton";
-import { Sheet, SheetContent} from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useBoundStore } from "@/store";
 import { Separator } from "../ui/separator";
 
-const CheckoutSheet = ({ open, onOpenChange }: {open: boolean, onOpenChange: any}) => {
+const CheckoutSheet = ({ open, onOpenChange }: { open: boolean, onOpenChange: any }) => {
 
     const store = useBoundStore();
-    
+
     const product = {
         description: 'Europe Open participation fee',
         price: store.amount_to_pay
@@ -32,13 +32,13 @@ const CheckoutSheet = ({ open, onOpenChange }: {open: boolean, onOpenChange: any
                         <Separator />
                         <div>
                             <p>
-                                Participation fee: <span className="font-medium">30 EUR</span>
+                                Participation fee: <span className="font-medium">37 EUR</span>
                             </p>
                             {
                                 store.diploma_by_post && (
-                                <p>
-                                    Diploma by post: <span className="font-medium">10 EUR</span>
-                                </p>
+                                    <p>
+                                        Diploma by post: <span className="font-medium">10 EUR</span>
+                                    </p>
                                 )
                             }
                         </div>
@@ -47,11 +47,11 @@ const CheckoutSheet = ({ open, onOpenChange }: {open: boolean, onOpenChange: any
                             Total: {product.price} EUR
                         </p>
                     </section>
-                        <PayPalScriptProvider
-                            options={initialOptions}
-                        >
-                            <PaypalCheckoutButton product={product} />
-                        </PayPalScriptProvider>
+                    <PayPalScriptProvider
+                        options={initialOptions}
+                    >
+                        <PaypalCheckoutButton product={product} />
+                    </PayPalScriptProvider>
                 </div>
             </SheetContent>
         </Sheet>
