@@ -18,7 +18,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const ParticipantInfo = ({participant}: IParticipantInfo) => {
+const ParticipantInfo = ({ participant }: IParticipantInfo) => {
   return (
     <Card className="h-full w-full">
       <ScrollArea className="flex justify-center items-center h-full w-full rounded-md">
@@ -32,7 +32,7 @@ const ParticipantInfo = ({participant}: IParticipantInfo) => {
                   priority={true}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-contain"
                 />
               </div>)
             }
@@ -54,7 +54,7 @@ const ParticipantInfo = ({participant}: IParticipantInfo) => {
                     Section:
                   </h2>
                   <p>
-                    {participant.category} category, {participant.date_of_birth.slice(0,4)}
+                    {participant.category} category, {participant.date_of_birth.slice(0, 4)}
                   </p>
                 </div>
                 {participant.teacher && (
