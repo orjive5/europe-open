@@ -35,11 +35,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
 } from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
 
@@ -72,7 +72,7 @@ const ParticipantsClient = () => {
   });
 
   // Search and filters form
-  const [years, setYears] = useState<string[]>([""]); 
+  const [years, setYears] = useState<string[]>([""]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -84,7 +84,7 @@ const ParticipantsClient = () => {
   });
 
   const [disciplinesOpen, setDisciplinesOpen] = useState(false);
- 
+
   function onSubmit(value: z.infer<typeof FormSchema>) {
     data && setParticipants(() => {
 
@@ -93,10 +93,10 @@ const ParticipantsClient = () => {
         : data?.filter(p => p.competitive_year.toString() === value.competitive_year);
 
       const filteredByDiscipline = value.discipline === 'All disciplines'
-      ? filteredByYear
-      : filteredByYear?.filter(p => p.discipline[0] === value.discipline);
+        ? filteredByYear
+        : filteredByYear?.filter(p => p.discipline[0] === value.discipline);
 
-      const searchedParticipant = value.searchByName 
+      const searchedParticipant = value.searchByName
         ? filteredByDiscipline.filter(p => p.name_and_surname.toLowerCase().includes(value.searchByName.toLowerCase()))
         : filteredByDiscipline
 
@@ -113,101 +113,101 @@ const ParticipantsClient = () => {
 
   const pageCount = Math.ceil((participants && participants) ? participants.length / participantsPerPage : 0);
 
-  const changePage = ({selected}: {selected: number}) => {
+  const changePage = ({ selected }: { selected: number }) => {
     setPageNumber(selected)
-    window.scrollTo({top: 0})
+    window.scrollTo({ top: 0 })
   }
 
   // Display participants
   const displayParticipants = participants?.slice(pagesVisited, pagesVisited + participantsPerPage)
     .map((p: IParticipantData) => (
-      <ParticipantPreview key={p._id} participant={p}/>
-  ));
+      <ParticipantPreview key={p._id} participant={p} />
+    ));
 
   return (
-    <main className="flex flex-col md:items-center sm:my-8 gap-8">
+    <main className="flex flex-col md:items-center sm:my-8 gap-8 w-5/6">
       <section className="w-full flex flex-col justify-center items-center gap-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col 2xl:flex-row justify-center items-end gap-4 w-full sm:w-10/12 md:w-auto">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col 2xl:flex-row justify-start items-end gap-4 w-full">
             <section className="justify-center items-end w-full xl:w-auto flex flex-col xl:flex-row gap-4">
               <section className="justify-center items-end w-full xl:w-auto flex flex-col md:flex-row gap-4">
                 <FormField
                   control={form.control}
                   name="discipline"
                   render={({ field }) => (
-                    <FormItem className="w-full md:w-[300px] flex flex-col items-start">
+                    <FormItem className="w-auto min-w-[200px] flex flex-col items-start">
                       <FormLabel className="w-auto">
-                          Discipline
+                        Discipline
                       </FormLabel>
-                        <Popover
-                          open={disciplinesOpen}
-                          onOpenChange={setDisciplinesOpen}
-                        >
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                className={cn(
-                                  "w-full justify-between h-auto",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="p-0">
-                            <ScrollArea className="h-[500px]">
-                              <Command>
-                                <CommandInput placeholder="Search discipline..." />
-                                <CommandEmpty>
-                                    No discipline found.
-                                </CommandEmpty>
-                                <CommandGroup>
+                      <Popover
+                        open={disciplinesOpen}
+                        onOpenChange={setDisciplinesOpen}
+                      >
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between h-auto",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-0">
+                          <ScrollArea className="h-[500px]">
+                            <Command>
+                              <CommandInput placeholder="Search discipline..." />
+                              <CommandEmpty>
+                                No discipline found.
+                              </CommandEmpty>
+                              <CommandGroup>
+                                <CommandItem
+                                  value="All disciplines"
+                                  onSelect={() => {
+                                    form.setValue("discipline", "All disciplines");
+                                    setDisciplinesOpen(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      "All disciplines" === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  All disciplines
+                                </CommandItem>
+                                {disciplines.data && disciplines.data.map((d) => (
                                   <CommandItem
-                                    value="All disciplines"
+                                    value={d.title}
+                                    key={d.title}
                                     onSelect={() => {
-                                      form.setValue("discipline", "All disciplines");
+                                      form.setValue("discipline", d.title);
                                       setDisciplinesOpen(false);
                                     }}
                                   >
                                     <Check
                                       className={cn(
                                         "mr-2 h-4 w-4",
-                                        "All disciplines" === field.value
+                                        d.title === field.value
                                           ? "opacity-100"
                                           : "opacity-0"
                                       )}
                                     />
-                                    All disciplines
+                                    {d.title}
                                   </CommandItem>
-                                  {disciplines.data && disciplines.data.map((d) => (
-                                    <CommandItem
-                                      value={d.title}
-                                      key={d.title}
-                                      onSelect={() => {
-                                        form.setValue("discipline", d.title);
-                                        setDisciplinesOpen(false);
-                                      }}
-                                    >
-                                      <Check
-                                        className={cn(
-                                          "mr-2 h-4 w-4",
-                                          d.title === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                      />
-                                      {d.title}
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              </Command>
-                            </ScrollArea>
-                          </PopoverContent>
-                        </Popover>
+                                ))}
+                              </CommandGroup>
+                            </Command>
+                          </ScrollArea>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -216,7 +216,7 @@ const ParticipantsClient = () => {
                   control={form.control}
                   name="competitive_year"
                   render={({ field }) => (
-                    <FormItem className="w-full md:w-[300px] flex flex-col items-start">
+                    <FormItem className="w-full md:w-[200px] flex flex-col items-start">
                       <FormLabel>
                         Year
                       </FormLabel>
@@ -245,7 +245,7 @@ const ParticipantsClient = () => {
                 control={form.control}
                 name="searchByName"
                 render={({ field }) => (
-                  <FormItem className="w-full xl:w-[300px] flex flex-col items-start" >
+                  <FormItem className="w-full xl:w-[200px] flex flex-col items-start" >
                     <FormLabel>Search by name</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter participant's name" {...field} />
@@ -255,7 +255,7 @@ const ParticipantsClient = () => {
                 )}
               />
             </section>
-            <Button className="flex gap-2 w-full 2xl:w-[300px]" type="submit">
+            <Button className="flex gap-2 w-full 2xl:w-[200px]" type="submit">
               Search
               <Search />
             </Button>
@@ -263,8 +263,8 @@ const ParticipantsClient = () => {
         </Form>
         {
           displayParticipants
-            && !displayParticipants.length
-            && (
+          && !displayParticipants.length
+          && (
             <div>
               <h2 className="font-medium text-center">
                 No results found.
@@ -273,13 +273,13 @@ const ParticipantsClient = () => {
                 Try different keywords or remove search filters.
               </p>
             </div>
-            )
+          )
         }
         <div className="justify-items-center w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
           {
             isLoading && [...Array(16)].map((el, i) => (
               <div key={i} className="flex flex-col gap-2 w-full sm:w-10/12 md:w-[300px]">
-                <AspectRatio 
+                <AspectRatio
                   className="overflow-hidden rounded-lg"
                   ratio={16 / 9}
                 >
@@ -298,10 +298,10 @@ const ParticipantsClient = () => {
             ))
           }
           {
-            isError && 
-              <h2 className="text-center">
-                Something went wrong...
-              </h2>
+            isError &&
+            <h2 className="text-center">
+              Something went wrong...
+            </h2>
           }
           {displayParticipants && displayParticipants}
         </div>
