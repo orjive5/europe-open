@@ -4,7 +4,7 @@ import HeroImage from '../heroImage';
 const Hero = () => {
 
     return (
-        <section className="xl:h-[calc(100vh-192px)] w-5/6 flex flex-col xl:flex-row justify-center items-center gap-8">
+        <section className="xl:h-[calc(100vh-192px)] w-5/6 flex flex-col xl:flex-row justify-between items-center gap-8 xl:mb-8">
             <div className='xl:w-1/2 flex flex-col text-center xl:text-start gap-4 xl:gap-8'>
                 <div className='text-2xl xl:text-4xl'>
                     <span className='font-black text-4xl xl:text-8xl'>
