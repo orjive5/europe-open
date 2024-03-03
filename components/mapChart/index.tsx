@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export function MapChart() {
     const { theme } = useTheme();
-    const {data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['participants'],
         queryFn: getParticipants,
         refetchOnWindowFocus: true,
@@ -19,16 +19,16 @@ export function MapChart() {
 
     // Calculate number of participants from each country
     function countCountries(array: IParticipantData[]) {
-        const countryCountMap: { [country: string]: number } = {};
-        
+        const countryCountMap: { [country_code: string]: number } = {};
+
         for (const item of array) {
-            const country = item.country;
-            countryCountMap[country] 
-            ? countryCountMap[country]++ 
-            : countryCountMap[country] = 1        
+            const country_code = item.country_code;
+            countryCountMap[country_code]
+                ? countryCountMap[country_code]++
+                : countryCountMap[country_code] = 1
         }
-        
-        const result = Object.entries(countryCountMap).map(([country, count]) => [country, count]);
+
+        const result = Object.entries(countryCountMap).map(([country_code, count]) => [country_code, count]);
         return [["Country", "Number of participants"], ...result]
     }
 
@@ -37,21 +37,21 @@ export function MapChart() {
     // Ignore console warning
     console.warn = function (...args) {
         const arg = args && args[0];
-    
+
         if (arg && arg.includes('Attempting to load version \'51\' of Google Charts')) return;
         if (arg && arg.includes('Google Maps JavaScript API has been loaded directly without a callback')) return;
-    
+
         originalWarn(...args);
     };
 
     if (typeof window !== 'undefined') {
         // Re-render on window resize to match the required width
         window.addEventListener('resize', drawChart, false);
-      }
+    }
 
     const [key, setKey] = useState(false)
     function drawChart() {
-     setKey(prevKey => !prevKey)
+        setKey(prevKey => !prevKey)
     }
 
     return (
@@ -59,31 +59,31 @@ export function MapChart() {
             <h1 className="sm:text-xl font-medium">
                 Participant's Geography
             </h1>
-            {data 
+            {data
                 && (<Chart
-                        key={`${key}`}
-                        width="100%"
-                        chartType="GeoChart"
-                        data={countCountries(data)}
-                        mapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-                        options={{
-                            backgroundColor: `${theme === 'dark' ? '#0c0a09' : 'white'}`,
-                            datalessRegionColor: "#f5f5f5",
-                            defaultColor: "#f5f5f5",
-                            colorAxis: { colors: ["#FAE4D4", "#F97316"] },
-                            legend: false,
-                            keepAspectRatio: true
-                        }}
-                    />)
+                    key={`${key}`}
+                    width="100%"
+                    chartType="GeoChart"
+                    data={countCountries(data)}
+                    mapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+                    options={{
+                        backgroundColor: `${theme === 'dark' ? '#0c0a09' : 'white'}`,
+                        datalessRegionColor: "#f5f5f5",
+                        defaultColor: "#f5f5f5",
+                        colorAxis: { colors: ["#FAE4D4", "#F97316"] },
+                        legend: false,
+                        keepAspectRatio: true
+                    }}
+                />)
             }
             {
-              isLoading && <Skeleton className="w-full h-[300px] xl:h-[700px]" />
+                isLoading && <Skeleton className="w-full h-[300px] xl:h-[700px]" />
             }
             {
-              isError && 
-                  <h2 className="text-center">
-                      Something went wrong...
-                  </h2>
+                isError &&
+                <h2 className="text-center">
+                    Something went wrong...
+                </h2>
             }
         </section>
     );

@@ -11,7 +11,7 @@ const hanken = Hanken_Grotesk({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Europe Open',
-  description: 'Europe Open is an online music competition platform for classical musicians — a web app where music students from around the world submit their performance videos for evaluation by a professional jury.',
+  description: 'Europe Open is an online music competition platform for classical musicians where music students from around the world submit their performance videos for evaluation by a professional jury.',
 }
 
 export default async function RootLayout({
