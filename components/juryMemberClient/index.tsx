@@ -98,7 +98,14 @@ const JuryMemberClient = ({ params }: IJuryParams) => {
             </div>
           </section>
           <section className="sm:w-3/4">
-            <PortableText value={data.biography} />
+            <PortableText
+              components={{
+                types: {
+                  break: ({ value }) => value.style === "break" ? <br /> : null
+                },
+              }}
+              value={data.biography}
+            />
           </section>
         </Card>
       )
