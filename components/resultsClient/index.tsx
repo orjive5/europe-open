@@ -101,18 +101,65 @@ const ResultsClient = () => {
                 </Button>
               </form>
             </Form>
-            {chosenResults?.map(item => {
-              return <div key={item._id} className="styled-link-parent flex gap-2">
-                <ExternalLink className="text-primary" />
-                <a
-                  href={item.results}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {item.title}
-                </a>
+            {chosenResults && (
+              <div className="flex flex-col justify-start align-center gap-4">
+                {chosenResults.map(item => {
+                  return (
+                    <div key={item._id} className="styled-link-parent flex gap-2">
+                      <ExternalLink className="text-primary" />
+                      <a
+                        href={item.results}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.title}
+                      </a>
+                    </div>
+                  )
+                })}
+                <div className="styled-link-parent flex gap-2">
+                  <ExternalLink className="text-primary" />
+                  <a
+                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    e-Letters of Appreciation to teachers
+                  </a>
+                </div>
+                <div className="styled-link-parent flex gap-2">
+                  <ExternalLink className="text-primary" />
+                  <a
+                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Participant's e-Diploma
+                  </a>
+                </div>
+                <div className="styled-link-parent flex gap-2">
+                  <ExternalLink className="text-primary" />
+                  <a
+                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Participant's e-Poster
+                  </a>
+                </div>
+                <div className="styled-link-parent flex gap-2">
+                  <ExternalLink className="text-primary" />
+                  <a
+                    href='https://www.europecompetition.com/news/3d2e6-diploma-by-postal-service-2024'
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Diploma by Postal Service (on request)
+                  </a>
+                </div>
               </div>
-            })}
+            )}
+
           </>
         )
       }

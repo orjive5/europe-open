@@ -1,5 +1,5 @@
 import { slugHex } from '@/lib/slugHex';
-import {defineType, defineField, defineArrayMember, SlugRule} from 'sanity'
+import { defineType, defineField, defineArrayMember, SlugRule } from 'sanity'
 
 const jury = defineType({
     name: 'jury',
@@ -24,7 +24,7 @@ const jury = defineType({
                     .replace(/\s+/g, '-')
                     .replace(/[^\w\-]+/g, '')
                     .replace(/\-\-+/g, '-')
-                    .replace(/^-+/, '') 
+                    .replace(/^-+/, '')
                     .replace(/-+$/, '')
                     .slice(0, 101) + `-${new Date().getFullYear()}`
             },
@@ -68,7 +68,10 @@ const jury = defineType({
             of: [
                 defineArrayMember({
                     type: 'block'
-                })
+                }),
+                defineArrayMember({
+                    type: 'break'
+                }),
             ]
         }),
         defineField({
