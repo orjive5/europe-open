@@ -73,7 +73,7 @@ const JuryClient = () => {
     data && setJury(() => {
       return value.discipline === 'All disciplines'
         ? data
-        : data?.filter(p => p.discipline.includes(value.discipline));
+        : data?.filter(item => item.discipline?.includes(value.discipline));
     });
     setPageNumber(0);
   }

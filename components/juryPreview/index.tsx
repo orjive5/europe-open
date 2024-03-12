@@ -5,7 +5,7 @@ import CountrySection from "../countrySection";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Badge } from "../ui/badge";
 
-const JuryPreview = ({member, landingPage}: {member: IJury, landingPage?: boolean}) => {
+const JuryPreview = ({ member, landingPage }: { member: IJury, landingPage?: boolean }) => {
   return (
     <Link
       href={`/jury/${member.slug}`}
@@ -37,7 +37,7 @@ const JuryPreview = ({member, landingPage}: {member: IJury, landingPage?: boolea
         <div className="gap-1 flex flex-col justify-between items-start">
           <CountrySection participant={member} />
           <div className="flex gap-2 flex-wrap">
-            {member.discipline.map(d => (
+            {member.discipline?.map(d => (
               <Badge key={d} className="text-muted-foreground" variant="outline">
                 {d}
               </Badge>
