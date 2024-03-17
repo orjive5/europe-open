@@ -36,7 +36,7 @@ const ParticipantInfo = ({ participant }: IParticipantInfo) => {
                 />
               </div>)
             }
-            <CardTitle className="text-lg md:text-xl text-center">
+            <CardTitle className="max-w-[200px] sm:max-w-[300px] md:max-w-[400px] text-lg md:text-xl text-center">
               {participant.name_and_surname}
             </CardTitle>
             <div className="gap-2 2xl:gap-4 2xl:w-full flex flex-col 2xl:flex-row justify-center items-center">

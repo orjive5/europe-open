@@ -1,11 +1,11 @@
 import { slugHex } from '@/lib/slugHex';
-import {defineType, defineField, defineArrayMember, Rule, SlugRule} from 'sanity';
+import { defineType, defineField, defineArrayMember, Rule, SlugRule } from 'sanity';
 
 const seasonEnum = [
     { title: 'Autumn', value: 'autumn' },
     { title: 'Spring', value: 'spring' },
     { title: 'Summer', value: 'summer' },
-  ];
+];
 
 const participants = defineType({
     name: 'participants',
@@ -54,7 +54,7 @@ const participants = defineType({
                     .replace(/\s+/g, '-')
                     .replace(/[^\w\-]+/g, '')
                     .replace(/\-\-+/g, '-')
-                    .replace(/^-+/, '') 
+                    .replace(/^-+/, '')
                     .replace(/-+$/, '')
                     .slice(0, 101) + `-${new Date().getFullYear()}`
             },
@@ -141,7 +141,7 @@ const participants = defineType({
             name: 'identity_documents',
             title: 'Identity documents',
             type: 'array',
-            of: [{type: 'file'}],
+            of: [{ type: 'file' }],
         }),
         defineField({
             name: 'poster_photo',
@@ -178,7 +178,7 @@ const participants = defineType({
             title: 'Season',
             type: 'string',
             options: {
-              list: seasonEnum,
+                list: seasonEnum,
             },
             initialValue: 'autumn',
             validation: Rule => Rule.required()
