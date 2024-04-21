@@ -147,7 +147,7 @@ const ResultsClient = () => {
                 })}
                 {additionalResultsLinks.map(item => {
                   return (
-                    <div className="styled-link-parent flex gap-2">
+                    <div key={item.title} className="styled-link-parent flex gap-2">
                       <ExternalLink className="text-primary" />
                       <a
                         href={item.url}
