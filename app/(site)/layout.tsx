@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/themeProvider";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "@/components/ui/toaster"
 import { Hanken_Grotesk } from 'next/font/google'
+import { Analytics } from "@vercel/analytics/react"
 const hanken = Hanken_Grotesk({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default async function RootLayout({
     <ReactQueryProvider>
       <html lang="en">
         <body>
+          <Analytics />
           <main className={`${hanken.className} p-2 sm:p-4 md:p-8 flex flex-col items-center gap-8 mx-auto min-h-screen w-full`}>
             <NextTopLoader
               color='#ea580c'
