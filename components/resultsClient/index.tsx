@@ -22,10 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { getResults } from "@/sanity/sanity-utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { ExternalLink } from "lucide-react"
 import { Result } from "@/types/result.interface"
+import { useSearchParams, usePathname, useRouter } from "next/navigation"
+import { additionalResultsLinks } from "@/constants/additionalResultsLinks"
 
 const FormSchema = z.object({
   competitive_year: z
@@ -35,6 +37,9 @@ const FormSchema = z.object({
 })
 
 const ResultsClient = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   const { data, isError } = useQuery({
     queryKey: ['results'],
@@ -46,11 +51,34 @@ const ResultsClient = () => {
   const competitiveYears = [...new Set(data?.map(item => item.competitive_year))];
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(FormSchema)
   });
 
+  const { setValue, control, handleSubmit, watch } = form;
+
+  const selectedYear = watch('competitive_year');
+
+  useEffect(() => {
+    const yearFromURL = searchParams.get('year');
+    if (yearFromURL && data) {
+      const yearFromUrlData = data.filter(item => String(item.competitive_year) === yearFromURL);
+      if (yearFromUrlData) {
+        setValue('competitive_year', String(yearFromUrlData?.[0]?.competitive_year));
+      }
+      setChosenResults(yearFromUrlData);
+    }
+  }, [data])
+
   function onSubmit(value: z.infer<typeof FormSchema>) {
-    data && setChosenResults(data.filter(item => item.competitive_year === Number(value.competitive_year)));
+    const chosenYear = data?.filter(item => item.competitive_year === Number(value.competitive_year));
+    const params = new URLSearchParams(searchParams);
+    if (chosenYear) {
+      params.set('year', String(chosenYear[0].competitive_year))
+    } else {
+      params.delete('year')
+    }
+    replace(`${pathname}?${params.toString()}`);
+    setChosenResults(chosenYear || null);
   }
 
   return (
@@ -61,9 +89,9 @@ const ResultsClient = () => {
         </h2>) : (
           <>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="competitive_year"
                   render={({ field }) => (
                     <FormItem>
@@ -73,7 +101,7 @@ const ResultsClient = () => {
                       <Select onValueChange={(e) => {
                         setChosenResults(null)
                         field.onChange(e)
-                      }} defaultValue={field.value}>
+                      }} value={selectedYear || field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder='Select a year to download results' />
@@ -117,46 +145,20 @@ const ResultsClient = () => {
                     </div>
                   )
                 })}
-                <div className="styled-link-parent flex gap-2">
-                  <ExternalLink className="text-primary" />
-                  <a
-                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    e-Letters of Appreciation to teachers
-                  </a>
-                </div>
-                <div className="styled-link-parent flex gap-2">
-                  <ExternalLink className="text-primary" />
-                  <a
-                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Participant's e-Diploma
-                  </a>
-                </div>
-                <div className="styled-link-parent flex gap-2">
-                  <ExternalLink className="text-primary" />
-                  <a
-                    href='https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION'
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Participant's e-Poster
-                  </a>
-                </div>
-                <div className="styled-link-parent flex gap-2">
-                  <ExternalLink className="text-primary" />
-                  <a
-                    href='https://www.europecompetition.com/news/3d2e6-diploma-by-postal-service-2024'
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Diploma by Postal Service (on request)
-                  </a>
-                </div>
+                {additionalResultsLinks.map(item => {
+                  return (
+                    <div className="styled-link-parent flex gap-2">
+                      <ExternalLink className="text-primary" />
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.title}
+                      </a>
+                    </div>
+                  )
+                })}
               </div>
             )}
 
