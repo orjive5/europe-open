@@ -4,11 +4,11 @@ export const additionalResultsLinks = [
         url: 'https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION',
     },
     {
-        title: 'Participantn\'s e-Diploma',
+        title: 'Participant\'s e-Diploma',
         url: 'https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION',
     },
     {
-        title: 'Participantn\'s e-Poster',
+        title: 'Participant\'s e-Poster',
         url: 'https://www.mediafire.com/folder/nt3790j7u6fxf/EUROPE_OPEN_MUSIC_COMPETITION',
     },
     {

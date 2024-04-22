@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDisciplines, getJury } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPaginate from 'react-paginate';
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -34,16 +34,20 @@ import {
 } from "@/components/ui/command"
 import { IJury } from "@/types/jury.interface";
 import JuryPreview from "@/components/juryPreview";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   discipline: z.string(),
 });
 
 const JuryClient = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const params = new URLSearchParams(searchParams);
 
   const [jury, setJury] = useState<null | IJury[]>(null);
 
-  // Get jury data
   const { data, isLoading, isError } = useQuery({
     queryKey: ['jury'],
     queryFn: getJury,
@@ -53,13 +57,11 @@ const JuryClient = () => {
     },
   });
 
-  // Get disciplines data
   const disciplines = useQuery({
     queryKey: ['disciplines'],
     queryFn: getDisciplines,
   });
 
-  // Search and filters form
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -69,17 +71,9 @@ const JuryClient = () => {
 
   const [disciplinesOpen, setDisciplinesOpen] = useState(false);
 
-  function onSubmit(value: z.infer<typeof FormSchema>) {
-    data && setJury(() => {
-      return value.discipline === 'All disciplines'
-        ? data
-        : data?.filter(item => item.discipline?.includes(value.discipline));
-    });
-    setPageNumber(0);
-  }
-
   // Pagination
   const [pageNumber, setPageNumber] = useState(0);
+  const [forcePage, setForcePage] = useState(0);
 
   const juryPerPage = 16;
   const pagesVisited = pageNumber * juryPerPage;
@@ -87,15 +81,54 @@ const JuryClient = () => {
   const pageCount = Math.ceil((jury && jury) ? jury.length / juryPerPage : 0);
 
   const changePage = ({ selected }: { selected: number }) => {
+    params.set('page', String(selected + 1));
+    replace(`${pathname}?${params.toString()}`);
     setPageNumber(selected);
     window.scrollTo({ top: 0 })
   }
+
+  const pageFromUrl = searchParams.get('page');
+  useEffect(() => {
+    if (pageFromUrl) {
+      setPageNumber(Number(pageFromUrl) - 1);
+      setForcePage(Number(pageFromUrl) - 1)
+    }
+  }, []);
+
+  function onSubmit(value: z.infer<typeof FormSchema>) {
+    const selectedDiscipline = value.discipline === 'All disciplines'
+      ? data
+      : data?.filter(item => item.discipline?.includes(value.discipline));
+    if (value.discipline === 'All disciplines') {
+      params.delete('discipline')
+    } else {
+      params.set('discipline', value.discipline.toLowerCase());
+      replace(`${pathname}?${params.toString()}`);
+    }
+    data && setJury(selectedDiscipline || null);
+    changePage({ selected: 0 });
+    setForcePage(0);
+  }
+
+  const disciplineFromUrl = searchParams.get('discipline');
+  useEffect(() => {
+    if (disciplineFromUrl && data) {
+      const parsedDiscipline = disciplineFromUrl.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+      const selectedDiscipline = data.filter(item => item.discipline?.includes(parsedDiscipline));
+      setJury(selectedDiscipline || null);
+      form.setValue('discipline', parsedDiscipline)
+    }
+  }, [data]);
 
   // Display jury
   const displayJury = jury?.slice(pagesVisited, pagesVisited + juryPerPage)
     .map((j: IJury) => (
       <JuryPreview key={j._id} member={j} />
     ));
+
+  if (!data) {
+    return <div className="flex flex-grow justify-center items-center">Loading...</div>
+  }
 
   return (
     <main className="flex flex-col md:items-center sm:my-8 gap-8">
@@ -249,6 +282,7 @@ const JuryClient = () => {
             disabledClassName={"text-muted-foreground"}
             disabledLinkClassName={"cursor-not-allowed"}
             activeClassName={"text-primary"}
+            forcePage={forcePage}
           />
         )}
       </section>
