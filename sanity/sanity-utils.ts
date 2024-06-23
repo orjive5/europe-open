@@ -216,10 +216,36 @@ export async function getSoloistsRules(): Promise<Rule[]> {
     );
 }
 
+export async function getSoloistsTimetable(): Promise<Rule[]> {
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "timetable_soloists"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+          content
+      } | order(_createdAt asc)`
+    );
+}
+
 export async function getCollectivesRules(): Promise<Rule[]> {
 
     return createClient({ ...clientConfig, perspective: 'published' }).fetch(
         groq`*[_type == "rules_collectives"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+          content
+      } | order(_createdAt asc)`
+    );
+}
+
+export async function getCollectivesTimetable(): Promise<Rule[]> {
+
+    return createClient({ ...clientConfig, perspective: 'published' }).fetch(
+        groq`*[_type == "timetable_collectives"]{
           _id,
           _createdAt,
           title,
