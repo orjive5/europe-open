@@ -11,6 +11,8 @@ import results from './results';
 import { youtube } from './youtube';
 import _break from './break';
 import news from './news';
+import timetable_soloists from './timetable_soloists';
+import timetable_collectives from './timetable_collectives';
 
 const schemas = [
     awards,
@@ -22,7 +24,9 @@ const schemas = [
     jury,
     faq,
     rules_soloists,
+    timetable_soloists,
     rules_collectives,
+    timetable_collectives,
     results,
     youtube,
     _break,
