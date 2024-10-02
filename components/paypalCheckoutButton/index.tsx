@@ -38,6 +38,7 @@ const PaypalCheckoutButton = (props: any) => {
             diploma_by_postal_service: store.diploma_by_post,
             postal_address: store.postal_address && store.postal_address,
             transaction_id: transactionId,
+            payment_proof: store.payment_proof && store.payment_proof,
         })
         router.push('/apply/success');
         store.setReadyToCheckout(false);
@@ -51,18 +52,18 @@ const PaypalCheckoutButton = (props: any) => {
     return (
         <div className="flex-grow w-full">
             {
-                isRejected ? 
-                (<div className="w-full text-center flex justify-center items-center">
-                    <h2>Something went wrong, please reload and try again.</h2>
-                </div>) : null
+                isRejected ?
+                    (<div className="w-full text-center flex justify-center items-center">
+                        <h2>Something went wrong, please reload and try again.</h2>
+                    </div>) : null
             }
             {
-                isPending ? 
-                (<div className="w-full text-center flex justify-center items-center">
-                    <span className="loader"></span>
-                </div>) : null
+                isPending ?
+                    (<div className="w-full text-center flex justify-center items-center">
+                        <span className="loader"></span>
+                    </div>) : null
             }
-            {!isPending && 
+            {!isPending &&
                 <h2 className="text-center mb-4">
                     Choose your payment option:
                 </h2>

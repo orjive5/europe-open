@@ -4,81 +4,84 @@ import { StateCreator } from "zustand";
 
 export const applicationSlice: StateCreator<IApplicationSlice> = (set) => ({
     discipline: undefined,
-    setDiscipline: (state: string) => 
+    setDiscipline: (state: string) =>
         set(() => ({ discipline: state })),
     category: undefined,
-    setCategory: (state: string) => 
+    setCategory: (state: string) =>
         set(() => ({ category: state })),
     name_and_surname: undefined,
-    setNameAndSurname: (state: string) => 
+    setNameAndSurname: (state: string) =>
         set(() => ({ name_and_surname: state })),
     date_of_birth: undefined,
-    setDateOfBirth: (state: Date) => 
+    setDateOfBirth: (state: Date) =>
         set(() => ({ date_of_birth: state })),
     teacher: undefined,
-    setTeacher: (state: string) => 
+    setTeacher: (state: string) =>
         set(() => ({ teacher: state })),
     accompanist: undefined,
-    setAccompanist: (state: string) => 
+    setAccompanist: (state: string) =>
         set(() => ({ accompanist: state })),
     conductor: undefined,
-    setConductor: (state: string) => 
+    setConductor: (state: string) =>
         set(() => ({ conductor: state })),
     collective_leader: undefined,
-    setCollectiveLeader: (state: string) => 
+    setCollectiveLeader: (state: string) =>
         set(() => ({ collective_leader: state })),
     country: undefined,
-    setCountry: (state: string) => 
+    setCountry: (state: string) =>
         set(() => ({ country: state })),
     country_code: undefined,
-    setCountryCode: (state: string) => 
+    setCountryCode: (state: string) =>
         set(() => ({ country_code: state })),
     place: undefined,
-    setPlace: (state: string) => 
+    setPlace: (state: string) =>
         set(() => ({ place: state })),
     institution: undefined,
-    setInstitution: (state: string) => 
+    setInstitution: (state: string) =>
         set(() => ({ institution: state })),
     program: undefined,
-    setProgram: (state: string) => 
+    setProgram: (state: string) =>
         set(() => ({ program: state })),
     biography: undefined,
-    setBiography: (state: string) => 
+    setBiography: (state: string) =>
         set(() => ({ biography: state })),
     participants_email: undefined,
-    setParticipantsEmail: (state: string) => 
+    setParticipantsEmail: (state: string) =>
         set(() => ({ participants_email: state })),
     teachers_email: undefined,
-    setTeachersEmail: (state: string) => 
+    setTeachersEmail: (state: string) =>
         set(() => ({ teachers_email: state })),
     video_link: undefined,
     setVideoLink: (state: string) =>
-        set(() => ({video_link: state})),
+        set(() => ({ video_link: state })),
     identity_documents: undefined,
     setIdentityDocuments: (state: IUploadedFile[]) =>
-        set(() => ({identity_documents: state})),
+        set(() => ({ identity_documents: state })),
     avatar: undefined,
     setAvatar: (state: IUploadedFile[]) =>
-        set(() => ({avatar: state})),
+        set(() => ({ avatar: state })),
+    payment_proof: undefined,
+    setPaymentProof: (state: IUploadedFile[]) =>
+        set(() => ({ payment_proof: state })),
     info_correct: undefined,
     setInfoCorrect: (state: boolean) =>
-        set(() => ({info_correct: state})),
+        set(() => ({ info_correct: state })),
     agree_with_terms: undefined,
     setAgreeWithTerms: (state: boolean) =>
-        set(() => ({agree_with_terms: state})),
+        set(() => ({ agree_with_terms: state })),
     ready_to_checkout: false,
     setReadyToCheckout: (state: boolean) =>
-        set(() => ({ready_to_checkout: state})),
+        set(() => ({ ready_to_checkout: state })),
     amount_to_pay: undefined,
     setAmountToPay: (state: number) =>
-        set(() => ({amount_to_pay: state})),
+        set(() => ({ amount_to_pay: state })),
     diploma_by_post: false,
     setDiplomaByPost: (state: boolean) =>
-        set(() => ({diploma_by_post: state})),
+        set(() => ({ diploma_by_post: state })),
     postal_address: undefined,
     setPostalAddress: (state: string) =>
-        set(() => ({postal_address: state})),
+        set(() => ({ postal_address: state })),
     open_checkout: false,
     setOpenCheckout: (state: boolean) =>
-        set(() => ({open_checkout: state})),
+        set(() => ({ open_checkout: state })),
 });

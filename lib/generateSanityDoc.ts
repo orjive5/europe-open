@@ -4,7 +4,7 @@ import { ICategory } from '@/types/category.interface';
 import { createClient } from "next-sanity";
 import clientConfig from '../sanity/config/client-config';
 
-export async function generateCategory({title}: ICategory) {
+export async function generateCategory({ title }: ICategory) {
 
     const doc = {
         _type: 'categories',
@@ -20,29 +20,30 @@ export async function generateCategory({title}: ICategory) {
 }
 
 export async function generateParticipant({
-        discipline,
-        category,
-        name_and_surname,
-        date_of_birth,
-        teacher,
-        accompanist,
-        conductor,
-        collective_leader,
-        country,
-        country_code,
-        place,
-        institution,
-        program,
-        teacher_email,
-        participant_email,
-        video_link,
-        identity_documents,
-        poster_photo,
-        biography,
-        diploma_by_postal_service,
-        postal_address,
-        transaction_id,
-    }: any) {
+    discipline,
+    category,
+    name_and_surname,
+    date_of_birth,
+    teacher,
+    accompanist,
+    conductor,
+    collective_leader,
+    country,
+    country_code,
+    place,
+    institution,
+    program,
+    teacher_email,
+    participant_email,
+    video_link,
+    identity_documents,
+    poster_photo,
+    biography,
+    diploma_by_postal_service,
+    postal_address,
+    transaction_id,
+    payment_proof,
+}: any) {
 
     const doc = {
         _type: 'participants',
@@ -53,7 +54,7 @@ export async function generateParticipant({
             _ref: discipline,
         }],
         category: [{
-            _type:'reference',
+            _type: 'reference',
             _key: '5e31c2201004',
             _ref: category,
         }],
@@ -77,17 +78,18 @@ export async function generateParticipant({
         competitive_year: 2023,
         season: 'autumn',
         transaction_id,
+        payment_proof,
     }
 
-    async function createParticipantDoc(clientConfig: any, doc: any, identity_documents: any, poster_photo: any) {
+    async function createParticipantDoc(clientConfig: any, doc: any, identity_documents: any, poster_photo: any, payment_proof: any) {
         try {
             // Create the initial participant document
             const client = createClient(clientConfig);
             const participantDoc = await client.create(doc);
             const participantDocId = participantDoc._id;
-    
+
             // Upload image and get the image asset
-            const imageAsset = poster_photo && await client.assets.upload('image', poster_photo, {filename: `${poster_photo?.name && poster_photo.name}-poster-photo`});
+            const imageAsset = poster_photo && await client.assets.upload('image', poster_photo, { filename: `${poster_photo?.name && poster_photo.name}-poster-photo` });
 
             // Upload identity docs and get the identity docs asset
             const idDocsAssets = identity_documents && await Promise.all(identity_documents.map(async (idDoc: any) => {
@@ -95,7 +97,13 @@ export async function generateParticipant({
                 return idDocsAsset;
             }));
 
-            // Set files reference in the initial document
+            // Upload identity docs and get the identity docs asset
+            const paymentProofAssets = payment_proof && await Promise.all(payment_proof.map(async (item: any) => {
+                const asset = await client.assets.upload('file', item, { filename: `${item?.name && item.name}-payment-proof` });
+                return asset;
+            }));
+
+            // Set identity documents files reference in the initial document
             identity_documents && await client
                 .patch(participantDocId)
                 .set({
@@ -108,7 +116,22 @@ export async function generateParticipant({
                         _key: `${idDocAsset._id}${index}`
                     }))
                 })
-            .commit();
+                .commit();
+
+            // Set payment proof files reference in the initial document
+            payment_proof && await client
+                .patch(participantDocId)
+                .set({
+                    payment_proof: paymentProofAssets.map((item: any, index: any) => ({
+                        _type: 'file',
+                        asset: {
+                            _type: "reference",
+                            _ref: item._id
+                        },
+                        _key: `${item._id}${index}`
+                    }))
+                })
+                .commit();
 
             // Set the image asset in the initial document
             poster_photo && await client
@@ -122,13 +145,13 @@ export async function generateParticipant({
                         }
                     }
                 })
-            .commit();
+                .commit();
 
         } catch (error) {
             console.error("Error:", error);
         }
     }
-    
+
     // Call the function with appropriate arguments
-    createParticipantDoc(clientConfig, doc, identity_documents, poster_photo);
+    createParticipantDoc(clientConfig, doc, identity_documents, poster_photo, payment_proof);
 }

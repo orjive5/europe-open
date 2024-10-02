@@ -5,6 +5,7 @@ import PaypalCheckoutButton from "../paypalCheckoutButton";
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useBoundStore } from "@/store";
 import { Separator } from "../ui/separator";
+import OtherPaymentOptions from "../otherPaymentOptions";
 
 const CheckoutSheet = ({ open, onOpenChange }: { open: boolean, onOpenChange: any }) => {
 
@@ -47,11 +48,14 @@ const CheckoutSheet = ({ open, onOpenChange }: { open: boolean, onOpenChange: an
                             Total: {product.price} EUR
                         </p>
                     </section>
-                    <PayPalScriptProvider
-                        options={initialOptions}
-                    >
-                        <PaypalCheckoutButton product={product} />
-                    </PayPalScriptProvider>
+                    <section className="w-full">
+                        <PayPalScriptProvider
+                            options={initialOptions}
+                        >
+                            <PaypalCheckoutButton product={product} />
+                        </PayPalScriptProvider>
+                        <OtherPaymentOptions />
+                    </section>
                 </div>
             </SheetContent>
         </Sheet>
