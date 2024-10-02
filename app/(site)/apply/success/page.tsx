@@ -18,7 +18,7 @@ const Success = () => {
         <CardHeader className='flex flex-col gap-4 justify-center items-center'>
           <CheckCircle className='w-20 h-20 text-primary' />
           <CardTitle>
-            Payment Successful!
+            Application Successful!
           </CardTitle>
           <CardDescription className='text-center'>
             We've received your application and it is currently under review.

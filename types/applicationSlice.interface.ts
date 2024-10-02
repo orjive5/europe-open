@@ -39,6 +39,8 @@ export interface IApplicationSlice {
     setIdentityDocuments(i: IUploadedFile[]): void;
     avatar?: IUploadedFile[];
     setAvatar(i: IUploadedFile[]): void;
+    payment_proof?: IUploadedFile[];
+    setPaymentProof(i: IUploadedFile[]): void;
     info_correct?: boolean;
     setInfoCorrect(i?: boolean): void;
     agree_with_terms?: boolean;

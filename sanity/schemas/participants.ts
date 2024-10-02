@@ -193,6 +193,12 @@ const participants = defineType({
             title: 'Transaction ID',
             type: 'string',
         }),
+        defineField({
+            name: 'payment_proof',
+            title: 'Payment proof',
+            type: 'array',
+            of: [{ type: 'file' }],
+        }),
     ]
 })
 
