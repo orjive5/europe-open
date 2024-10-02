@@ -99,6 +99,7 @@ export async function generateParticipant({
 
             // Upload identity docs and get the identity docs asset
             const paymentProofAssets = payment_proof && await Promise.all(payment_proof.map(async (item: any) => {
+                console.log('payment proof item', item)
                 const asset = await client.assets.upload('file', item, { filename: `${item?.name && item.name}-payment-proof` });
                 return asset;
             }));
