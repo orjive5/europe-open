@@ -7,9 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getYoutubeVideoId } from "@/lib/getYoutubeVideoId";
 import ParticipantInfo from "@/components/participantInfo";
 import { Skeleton } from "@/components/ui/skeleton";
-import ParticipantsGrid from "@/components/participantsGrid";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ParticipantsGrid } from "../participantsGrid";
 
 const ParticipantClient = ({ params }: IParticipantParams) => {
 
@@ -39,7 +39,7 @@ const ParticipantClient = ({ params }: IParticipantParams) => {
               <ParticipantInfo participant={data} />
             </section>
             <section className="w-full flex flex-col items-center gap-8">
-              <ParticipantsGrid text heading={`LATEST PARTICIPANTS - ${data.discipline[0].toUpperCase()}`} discipline={data.discipline[0]} />
+              <ParticipantsGrid isText heading={`LATEST PARTICIPANTS - ${data.discipline[0].toUpperCase()}`} discipline={data.discipline[0]} />
               <Link href='/participants'>
                 <Button>
                   Browse Participants
