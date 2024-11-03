@@ -3,60 +3,53 @@
 import { getParticipants } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
 import ParticipantPreview from "../participantPreview";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AspectRatio } from "../ui/aspect-ratio";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IParticipantData } from "@/types/participantData.interface";
+import { getUniqueCountryElements } from "./utils";
+import { ParticipantsSkeleton } from "./components/Skeleton";
 
-const ParticipantsGrid = ({ heading, discipline, text }: { heading?: string, discipline?: string, text?: boolean }) => {
+type TProps = {
+  heading?: string;
+  discipline?: string;
+  isText?: boolean;
+}
+
+export const ParticipantsGrid = (props: TProps) => {
+  const { heading, discipline, isText } = props;
   const { data, isLoading, isError } = useQuery({
     queryKey: ['participants'],
     queryFn: getParticipants,
   });
 
-  const [sortedByDiscipline, setSortedByDiscipline] = useState<IParticipantData[] | null>(null);
+  const [sortedData, setSortedData] = useState<IParticipantData[]>([]);
 
   useEffect(() => {
-    if (discipline) {
-      data && setSortedByDiscipline(data.filter(item => item.discipline[0] === discipline))
+    if (data) {
+      if (discipline) {
+        setSortedData(data.filter(item => item.discipline[0] === discipline).slice(0, 8))
+      } else {
+        setSortedData(getUniqueCountryElements(data))
+      }
     }
-  }, [data])
 
-  data && console.log(data);
-  discipline && data && console.log('discipline', sortedByDiscipline)
+  }, [data]);
 
   return (
     <section className="w-full flex flex-col justify-center items-center gap-8">
-      {text ? (
-        <h1 className="sm:text-xl font-medium">
+      {isText ? (
+        <h2 className="sm:text-xl font-medium">
           {heading}
-        </h1>) : (
+        </h2>) : (
         <Link href='/participants'>
-          <h1 className="sm:text-xl font-medium hover:underline">
+          <h2 className="sm:text-xl font-medium hover:underline">
             {heading}
-          </h1>
+          </h2>
         </Link>)}
       <div className="justify-items-center w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-8 gap-x-4">
         {
-          isLoading && [...Array(8)].map((el, i) => (
-            <div key={i} className="flex flex-col gap-2 w-full">
-              <AspectRatio
-                className="overflow-hidden rounded-lg"
-                ratio={16 / 9}
-              >
-                <Skeleton
-                  className="h-full w-full"
-                />
-              </AspectRatio>
-              <div className="flex flex-col items-start gap-1">
-                <Skeleton className="h-4 w-[200px]" />
-                <div className="text-start gap-1 flex flex-col justify-between items-start">
-                  <Skeleton className="h-4 w-[150px]" />
-                  <Skeleton className="h-4 w-[50px]" />
-                </div>
-              </div>
-            </div>
+          isLoading && [...Array(8)].map((item, index) => (
+            <ParticipantsSkeleton key={index} />
           ))
         }
         {
@@ -66,16 +59,11 @@ const ParticipantsGrid = ({ heading, discipline, text }: { heading?: string, dis
           </h2>
         }
         {
-          sortedByDiscipline ? (sortedByDiscipline
-            .slice(0, 8)
-            .map(p => <ParticipantPreview key={p.slug} participant={p} />)) :
-            (data && data
-              .slice(0, 8)
-              .map(p => <ParticipantPreview key={p.slug} participant={p} />))
+          sortedData.length > 0 && (
+            sortedData.map(item => <ParticipantPreview key={item.slug} participant={item} />)
+          )
         }
       </div>
     </section>
   )
 }
-
-export default ParticipantsGrid;
