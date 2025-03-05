@@ -15,7 +15,7 @@ import Autoplay from "embla-carousel-autoplay"
 type TProps = {
     heading: string;
     href: string;
-    data: Post[];
+    data?: Post[];
     isLoading: boolean;
     isError: boolean;
 }
@@ -68,13 +68,13 @@ export const PostsGrid = (props: TProps) => {
                     className="w-full"
                 >
                     <CarouselContent>
-                        {data.map(item => (
+                        {data && data.length > 0 && data.map(item => (
                             <CarouselItem className="basis-1/4" key={item._id}>
                                 <PostsPreview landingPage key={item._id} post={item} />
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    {data.length > 4 && (
+                    {data && data.length > 4 && (
                         <>
                             <CarouselPrevious />
                             <CarouselNext />
