@@ -8,13 +8,12 @@ import { IParticipantData } from "@/types/participantData.interface";
 import { Skeleton } from "../ui/skeleton";
 import { useState } from "react";
 
-export function MapChart() {
+export const MapChart = () => {
     const { theme } = useTheme();
     const { data, isLoading, isError } = useQuery({
         queryKey: ['participants'],
         queryFn: getParticipants,
         refetchOnWindowFocus: true,
-
     });
 
     // Calculate number of participants from each country
