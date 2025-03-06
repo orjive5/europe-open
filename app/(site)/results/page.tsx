@@ -1,5 +1,5 @@
+import React, { Suspense } from 'react'
 import ResultsClient from '@/components/resultsClient'
-import React from 'react'
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,7 +7,11 @@ export const metadata: Metadata = {
 }
 
 const Results = () => {
-  return <ResultsClient />
+  return (
+      <Suspense fallback={<p>Loading...</p>}>
+        <ResultsClient />
+      </Suspense>
+  )
 }
 
 export default Results;
