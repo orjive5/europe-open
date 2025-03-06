@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react'
 import JuryClient from '@/components/juryClient'
 import { Metadata } from "next";
 
@@ -6,7 +7,11 @@ export const metadata: Metadata = {
 }
 
 const Jury = () => {
-  return <JuryClient />
+  return (
+      <Suspense fallback={<p>Loading...</p>}>
+        <JuryClient />
+      </Suspense>
+  )
 }
 
 export default Jury;
