@@ -19,22 +19,20 @@ export const NavMenu = () => {
   return (
     <NavigationMenu className="hidden lg:block">
       <NavigationMenuList>
-        {/* HOME */}
         <NavigationMenuItem>
           <Link href='/' legacyBehavior passHref>
             <NavigationMenuLink>
               <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                 <p className="text-base font-medium leading-none">
-                  HOME
+                  Home
                 </p>
               </div>
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        {/* COMPETITION */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            COMPETITION
+            Competition
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -49,10 +47,9 @@ export const NavMenu = () => {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        {/* ABOUT */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            ABOUT
+            About
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -67,11 +64,10 @@ export const NavMenu = () => {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        {/* APPLY */}
         <NavigationMenuItem>
           <Link href="/apply">
             <Button variant='outline'>
-              APPLY
+              Apply
             </Button>
           </Link>
         </NavigationMenuItem>

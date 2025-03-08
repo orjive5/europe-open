@@ -19,7 +19,7 @@ const Contact = () => {
       <Card className="w-full lg:w-3/4 xl:w-2/3 lg:p-8 flex flex-col justify-center items-center text-justify">
         <CardHeader>
           <CardTitle className="text-center">
-            CONTACT
+            Contact
           </CardTitle>
           <CardDescription className="text-center">
             Europe Open Online Music Competition
