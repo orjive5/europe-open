@@ -2,17 +2,17 @@ import { IHeaderPages } from "@/types/headerPages.interface";
 
 export const aboutPages: IHeaderPages[] = [
   {
-    title: "ABOUT",
+    title: "About",
     href: "/about",
     description: "Learn more about us",
   },
   {
-    title: "FAQ",
+    title: "Faq",
     href: "/faq",
     description: "Check out some frequently asked questions",
   },
   {
-    title: "CONTACT",
+    title: "Contact",
     href: "/contact",
     description: "Contact us here",
   },

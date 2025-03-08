@@ -24,11 +24,11 @@ const Header = () => {
         </div>
         <div className="flex flex-col h-full justify-center">
           <h1 className="font-bold text-base sm:text-xl">
-            EUROPE OPEN
+            Europe Open
           </h1>
           <Separator className="hidden sm:block" />
           <p className="hidden sm:block font-medium">
-            ONLINE MUSIC COMPETITION
+            Online Music Competition
           </p>
         </div>
       </Link>
