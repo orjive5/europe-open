@@ -9,7 +9,7 @@ const Apply = () => {
 
   return (
     <div className="flex flex-col gap-8 justify-center items-center">
-        <h1>Apply</h1>
+        <h3 className="text-2xl font-semibold leading-none tracking-tight text-center">Apply</h3>
         <ApplyForm />
     </div>
   )
