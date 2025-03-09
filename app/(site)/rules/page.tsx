@@ -62,7 +62,7 @@ const Rules = async () => {
               <Accordion type="multiple" className="w-full md:w-[600px]">
                 <AccordionItem value="soloists_timetable">
                   <AccordionTrigger className="text-justify gap-8">
-                    TIMETABLE
+                    Timetable
                   </AccordionTrigger>
                   <AccordionContent className="text-justify styled-link-parent">
                     {
@@ -96,7 +96,7 @@ const Rules = async () => {
               <Accordion type="multiple" className="w-full md:w-[600px]">
                 <AccordionItem value="soloists_timetable">
                   <AccordionTrigger className="text-justify gap-8">
-                    TIMETABLE
+                    Timetable
                   </AccordionTrigger>
                   <AccordionContent className="text-justify styled-link-parent">
                     {
