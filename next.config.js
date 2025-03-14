@@ -21,6 +21,8 @@ const nextConfig = {
             },
         ],
         domains: ['img.youtube.com', 'cdn.sanity.io'],
+        // todo: added this because reached a limit on a vercel's free tier, maybe upgrade
+        unoptimized: true,
     },
 }
 
