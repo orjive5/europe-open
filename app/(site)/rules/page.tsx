@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   title: 'Europe Open | Rules',
 }
 
+export const revalidate = 60;
+
 const Rules = async () => {
 
   const soloistsRules = await getSoloistsRules();

@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   title: 'Europe Open | FAQ',
 }
 
+export const revalidate = 60;
+
 const Faq = async () => {
 
   const faqs = await getFaqs();
