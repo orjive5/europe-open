@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getDisciplines, getJury } from "@/sanity/sanity-utils";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import ReactPaginate from 'react-paginate';
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -15,7 +14,6 @@ import * as z from "zod"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,6 +33,7 @@ import {
 import { IJury } from "@/types/jury.interface";
 import JuryPreview from "@/components/juryPreview";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { Paginator } from "@/components/paginator";
 
 const FormSchema = z.object({
   discipline: z.string(),
@@ -80,7 +79,7 @@ const JuryClient = () => {
 
   const pageCount = Math.ceil((jury && jury) ? jury.length / juryPerPage : 0);
 
-  const changePage = ({ selected }: { selected: number }) => {
+  const onPageChange = ({ selected }: { selected: number }) => {
     params.set('page', String(selected + 1));
     replace(`${pathname}?${params.toString()}`);
     setPageNumber(selected);
@@ -106,7 +105,7 @@ const JuryClient = () => {
       replace(`${pathname}?${params.toString()}`);
     }
     data && setJury(selectedDiscipline || null);
-    changePage({ selected: 0 });
+    onPageChange({ selected: 0 });
     setForcePage(0);
   }
 
@@ -127,7 +126,7 @@ const JuryClient = () => {
     ));
 
   if (!data) {
-    return <div className="flex flex-grow justify-center items-center">Loading...</div>
+    return <div className="flex grow justify-center items-center">Loading...</div>
   }
 
   return (
@@ -272,18 +271,7 @@ const JuryClient = () => {
           {displayJury && displayJury}
         </div>
         {pageCount > 1 && (
-          <ReactPaginate
-            breakLabel={"..."}
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 text-base"}
-            disabledClassName={"text-muted-foreground"}
-            disabledLinkClassName={"cursor-not-allowed"}
-            activeClassName={"text-primary"}
-            forcePage={forcePage}
-          />
+            <Paginator pageCount={pageCount} onPageChange={onPageChange} forcePage={forcePage} />
         )}
       </section>
     </main>

@@ -22,7 +22,7 @@ export const NavMenu = () => {
         <NavigationMenuItem>
           <Link href='/' legacyBehavior passHref>
             <NavigationMenuLink>
-              <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+              <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                 <p className="text-base font-medium leading-none">
                   Home
                 </p>
@@ -82,7 +82,7 @@ const ListItem = (({ title, href, description }: IListItem) => {
       <NavigationMenuItem asChild>
         <Link href={href} legacyBehavior passHref>
           <NavigationMenuLink>
-            <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+            <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
               <div className="text-base font-medium leading-none">
                 {title}
               </div>

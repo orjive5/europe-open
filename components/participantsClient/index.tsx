@@ -8,7 +8,6 @@ import { getDisciplines, getParticipants } from "@/sanity/sanity-utils";
 import { IParticipantData } from "@/types/participantData.interface";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import ReactPaginate from 'react-paginate';
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -17,7 +16,6 @@ import * as z from "zod"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -42,6 +40,7 @@ import {
   CommandItem,
 } from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
+import { Paginator } from "@/components/paginator";
 
 const FormSchema = z.object({
   competitive_year: z.string(),
@@ -61,7 +60,8 @@ const ParticipantsClient = () => {
     onSuccess: (data) => {
       setParticipants(data);
       const uniqueYears = [...new Set(data.map((item: IParticipantData) => (item.competitive_year).toString()))];
-      setYears(['All years', ...uniqueYears])
+      const sortedYears = uniqueYears.sort((a, b) => Number(b) - Number(a));
+      setYears(['All years', ...sortedYears])
     },
   });
 
@@ -113,7 +113,7 @@ const ParticipantsClient = () => {
 
   const pageCount = Math.ceil((participants && participants) ? participants.length / participantsPerPage : 0);
 
-  const changePage = ({ selected }: { selected: number }) => {
+  const onPageChange = ({ selected }: { selected: number }) => {
     setPageNumber(selected)
     window.scrollTo({ top: 0 })
   }
@@ -224,7 +224,7 @@ const ParticipantsClient = () => {
                         field.onChange(e)
                       }} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="m-0">
                             <SelectValue placeholder='All years' />
                           </SelectTrigger>
                         </FormControl>
@@ -306,17 +306,7 @@ const ParticipantsClient = () => {
           {displayParticipants && displayParticipants}
         </div>
         {pageCount > 1 && (
-          <ReactPaginate
-            breakLabel={"..."}
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName={"flex items-center justify-center gap-8 col-span-1 md:col-span-2 lg:col-span-3 text-base"}
-            disabledClassName={"text-muted-foreground"}
-            disabledLinkClassName={"cursor-not-allowed"}
-            activeClassName={"text-primary"}
-          />
+            <Paginator pageCount={pageCount} onPageChange={onPageChange} />
         )}
       </section>
     </main>

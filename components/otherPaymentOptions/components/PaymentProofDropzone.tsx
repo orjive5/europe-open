@@ -52,7 +52,7 @@ export const PaymentProofDropzone = ({ onChange, onBlur, value, form }: {
             }) => (
                 <div className="mt-2">
                     <div
-                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background file:border-0 file:bg-transparent file:text-lg file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background file:border-0 file:bg-transparent file:text-lg file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                         {...getRootProps()}
                     >
                         <input

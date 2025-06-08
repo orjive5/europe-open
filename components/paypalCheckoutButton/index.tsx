@@ -50,7 +50,7 @@ const PaypalCheckoutButton = (props: any) => {
     }
 
     return (
-        <div className="flex-grow w-full">
+        <div className="grow w-full">
             {
                 isRejected ?
                     (<div className="w-full text-center flex justify-center items-center">

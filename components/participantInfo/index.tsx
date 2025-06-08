@@ -1,7 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -47,7 +46,7 @@ const ParticipantInfo = ({ participant }: IParticipantInfo) => {
             </div>
           </CardHeader>
           <div className="w-full md:w-auto">
-            <CardContent className="flex-grow md:mt-6 2xl:mt-0 flex flex-col gap-2 text-center">
+            <CardContent className="grow md:mt-6 2xl:mt-0 flex flex-col gap-2 text-center">
               <div className="flex flex-col gap-4">
                 <div>
                   <h2 className="font-medium">

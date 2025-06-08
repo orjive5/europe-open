@@ -217,7 +217,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="disciplines"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel className="w-auto">
                     Discipline
                     <span className="text-primary">*</span>
@@ -288,7 +288,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="categories"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Category
                     <span className="text-primary">*</span>
@@ -434,7 +434,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="teacher"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Teacher
                   </FormLabel>
@@ -457,7 +457,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="accompanist"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Accompanist
                   </FormLabel>
@@ -482,7 +482,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="conductor"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Conductor
                   </FormLabel>
@@ -505,7 +505,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="collective_leader"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Collective leader
                   </FormLabel>
@@ -526,7 +526,7 @@ export const ApplyForm = () => {
           </div>
           <div className="flex w-full gap-4">
             {/* COUNTRY */}
-            <div className="flex-grow flex flex-col">
+            <div className="grow flex flex-col">
               <FormField
                 control={form.control}
                 name="countries"
@@ -600,7 +600,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="place"
               render={({ field }) => (
-                <FormItem className="gap-1 flex-grow flex flex-col justify-end items-start">
+                <FormItem className="gap-1 grow flex flex-col justify-end items-start">
                   <FormLabel>
                     City/Place
                     <span className="text-primary">*</span>
@@ -714,7 +714,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="participants_email"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Your Email
                     <span className="text-primary">*</span>
@@ -739,7 +739,7 @@ export const ApplyForm = () => {
               control={form.control}
               name="teachers_email"
               render={({ field }) => (
-                <FormItem className="flex-grow flex flex-col items-start">
+                <FormItem className="grow flex flex-col items-start">
                   <FormLabel>
                     Teacher's Email
                   </FormLabel>
@@ -820,7 +820,7 @@ export const ApplyForm = () => {
                   }) => (
                     <div className="mt-2">
                       <div
-                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                         {...getRootProps()}
                       >
                         <input
@@ -916,7 +916,7 @@ export const ApplyForm = () => {
                   }) => (
                     <div className="mt-2">
                       <div
-                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
+                        className={`text-muted-foreground cursor-pointer flex flex-col gap-2 h-auto w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-dashed ${isDragActive ? 'bg-muted' : 'bg-transparent'}`}
                         {...getRootProps()}
                       >
                         <input
