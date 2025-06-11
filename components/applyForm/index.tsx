@@ -987,16 +987,12 @@ export const ApplyForm = () => {
           />
           {/* DISCLAIMER */}
           <Alert>
-            <div className="flex gap-2">
-              <ShieldCheck className="h-6 w-6" />
-              <div>
-                <AlertTitle>Please read</AlertTitle>
-                <AlertDescription>
+              <ShieldCheck />
+              <AlertTitle>Please read</AlertTitle>
+              <AlertDescription>
                   The information you provided will be used in diplomas.
                   Please take your time to review it and check for any mistakes.
-                </AlertDescription>
-              </div>
-            </div>
+              </AlertDescription>
           </Alert>
           {/* INFO CORRECT */}
           <FormField
